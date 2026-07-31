@@ -38,4 +38,4 @@ El prototipo ha sido evaluado bajo metodologías de desarrollo tecnológico expe
 ---
 
 ## 👥 Autores y Proyecto Escolar
-Proyecto desarrollado en el marco de la **Feria Escolar de Innovación Tecnológica** en El Salvador.
+Grupo 3
