@@ -1,3 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">NefroScan</string>
+    <string name="subtitle_simulation">Ecosistema de Bio-Simulación Avanzada</string>
+    <string name="btn_load_ultrasound">Cargar Ecografía</string>
+
+    <string name="title_anatomy_3d">1. ANATOMÍA 3D INTERACTIVA</string>
+    <string name="lbl_opacity_default">Ver Estructura Interna (Transparencia): %1$d%%</string>
+    <string name="lbl_layers">Capas visibles: %1$s</string>
+    <string name="layer_all">Todas</string>
+    <string name="layer_medulla">Médula</string>
+    <string name="layer_pelvis">Pelvis</string>
+
+    <string name="title_digital_twin">2. GEMELO DIGITAL (MAPA DE CALOR)</string>
+    <string name="status_waiting">Esperando Análisis...</string>
+    <string name="status_analyzing">Analizando ecografía localmente...</string>
+
+    <string name="title_temporal_projection">PROYECCIÓN TEMPORAL MULTI-VARIABLE</string>
+    <string name="lbl_water_intake">Consumo de Agua Diario: %1$.1f Litros</string>
+    <string name="lbl_sodium_intake">Ingesta de Sodio (Sal): %1$s</string>
+
+    <string name="prediction_5_years">En 5 años: eGFR estimado de %1$d mL/min/1.73m²</string>
+    <string name="prediction_10_years">En 10 años: eGFR estimado de %1$d mL/min/1.73m²</string>
+    <string name="prediction_calculating">Calculando...</string>
+
+    <string name="classifier_result_format">Daño: %1$.1f%% | %2$s\nClasificación: %3$s</string>
+    <string name="sodium_low">Bajo</string>
+    <string name="sodium_normal">Normal</string>
+    <string name="sodium_high">Alto (Exceso)</string>
 </resources>

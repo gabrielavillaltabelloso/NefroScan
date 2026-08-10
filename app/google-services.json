@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "156545914649",
+    "project_id": "nefroscan-6cfd9",
+    "storage_bucket": "nefroscan-6cfd9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156545914649:android:0bb4d8ed0b3c786f821788",
+        "android_client_info": {
+          "package_name": "com.insamt.nefroscan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDz4n-E4ke5pZp2kuIk3fLZvIpTkZrW268"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

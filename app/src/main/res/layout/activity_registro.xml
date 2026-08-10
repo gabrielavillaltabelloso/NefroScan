@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="Logo NefroScan" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="#38BDF8"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nuevo Registro de Paciente"
+        android:textColor="#94A3B8"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- Campo: Nombre -->
+    <EditText
+        android:id="@+id/etNombrePaciente"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#1E293B"
+        android:hint="Nombre Completo del Paciente"
+        android:textColorHint="#64748B"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:inputType="textPersonName"/>
+
+    <!-- Campo: Edad -->
+    <EditText
+        android:id="@+id/etEdadPaciente"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#1E293B"
+        android:hint="Edad"
+        android:textColorHint="#64748B"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="32dp"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/btnIniciarEscaneo"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Iniciar Escaneo IA"
+        android:backgroundTint="#0284C7"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

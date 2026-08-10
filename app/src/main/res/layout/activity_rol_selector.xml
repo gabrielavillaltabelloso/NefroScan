@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NefroScan"
+        android:textColor="#38BDF8"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seleccione su perfil de usuario institucional"
+        android:textColor="#94A3B8"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginBottom="40dp"/>
+
+    <!-- Botón Rol: Promotor de Salud -->
+    <Button
+        android:id="@+id/btnRolPromotor"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:text="Promotor de Salud (Campo)"
+        android:backgroundTint="#1E293B"
+        android:textColor="#38BDF8"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Botón Rol: Médico -->
+    <Button
+        android:id="@+id/btnRolMedico"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:text="Médico (Diagnóstico e IA)"
+        android:backgroundTint="#0284C7"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Botón Rol: Paciente -->
+    <Button
+        android:id="@+id/btnRolPaciente"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:text="Paciente (Mi Historial)"
+        android:backgroundTint="#1E293B"
+        android:textColor="#EC4899"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
