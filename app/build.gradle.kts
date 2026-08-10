@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kotlinKapt) // <-- Use KAPT instead of KSP
+    alias(libs.plugins.kotlinKapt)
 }
 
 android {
@@ -20,6 +20,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,13 +35,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlin {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
 }
@@ -49,13 +50,12 @@ dependencies {
     // Librerías Base
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.core.ktx)
     implementation(libs.material)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    // TensorFlow Lite (IA On-Device) con exclusión segura integrada
+    // TensorFlow Lite (IA On-Device)
     implementation("org.tensorflow:tensorflow-lite:2.14.0")
     implementation("org.tensorflow:tensorflow-lite-support:0.4.4") {
         exclude(group = "com.google.flatbuffers", module = "flatbuffers-java")
@@ -64,16 +64,14 @@ dependencies {
         exclude(group = "com.google.flatbuffers", module = "flatbuffers-java")
     }
 
-    // SceneView 3D (Gemelo Digital) con exclusión segura integrada
-    implementation("io.github.sceneview:arsceneview:0.10.2") {
-        exclude(group = "com.google.flatbuffers", module = "flatbuffers-java")
-    }
+    // SceneView 3D (Gemelo Digital - Artefacto base compatible con Gradle 8+)
+    implementation("io.github.sceneview:sceneview:2.2.1")
 
     // Room Database (Configurado mediante KAPT)
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion") // <-- Cambiado de ksp a kapt
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     // Firebase (Plataforma Nube mediante BoM)
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))

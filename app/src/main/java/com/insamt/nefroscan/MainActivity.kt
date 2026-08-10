@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 imgPreview.setImageBitmap(bitmap)
                 txtStatusTitle.text = getString(R.string.status_analyzing)
 
-                // BLINDAJE: Ejecución totalmente aislada en IO para evitar congelar la UI
+                // Execution on IO thread to keep UI smooth
                 lifecycleScope.launch(Dispatchers.IO) {
                     try {
                         val result = localClassifier.processImage(bitmap)
@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity() {
                             else -> "Severa"
                         }
 
-                        // Guardado seguro en base de datos en segundo plano
                         val litrosAgua = withContext(Dispatchers.Main) { sbWater.progress / 10.0f }
                         val sodioProgreso = withContext(Dispatchers.Main) { sbSodium.progress }
 
@@ -120,7 +119,6 @@ class MainActivity : AppCompatActivity() {
 
                         database.diagnosticDao().insertarDiagnostico(expediente)
 
-                        // Retorno seguro al Hilo Principal para actualizar elementos visuales
                         withContext(Dispatchers.Main) {
                             txtStatusTitle.text = "Patología: ${result.pathologyLabel} (${"%.1f".format(result.confidence * 100)}%)\n" +
                                     "Área Afectada: ${"%.1f".format(result.damagePercentage)}% ($severidadTexto)"
@@ -311,19 +309,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inicializarModelos3D() {
-        try {
-            val nodeAnat = ModelNode(anatomicalSceneView.engine)
-            lifecycleScope.launch {
-                try {
-                    nodeAnat.loadModelGlb(
-                        context = this@MainActivity,
-                        glbFileLocation = "kidney_model.glb",
-                        autoAnimate = true,
+        lifecycleScope.launch {
+            try {
+                val modelInstance = anatomicalSceneView.modelLoader.loadModelInstance("kidney_model.glb")
+                if (modelInstance != null) {
+                    val nodeAnat = ModelNode(
+                        modelInstance = modelInstance,
                         scaleToUnits = 1.0f
-                    )
-                    nodeAnat.position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
-                    nodeAnat.isRotationEditable = true
-                    nodeAnat.isScaleEditable = true
+                    ).apply {
+                        position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
+                        isRotationEditable = true
+                        isScaleEditable = true
+                    }
 
                     nodeAnat.modelInstance?.materialInstances?.forEach { material ->
                         try {
@@ -350,38 +347,34 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     anatomicalNode = nodeAnat
-                    anatomicalSceneView.addChild(nodeAnat)
-                } catch (e: Exception) {
-                    Log.e("NephroScan3D", "Error cargando modelo anatómico: ${e.message}")
+                    anatomicalSceneView.addChildNode(nodeAnat)
                 }
+            } catch (e: Exception) {
+                Log.e("NephroScan3D", "Error cargando modelo anatómico: ${e.message}")
             }
-        } catch (e: Exception) { e.printStackTrace() }
+        }
 
-        try {
-            val nodeHeat = ModelNode(heatmapSceneView.engine)
-            lifecycleScope.launch {
-                try {
-                    nodeHeat.loadModelGlb(
-                        context = this@MainActivity,
-                        glbFileLocation = "kidney_model.glb",
-                        autoAnimate = true,
+        lifecycleScope.launch {
+            try {
+                val modelInstance = heatmapSceneView.modelLoader.loadModelInstance("kidney_model.glb")
+                if (modelInstance != null) {
+                    val nodeHeat = ModelNode(
+                        modelInstance = modelInstance,
                         scaleToUnits = 1.0f
-                    )
-                    nodeHeat.position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
-                    nodeHeat.isRotationEditable = true
-                    nodeHeat.isScaleEditable = true
+                    ).apply {
+                        position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
+                        isRotationEditable = true
+                        isScaleEditable = true
+                    }
 
                     heatmapNode = nodeHeat
-                    heatmapSceneView.addChild(nodeHeat)
-
-                    nodeHeat.modelInstance?.materialInstances?.let {
-                        actualizarGemeloDigital()
-                    }
-                } catch (e: Exception) {
-                    Log.e("NephroScan3D", "Error cargando modelo de calor: ${e.message}")
+                    heatmapSceneView.addChildNode(nodeHeat)
+                    actualizarGemeloDigital()
                 }
+            } catch (e: Exception) {
+                Log.e("NephroScan3D", "Error cargando modelo de calor: ${e.message}")
             }
-        } catch (e: Exception) { e.printStackTrace() }
+        }
     }
 
     private fun configurarControlesSimulacion() {
@@ -577,8 +570,8 @@ class MainActivity : AppCompatActivity() {
         detenerPulsoSimple()
         stop3DScanningAnimation()
         try {
-            anatomicalNode?.let { anatomicalSceneView.removeChild(it) }
-            heatmapNode?.let { heatmapSceneView.removeChild(it) }
+            anatomicalNode?.let { anatomicalSceneView.removeChildNode(it) }
+            heatmapNode?.let { heatmapSceneView.removeChildNode(it) }
         } catch (e: Exception) {
             e.printStackTrace()
         }
