@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://tools.android.com/tools">
 
+    <!-- Permisos de Red y Conectividad (Sincronización Firebase Cloud) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <!-- Permisos de lectura de almacenamiento y multimedia -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -29,33 +33,51 @@
             </intent-filter>
         </activity>
 
-        <!-- 2. Pantalla de Registro de Paciente -->
+        <!-- 2. Dashboard / Menú Principal del Promotor de Salud -->
+        <activity
+            android:name=".PromotorDashboardActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 3. Gestor de Sincronización de Fichas (Offline / Cloud) -->
+        <activity
+            android:name=".SyncStatusActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 4. Pantalla de Registro de Paciente -->
         <activity
             android:name=".RegistroActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- 3. Pantalla de Historial Clínico (Acceso Paciente / Médico) -->
+        <!-- 5. Pantalla de Historial Clínico (Acceso Paciente / Médico) -->
         <activity
             android:name=".HistorialActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- 4. Pantalla de Tamizaje Comunitario (Acceso Promotor de Salud) -->
+        <!-- 6. Pantalla de Tamizaje Comunitario (Acceso Promotor de Salud) -->
         <activity
             android:name=".PromotorActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- 5. Pantalla de Mapa de Calor Epidemiológico -->
+        <!-- 7. Pantalla de Mapa de Calor Epidemiológico -->
         <activity
             android:name=".MapaRiesgoActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- 6. Pantalla principal de Escaneo 3D e IA (Acceso Médico) -->
+        <!-- 8. Pantalla principal de Escaneo 3D e IA (Acceso Médico) -->
         <activity
             android:name=".MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 9. Asistente Virtual / Chatbot IA de Salud Renal (Acceso Paciente / Promotor) -->
+        <activity
+            android:name=".ChatbotActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

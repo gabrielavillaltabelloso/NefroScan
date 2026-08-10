@@ -15,9 +15,9 @@ class RolSelectorActivity : AppCompatActivity() {
         val btnMedico = findViewById<Button>(R.id.btnRolMedico)
         val btnPaciente = findViewById<Button>(R.id.btnRolPaciente)
 
-        // Si es Promotor de Salud (Abre la ficha de tamizaje comunitario)
+        // Si es Promotor de Salud (Abre el Dashboard/Menú principal del Promotor)
         btnPromotor.setOnClickListener {
-            val intent = Intent(this, PromotorActivity::class.java)
+            val intent = Intent(this, PromotorDashboardActivity::class.java)
             startActivity(intent)
         }
 
