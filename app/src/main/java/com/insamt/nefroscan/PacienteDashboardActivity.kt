@@ -4,19 +4,25 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.set
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.button.MaterialButton
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
+@Suppress("SpellCheckingInspection")
 class PacienteDashboardActivity : AppCompatActivity() {
 
     private lateinit var tvNombre: TextView
@@ -33,13 +39,12 @@ class PacienteDashboardActivity : AppCompatActivity() {
         tvEdadSexo = findViewById(R.id.tvEdadSexoPerfil)
         tvEstadio = findViewById(R.id.tvEstadioERCPerfil)
 
-        val btnHistorial = findViewById<Button>(R.id.btnMiHistorial)
-        val btnChatbot = findViewById<Button>(R.id.btnAsistenteIA)
-        val btnPasaporte = findViewById<Button>(R.id.btnPasaporteQR)
-        val btnGuia = findViewById<Button>(R.id.btnGuiaRenal)
-        val btnVolver = findViewById<Button>(R.id.btnVolverRolesPaciente)
+        val btnHistorial = findViewById<MaterialButton>(R.id.btnMiHistorial)
+        val btnChatbot = findViewById<MaterialButton>(R.id.btnAsistenteIA)
+        val btnPasaporte = findViewById<MaterialButton>(R.id.btnPasaporteQR)
+        val btnGuia = findViewById<MaterialButton>(R.id.btnGuiaRenal)
+        val btnVolver = findViewById<MaterialButton>(R.id.btnVolverRolesPaciente)
 
-        // Cargar el último expediente del paciente en Room
         cargarDatosFicha()
 
         btnHistorial.setOnClickListener {
@@ -69,8 +74,8 @@ class PacienteDashboardActivity : AppCompatActivity() {
                     ultimoExpediente = expedientes.last()
                     withContext(Dispatchers.Main) {
                         tvNombre.text = ultimoExpediente?.nombrePaciente ?: "Paciente Comunitario"
-                        tvEdadSexo.text = "Edad: ${ultimoExpediente?.edad ?: "--"} años | Sexo: ${ultimoExpediente?.sexo ?: "--"}"
-                        tvEstadio.text = "Estadio ERC: ${ultimoExpediente?.clasificacionEstadio ?: "En evaluación"}"
+                        tvEdadSexo.text = "Edad: ${ultimoExpediente?.edadPaciente ?: "--"} años"
+                        tvEstadio.text = "Estado: ${ultimoExpediente?.nivelSeveridad ?: "En evaluación"}"
                     }
                 } else {
                     withContext(Dispatchers.Main) {
@@ -79,7 +84,7 @@ class PacienteDashboardActivity : AppCompatActivity() {
                         tvEstadio.text = "Bajo Monitoreo General"
                     }
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 withContext(Dispatchers.Main) {
                     tvNombre.text = "Paciente NefroScan"
                 }
@@ -94,26 +99,28 @@ class PacienteDashboardActivity : AppCompatActivity() {
             return
         }
 
+        val fechaFormateada = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date(exp.fechaRegistroTimestamp))
+
         val datosQR = """
             --- PASAPORTE NEFROSCAN ---
             Paciente: ${exp.nombrePaciente}
-            Edad/Sexo: ${exp.edad} / ${exp.sexo}
-            Estadio: ${exp.clasificacionEstadio}
-            Riesgo Alto: ${if (exp.esRiesgoAlto) "SI" else "NO"}
-            eGFR 5y: ${exp.egfr5Anios} mL/min
-            eGFR 10y: ${exp.egfr10Anios} mL/min
-            Fecha: ${exp.fechaRegistro}
+            Edad: ${exp.edadPaciente} años
+            Patología: ${exp.patologiaDetectada}
+            Severidad: ${exp.nivelSeveridad}
+            Daño Tisular: ${exp.porcentajeDano}%
+            eGFR 5y: ${exp.egfrEstimado5Anios} mL/min
+            eGFR 10y: ${exp.egfrEstimado10Anios} mL/min
+            Fecha: $fechaFormateada
         """.trimIndent()
 
         val bitmap = crearBitmapQR(datosQR)
 
-        // Usamos la vista de dialog_tarjeta_qr.xml que ya tienes en tu carpeta layout
         val dialogView = layoutInflater.inflate(R.layout.dialog_tarjeta_qr, null)
         val ivQR = dialogView.findViewById<ImageView>(R.id.ivQrCodeDialog)
         val tvInfo = dialogView.findViewById<TextView>(R.id.tvInfoQrDialog)
 
         ivQR.setImageBitmap(bitmap)
-        tvInfo.text = "Paciente: ${exp.nombrePaciente}\nEstadio: ${exp.clasificacionEstadio}"
+        tvInfo.text = "Paciente: ${exp.nombrePaciente}\nSeveridad: ${exp.nivelSeveridad}"
 
         AlertDialog.Builder(this)
             .setView(dialogView)
@@ -124,10 +131,10 @@ class PacienteDashboardActivity : AppCompatActivity() {
     private fun crearBitmapQR(texto: String): Bitmap {
         val writer = QRCodeWriter()
         val bitMatrix = writer.encode(texto, BarcodeFormat.QR_CODE, 512, 512)
-        val bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.RGB_565)
+        val bitmap = createBitmap(512, 512, Bitmap.Config.RGB_565)
         for (x in 0 until 512) {
             for (y in 0 until 512) {
-                bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+                bitmap[x, y] = if (bitMatrix[x, y]) Color.BLACK else Color.WHITE
             }
         }
         return bitmap
