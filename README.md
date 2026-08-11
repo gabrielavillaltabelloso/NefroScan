@@ -1,41 +1,59 @@
-# NefroScan 🩺🤖
+# 🩺 NefroScan - Plataforma Médica Móvil e Inteligente
 
-**NefroScan** es una plataforma tecnológica e inteligente desarrollada en Android que integra modelos de Machine Learning (TensorFlow/Keras) para optimizar la evaluación preliminar y el análisis de la Enfermedad Renal Crónica (ERC) en El Salvador.
-
----
-
-## 🚀 Características Principales
-
-* **Evaluación Predictiva con IA:** Procesamiento de parámetros clínicos clave (presión arterial, creatinina, albúmina, entre otros) utilizando modelos entrenados para la clasificación de fases y estimación de riesgo renal.
-* **Módulo de Análisis de Imágenes Ecográficas:** Herramienta de visión por computadora diseñada para apoyar la detección preliminar de anomalías a partir de imágenes de ultrasonido.
-* **Persistencia Local Segura:** Gestión de datos y registros médicos locales mediante *Room Database* para asegurar la disponibilidad de los historiales de evaluación.
-* **Enfoque Comunitario y Preventivo:** Diseñado como herramienta de apoyo técnico para personal de salud, médicos generales y promotores comunitarios en la atención primaria.
+**NefroScan** es un sistema nativo desarrollado en Kotlin para dispositivos Android, concebido como una herramienta tecnológica de apoyo en la detección temprana del riesgo de Enfermedad Renal Crónica (ERC) y Nefropatía Mesoamericana en comunidades rurales de El Salvador.
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
-
-* **Desarrollo Móvil:** Android Studio / Kotlin
-* **Inteligencia Artificial y Machine Learning:** TensorFlow / Keras (Modelos predictivos y procesamiento de imágenes)
-* **Almacenamiento de Datos:** Room Database (Base de datos local estructurada)
-* **Entrenamiento y Validación:** Google Colab / Datasets clínicos estandarizados (Kaggle)
-
----
-
-## 📱 Estructura de la Aplicación
-
-1. **Dashboard Principal:** Acceso directo a los módulos de evaluación clínica y análisis de ultrasonido.
-2. **Formulario de Parámetros:** Interfaz intuitiva para el ingreso de signos vitales e indicadores de laboratorio.
-3. **Módulo de Resultados:** Despliegue de la clasificación de riesgo (incluyendo soporte para casos críticos como ERC en estadio avanzado) y recomendaciones automatizadas.
-4. **Historial Clínico:** Consulta de evaluaciones previas almacenadas de manera local y segura.
+## 🏛️ Información Institucional
+* **Institución:** Instituto Nacional de San Miguel Tepezontes
+* **Especialidad:** Desarrollo de Software
+* **Año:** 3º Año de Bachillerato (2026)
+* **Proyecto:** NefroScan
 
 ---
 
-## 🧪 Validación y Metodología
+## 🚀 Arquitectura y Características Principales
 
-El prototipo ha sido evaluado bajo metodologías de desarrollo tecnológico experimental, utilizando conjuntos de datos validados (400 registros clínicos de referencia) y pruebas de caso de estudio en entornos reales de monitoreo clínico para garantizar tiempos de respuesta óptimos (menores a 5 minutos por evaluación) y alta precisión predictiva.
+1. **Panel del Promotor de Salud (Tamizaje de Campo):**
+   * Evaluación de presión arterial sistólica y factor de exposición laboral agrícola.
+   * Algoritmo de triaje por semáforo de riesgo (Verde / Amarillo / Rojo).
+   * Monitoreo de sincronización *Offline-First*.
+   
+2. **Panel Médico (IA & Visión por Computadora):**
+   * Inferencia local (*On-Device*) con TensorFlow Lite (256x256) para análisis ecográfico.
+   * Renderizado y visualización anatómica 3D del Gemelo Digital del riñón con SceneView.
+   * Generación de Pasaporte Clínico mediante código QR.
+
+3. **Panel del Paciente:**
+   * Consulta de expedientes locales mediante Room Database.
+   * Asistente virtual conversacional para orientación y prevención en salud renal.
 
 ---
 
-## 👥 Autores y Proyecto Escolar
-Grupo 3
+## 🛠️ Librerías y Dependencias del Proyecto
+
+El proyecto está configurado bajo **Gradle 8+** (Kotlin DSL `build.gradle.kts`). A continuación se detallan las librerías principales integradas en la aplicación:
+
+| Categoría | Librería / Artefacto | Versión | Propósito Técnico |
+| :--- | :--- | :---: | :--- |
+| **UI & Base** | `androidx.core:core-ktx` | *Catalog* | Extensiones KTX de Kotlin para la API nativa de Android. |
+| **Componentes Visuales**| `com.google.android.material:material` | *Catalog* | Componentes gráficos de Material Design 3. |
+| **Inteligencia Artificial**| `org.tensorflow:tensorflow-lite` | `2.14.0` | Inferencia local On-Device de modelos convolucionales (`.tflite`). |
+| **Soporte IA** | `org.tensorflow:tensorflow-lite-support` | `0.4.4` | Preprocesamiento y transformación de tensores de imágenes. |
+| **Motor 3D & AR** | `io.github.sceneview:sceneview` | `2.2.1` | Renderizado y manipulación del modelo 3D anatómico (`.glb`). |
+| **Base de Datos Local** | `androidx.room:room-runtime` | `2.6.1` | Persistencia local offline-first sobre SQLite. |
+| **Room Corrutinas** | `androidx.room:room-ktx` | `2.6.1` | Consultas asíncronas reactivas sin congelar el hilo principal. |
+| **Compilador Room** | `androidx.room:room-compiler` | `2.6.1` | Procesador de anotaciones `kapt` para verificación SQL en compilación. |
+| **Plataforma Nube** | `com.google.firebase:firebase-bom` | `33.1.2` | Gestor centralizado de versiones de Google Firebase. |
+| **Nube NoSQL** | `com.google.firebase:firebase-firestore-ktx` | *BoM* | Sincronización en tiempo real con Firebase Cloud. |
+| **Asincronía** | `kotlinx-coroutines-android` | `1.7.3` | Manejo de hilos de ejecución en segundo plano. |
+
+---
+
+## 📋 Requisitos del Entorno de Desarrollo
+
+* **Android Studio:** Jellyfish / Koala o superior
+* **Compile SDK:** 34
+* **Min SDK:** 24 (Android 7.0 Nougat)
+* **JDK:** Java 17
+* **Lenguaje:** Kotlin
