@@ -15,6 +15,10 @@ interface DiagnosticDao {
     @Query("SELECT * FROM tabla_diagnosticos ORDER BY fechaRegistroTimestamp DESC")
     fun obtenerTodosLosDiagnosticos(): Flow<List<DiagnosticEntity>>
 
+    // ✅ AGREGADA: Consulta directa suspend para el Dashboard Médico
+    @Query("SELECT * FROM tabla_diagnosticos ORDER BY fechaRegistroTimestamp DESC")
+    suspend fun obtenerTodosLista(): List<DiagnosticEntity>
+
     @Query("SELECT * FROM tabla_diagnosticos WHERE id = :id LIMIT 1")
     suspend fun obtenerDiagnosticoPorId(id: Long): DiagnosticEntity?
 
