@@ -15,23 +15,21 @@ class RolSelectorActivity : AppCompatActivity() {
         val btnMedico = findViewById<Button>(R.id.btnRolMedico)
         val btnPaciente = findViewById<Button>(R.id.btnRolPaciente)
 
-        // Si es Promotor de Salud (Abre el Dashboard/Menú principal del Promotor)
+        // 1. Rol: Promotor de Salud (Abre el Dashboard de Trabajo de Campo)
         btnPromotor.setOnClickListener {
             val intent = Intent(this, PromotorDashboardActivity::class.java)
             startActivity(intent)
         }
 
-        // Si es Médico (Abre el registro previo al escaneo e IA)
+        // 2. Rol: Médico (Abre la Estación de Diagnóstico Médico e IA)
         btnMedico.setOnClickListener {
-            val intent = Intent(this, RegistroActivity::class.java).apply {
-                putExtra("EXTRA_ROL", "MEDICO")
-            }
+            val intent = Intent(this, MedicoDashboardActivity::class.java)
             startActivity(intent)
         }
 
-        // Si es Paciente (Abre el historial médico local)
+        // 3. Rol: Paciente (Abre el Portal de Autogestión del Paciente)
         btnPaciente.setOnClickListener {
-            val intent = Intent(this, HistorialActivity::class.java)
+            val intent = Intent(this, PacienteDashboardActivity::class.java)
             startActivity(intent)
         }
     }

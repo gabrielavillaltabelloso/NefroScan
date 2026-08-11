@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center_horizontal">
+
+        <!-- Encabezado Clínico -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estación de Diagnóstico Médico"
+            android:textColor="#38BDF8"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NefroScan AI - Especialidad Nefrológica"
+            android:textColor="#94A3B8"
+            android:textSize="12sp"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Tarjeta de Resumen Clínico / Derivaciones de Campo -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="#1E293B"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🚨 Derivaciones de Campo (Promotor)"
+                    android:textColor="#F59E0B"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:id="@+id/tvAlertaPromotor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Consultando alertas de tamizaje en Room..."
+                    android:textColor="#E2E8F0"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#334155"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvTotalExpedientesMed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Expedientes Evaluados: --"
+                    android:textColor="#38BDF8"
+                    android:textSize="13sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Botón 1: Nuevo Diagnóstico / Ecografía e IA -->
+        <Button
+            android:id="@+id/btnNuevoDiagnostico"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="🔬 Nueva Ecografía e Inferencia IA (TFLite)"
+            android:backgroundTint="#0284C7"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Botón 2: Expedientes Clínicos -->
+        <Button
+            android:id="@+id/btnExpedientesClinicos"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="📋 Expedientes y Revisiones Médicas"
+            android:backgroundTint="#1E293B"
+            android:textColor="#38BDF8"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Botón 3: Radar Epidemiológico Nacional -->
+        <Button
+            android:id="@+id/btnRadarMed"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="🗺️ Radar Epidemiológico Nacional"
+            android:backgroundTint="#1E293B"
+            android:textColor="#F59E0B"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Botón Cambiar de Perfil -->
+        <Button
+            android:id="@+id/btnVolverRolesMed"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Cambiar de Perfil"
+            android:backgroundTint="#334155"
+            android:textColor="#94A3B8"/>
+
+    </LinearLayout>
+</ScrollView>
