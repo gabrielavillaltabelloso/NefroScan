@@ -1,0 +1,3 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="#5010B981" /> <!-- 50% de opacidad (80 en hex = 128 decimal ~50%) -->
+</shape>

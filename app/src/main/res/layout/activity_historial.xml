@@ -54,7 +54,7 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
-        <!-- Estado vacío mejorado -->
+        <!-- Estado vacío mejorado (Usa componentes nativos) -->
         <LinearLayout
             android:id="@+id/emptyStateLayout"
             android:layout_width="match_parent"
@@ -64,14 +64,15 @@
             android:gravity="center"
             android:padding="32dp"
             android:visibility="gone"
-            android:background="@drawable/empty_state_background"
+            android:background="#1E293B"
             android:elevation="2dp">
 
-            <!-- Ícono decorativo -->
+            <!-- Ícono decorativo nativo -->
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/ic_empty_folder"
+                android:src="@android:drawable/ic_menu_agenda"
+                app:tint="#64748B"
                 android:alpha="0.5"
                 android:layout_marginBottom="24dp"
                 android:contentDescription="Sin registros" />

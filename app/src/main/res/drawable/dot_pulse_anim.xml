@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <!-- Fotograma 1: opacidad completa -->
+    <item
+        android:drawable="@drawable/dot_green_pulse_on"
+        android:duration="800" />
+
+    <!-- Fotograma 2: semi‑transparente -->
+    <item
+        android:drawable="@drawable/dot_green_pulse_off"
+        android:duration="800" />
+
+</animation-list>
