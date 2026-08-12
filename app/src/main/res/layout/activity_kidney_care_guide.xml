@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,14 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="24dp">
 
+        <!-- Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Guía de Cuidado Renal"
-            android:textColor="#8B5CF6"
-            android:textSize="24sp"
+            android:textColor="#C084FC"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium"
             android:textStyle="bold"
             android:gravity="center"
             android:layout_marginBottom="4dp"/>
@@ -27,113 +30,132 @@
             android:layout_height="wrap_content"
             android:text="Prevención para Trabajo de Campo y Salud Familiar"
             android:textColor="#94A3B8"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:gravity="center"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="28dp"/>
 
-        <!-- Calculadora Rápida de Agua -->
-        <androidx.cardview.widget.CardView
+        <!-- Card: Hidratación -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="20dp"
             app:cardBackgroundColor="#1E293B"
-            android:layout_marginBottom="16dp">
+            app:strokeColor="#334155"
+            app:strokeWidth="1dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="18dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="💧 Meta Diaria de Hidratación"
                     android:textColor="#38BDF8"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
+                    android:fontFamily="sans-serif-medium"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="10dp"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="• Trabajo de campo / Clima cálido: 3.0 a 3.5 Litros diarios.\n• Actividad moderada / Oficina: 2.0 a 2.5 Litros diarios.\n• Evitar bebidas azucaradas, carbonatadas o rehidratantes con alto sodio sin indicación."
-                    android:textColor="#E2E8F0"
-                    android:textSize="13sp"/>
+                    android:text="• Trabajo de campo / Clima cálido:\n  3.0 a 3.5 Litros diarios.\n\n• Actividad moderada / Oficina:\n  2.0 a 2.5 Litros diarios.\n\n• Evitar bebidas azucaradas, carbonatadas o rehidratantes con alto sodio sin indicación."
+                    android:textColor="#CBD5E1"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4dp"/>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <!-- Semáforo de Presión Arterial -->
-        <androidx.cardview.widget.CardView
+        <!-- Card: Presión Arterial -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="20dp"
             app:cardBackgroundColor="#1E293B"
-            android:layout_marginBottom="16dp">
+            app:strokeColor="#334155"
+            app:strokeWidth="1dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="18dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🩺 Tabla de Presión Arterial"
                     android:textColor="#F59E0B"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
+                    android:fontFamily="sans-serif-medium"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="10dp"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="• Normal: Menos de 120/80 mmHg (Verde)\n• Elevada: 120-129 / 80 mmHg (Amarillo)\n• Alta (Hipertensión): 130/80 mmHg o más (Rojo - Requiere Consulta)"
-                    android:textColor="#E2E8F0"
-                    android:textSize="13sp"/>
+                    android:text="🟢 Normal: Menos de 120/80 mmHg\n🟡 Elevada: 120-129 / 80 mmHg\n🔴 Alta (Hipertensión): 130/80 mmHg o más\n    (Requiere Consulta)"
+                    android:textColor="#CBD5E1"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="6dp"/>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <!-- Alimentos Cuidado Renal -->
-        <androidx.cardview.widget.CardView
+        <!-- Card: Nutrición -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="20dp"
             app:cardBackgroundColor="#1E293B"
-            android:layout_marginBottom="20dp">
+            app:strokeColor="#334155"
+            app:strokeWidth="1dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="28dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🥗 Nutrición Preventiva"
                     android:textColor="#10B981"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
+                    android:fontFamily="sans-serif-medium"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="10dp"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="• Reducir la sal al cocinar.\n• Evitar analgésicos frecuentes (Ibuprofeno/Diclofenaco) sin receta.\n• Priorizar frutas y verduras frescas locales."
-                    android:textColor="#E2E8F0"
-                    android:textSize="13sp"/>
+                    android:text="• Reducir el consumo de sal al cocinar.\n• Evitar analgésicos frecuentes (Ibuprofeno / Diclofenaco) sin receta médica.\n• Priorizar frutas y verduras frescas locales."
+                    android:textColor="#CBD5E1"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="5dp"/>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <Button
+        <!-- Botón Volver -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVolverGuia"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="56dp"
             android:text="Volver al Portal"
-            android:backgroundTint="#334155"
-            android:textColor="#94A3B8"/>
+            android:textColor="#F1F5F9"
+            android:textSize="15sp"
+            app:cornerRadius="16dp"
+            app:backgroundTint="#334155"
+            app:rippleColor="#475569"/>
 
     </LinearLayout>
 </ScrollView>
