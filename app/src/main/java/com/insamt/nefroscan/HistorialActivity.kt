@@ -27,28 +27,40 @@ class HistorialActivity : AppCompatActivity() {
 
         rvHistorial.layoutManager = LinearLayoutManager(this)
 
-        // Carga segura protegida contra crashes y pantallas en blanco
+        // 🚀 Carga filtrada por paciente específico
         cargarHistorialSeguro()
     }
 
     private fun cargarHistorialSeguro() {
+        val nombrePaciente = intent.getStringExtra("EXTRA_NOMBRE_PACIENTE")
+
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Si tu DAO devuelve Flow, obtenemos la lista usando .first() de manera segura
-                val listaExpedientes = database.diagnosticDao().obtenerTodosLosDiagnosticos().first()
+                // Si viene un nombre de paciente, filtra únicamente sus expedientes
+                val listaExpedientes: List<DiagnosticEntity> = if (!nombrePaciente.isNullOrEmpty()) {
+                    database.diagnosticDao().obtenerDiagnosticosPorPaciente(nombrePaciente)
+                } else {
+                    // Si no se envió nombre, recupera los diagnósticos usando el Flow
+                    database.diagnosticDao().obtenerTodosLosDiagnosticos().first()
+                }
 
                 withContext(Dispatchers.Main) {
                     if (listaExpedientes.isEmpty()) {
+                        tvHistorialEmpty.text = if (!nombrePaciente.isNullOrEmpty()) {
+                            "No se encontraron expedientes para $nombrePaciente."
+                        } else {
+                            "No hay registros guardados."
+                        }
                         tvHistorialEmpty.visibility = View.VISIBLE
                         rvHistorial.visibility = View.GONE
                     } else {
                         tvHistorialEmpty.visibility = View.GONE
                         rvHistorial.visibility = View.VISIBLE
-                        // Asignar adaptador de forma segura
+                        // Asignar adaptador con la lista filtrada del paciente
                         rvHistorial.adapter = ExpedienteAdapter(listaExpedientes)
                     }
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 withContext(Dispatchers.Main) {
                     tvHistorialEmpty.text = "Error al cargar los registros locales."
                     tvHistorialEmpty.visibility = View.VISIBLE

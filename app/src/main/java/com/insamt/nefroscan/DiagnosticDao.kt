@@ -27,4 +27,8 @@ interface DiagnosticDao {
 
     @Query("UPDATE tabla_diagnosticos SET sincronizadoConNube = 1 WHERE id = :id")
     suspend fun marcarComoSincronizado(id: Long)
+
+    // 🚀 AGREGADA: Permite a HistorialActivity filtrar los expedientes por paciente
+    @Query("SELECT * FROM tabla_diagnosticos WHERE nombrePaciente = :nombre ORDER BY fechaRegistroTimestamp DESC")
+    suspend fun obtenerDiagnosticosPorPaciente(nombre: String): List<DiagnosticEntity>
 }
