@@ -3,6 +3,7 @@ package com.insamt.nefroscan
 import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -20,11 +21,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.qrcode.QRCodeWriter
+import io.github.sceneview.SceneView
 import io.github.sceneview.math.Position
 import io.github.sceneview.math.Rotation
 import io.github.sceneview.math.Scale
 import io.github.sceneview.node.ModelNode
-import io.github.sceneview.SceneView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -75,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 imgPreview.setImageBitmap(bitmap)
                 txtStatusTitle.text = getString(R.string.status_analyzing)
 
-                // Execution on IO thread to keep UI smooth
+                // Ejecución en hilo IO para mantener la UI fluida
                 lifecycleScope.launch(Dispatchers.IO) {
                     try {
                         val result = localClassifier.processImage(bitmap)
@@ -219,27 +222,46 @@ class MainActivity : AppCompatActivity() {
 
     private fun mostrarPasaporteQR(nombre: String, resultado: Classifier.DiagnosticResult, severidad: String) {
         try {
+            val datosQR = """
+                --- PASAPORTE NEFROSCAN ---
+                Paciente: $nombre
+                Diagnóstico IA: ${resultado.pathologyLabel}
+                Severidad: $severidad
+                Confianza: ${"%.1f".format(resultado.confidence * 100)}%
+                Daño Parenquimatoso: ${"%.1f".format(resultado.damagePercentage)}%
+            """.trimIndent()
+
+            val bitmap = crearBitmapQR(datosQR)
+
             val dialogView = layoutInflater.inflate(R.layout.dialog_tarjeta_qr, null)
+            val ivQR = dialogView.findViewById<ImageView>(R.id.ivQrCodeDialog)
+            val tvInfo = dialogView.findViewById<TextView>(R.id.tvInfoQrDialog)
+
+            ivQR?.setImageBitmap(bitmap)
+            tvInfo?.text = "Paciente: $nombre\nPatología: ${resultado.pathologyLabel} ($severidad)"
+
             val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
                 .setView(dialogView)
+                .setPositiveButton("Cerrar") { d, _ -> d.dismiss() }
                 .create()
-
-            val tvNombre = dialogView.findViewById<TextView>(R.id.tvCardNombre)
-            val tvDiagnostico = dialogView.findViewById<TextView>(R.id.tvCardDiagnostico)
-            val btnCerrar = dialogView.findViewById<Button>(R.id.btnCerrarCard)
-
-            tvNombre?.text = "Paciente: $nombre"
-            tvDiagnostico?.text = "Patología: ${resultado.pathologyLabel} ($severidad)"
-
-            btnCerrar?.setOnClickListener {
-                dialog.dismiss()
-            }
 
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             dialog.show()
         } catch (e: Exception) {
             Log.e("NephroScanQR", "Error al mostrar pasaporte QR", e)
         }
+    }
+
+    private fun crearBitmapQR(texto: String): Bitmap {
+        val writer = QRCodeWriter()
+        val bitMatrix = writer.encode(texto, BarcodeFormat.QR_CODE, 512, 512)
+        val bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.RGB_565)
+        for (x in 0 until 512) {
+            for (y in 0 until 512) {
+                bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bitmap
     }
 
     private fun applyHoloShaderTo3DModel(

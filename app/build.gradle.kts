@@ -64,7 +64,11 @@ dependencies {
         exclude(group = "com.google.flatbuffers", module = "flatbuffers-java")
     }
 
-    // SceneView 3D (Gemelo Digital - Artefacto base compatible con Gradle 8+)
+    // Generador de Códigos QR (ZXing - Pasaporte Clínico)
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    // SceneView 3D (Gemelo Digital)
     implementation("io.github.sceneview:sceneview:2.2.1")
 
     // Room Database (Configurado mediante KAPT)

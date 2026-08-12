@@ -96,15 +96,15 @@ class MedicoDashboardActivity : AppCompatActivity() {
     private fun cargarMetricasClinicas() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val expedientes = database.diagnosticDao().obtenerTodosLista()
+                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerTodosLista()
                 val total = expedientes.size
 
-                val riesgoAltoCount = expedientes.count {
-                    it.nivelSeveridad.contains("Alto", ignoreCase = true) ||
-                            it.nivelSeveridad.contains("Rojo", ignoreCase = true) ||
-                            it.patologiaDetectada.contains("G4", ignoreCase = true) ||
-                            it.patologiaDetectada.contains("G5", ignoreCase = true) ||
-                            it.porcentajeDano >= 50f
+                val riesgoAltoCount = expedientes.count { item ->
+                    item.nivelSeveridad.contains("Alto", ignoreCase = true) ||
+                            item.nivelSeveridad.contains("Rojo", ignoreCase = true) ||
+                            item.patologiaDetectada.contains("G4", ignoreCase = true) ||
+                            item.patologiaDetectada.contains("G5", ignoreCase = true) ||
+                            item.porcentajeDano >= 50f
                 }
 
                 withContext(Dispatchers.Main) {
@@ -189,13 +189,13 @@ class MedicoDashboardActivity : AppCompatActivity() {
             if (porcentajeToxicidad > 100) porcentajeToxicidad = 100
 
             val nivelRiesgo = when {
-                porcentajeToxicidad >= 60 -> "🔴 ALERTA CRÍTICA: Alto Riesgo Nefrotóxico ($porcentajeToxicidad%)"
-                porcentajeToxicidad >= 30 -> "🟡 ALERTA MODERADA: Precaución Renal ($porcentajeToxicidad%)"
-                else -> "🟢 RIESGO BAJO: Combinación Farmacológica Segura ($porcentajeToxicidad%)"
+                porcentajeToxicidad >= 60 -> "ALERTA CRÍTICA: Alto Riesgo Nefrotóxico ($porcentajeToxicidad%)"
+                porcentajeToxicidad >= 30 -> "ALERTA MODERADA: Precaución Renal ($porcentajeToxicidad%)"
+                else -> "RIESGO BAJO: Combinación Farmacológica Segura ($porcentajeToxicidad%)"
             }
 
             val recomendacion = if (porcentajeToxicidad >= 50) {
-                "\n\n⚠️ RECOMENDACIÓN MÉDICA:\nSuspender AINEs inmediatamente. Reemplazar por Paracetamol (máx 2g/día). Garantizar hidratación oral de 3.0 Litros/día en campo."
+                "\n\nRECOMENDACIÓN MÉDICA:\nSuspender AINEs inmediatamente. Reemplazar por Paracetamol (máx 2g/día). Garantizar hidratación oral de 3.0 Litros/día en campo."
             } else {
                 "\n\nMantener dosis mínimas efectivas y monitoreo de creatinina mensual."
             }
@@ -224,7 +224,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     // =========================================================================
     private fun mostrarPrescriptorHidratacion() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("☀️ Prescriptor de Hidratación por Clima")
+        builder.setTitle("Prescriptor de Hidratación por Clima")
 
         val layout = android.widget.LinearLayout(this).apply {
             orientation = android.widget.LinearLayout.VERTICAL
@@ -256,13 +256,13 @@ class MedicoDashboardActivity : AppCompatActivity() {
             val totalLitros = String.format(Locale.US, "%.1f", baseLitros)
 
             val esquemaTerapeutico = """
-                💧 RECETA DE HIDRATACIÓN EN CAMPO:
+                RECETA DE HIDRATACIÓN EN CAMPO:
                 • Meta Diaria Total: $totalLitros Litros/día
                 • Jornada Mañana: 1.0 Litro (Tomas de 250 ml cada 45 min).
                 • Turno de Mediodía: 1 Litro de Agua + 1 Sobre de Suero Oral.
                 • Turno Tarde: 1.0 Litro de Agua fresca.
                 
-                ⚠️ PRECAUCIÓN: Prohibido ingerir bebidas energizantes o azucaradas en jornada de calor extremo.
+                PRECAUCIÓN: Prohibido ingerir bebidas energizantes o azucaradas en jornada de calor extremo.
             """.trimIndent()
 
             AlertDialog.Builder(this)
@@ -287,7 +287,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     // =========================================================================
     private fun mostrarCalculadoraKfre() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("📉 Modelo KFRE: Riesgo de Falla Renal")
+        builder.setTitle("Modelo KFRE: Riesgo de Falla Renal")
 
         val layout = android.widget.LinearLayout(this).apply {
             orientation = android.widget.LinearLayout.VERTICAL
@@ -331,18 +331,18 @@ class MedicoDashboardActivity : AppCompatActivity() {
             val r5Str = String.format(Locale.US, "%.1f", riesgo5Anios)
 
             val nivelAlerta = when {
-                riesgo5Anios >= 15.0 -> "🔴 RIESGO ALTO DE PRE-DIÁLISIS (≥15%)"
-                riesgo5Anios >= 5.0 -> "🟡 RIESGO MODERADO (5% - 14.9%)"
-                else -> "🟢 RIESGO BAJO DE FALLA RENAL (<5%)"
+                riesgo5Anios >= 15.0 -> "RIESGO ALTO DE PRE-DIÁLISIS (≥15%)"
+                riesgo5Anios >= 5.0 -> "RIESGO MODERADO (5% - 14.9%)"
+                else -> "RIESGO BAJO DE FALLA RENAL (<5%)"
             }
 
             val mensaje = """
-                📊 PROYECCIÓN DE FALLA RENAL GRAVE:
+                PROYECCIÓN DE FALLA RENAL GRAVE:
                 • Riesgo de requerir Diálisis a 2 Años: $r2Str%
                 • Riesgo de requerir Diálisis a 5 Años: $r5Str%
                 
-                📋 PROTOCOLO RECOMENDADO:
-                ${if (riesgo5Anios >= 15.0) "Derivation urgente a Nefrología. Preparación de acceso vascular / terapia nefroprotectora avanzada." else "Seguimiento ambulatorio cada 3 a 6 meses con control de proteinuria."}
+                PROTOCOLO RECOMENDADO:
+                ${if (riesgo5Anios >= 15.0) "Derivación urgente a Nefrología. Preparación de acceso vascular / terapia nefroprotectora avanzada." else "Seguimiento ambulatorio cada 3 a 6 meses con control de proteinuria."}
             """.trimIndent()
 
             AlertDialog.Builder(this)
@@ -416,7 +416,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     private fun generarInformeMedicoOficial() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val expedientes = database.diagnosticDao().obtenerTodosLista()
+                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerTodosLista()
                 withContext(Dispatchers.Main) {
                     if (expedientes.isEmpty()) {
                         Toast.makeText(this@MedicoDashboardActivity, "No hay expedientes para generar el informe.", Toast.LENGTH_SHORT).show()
