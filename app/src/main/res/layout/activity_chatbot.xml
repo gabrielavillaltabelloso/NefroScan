@@ -1,75 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0F172A"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".ChatbotActivity">
 
     <!-- Encabezado del Chatbot -->
     <TextView
+        android:id="@+id/tvTituloChatbot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:gravity="center"
         android:text="Asistente Virtual NefroScan"
         android:textColor="#38BDF8"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="2dp"/>
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tvSubtituloChatbot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Educacion y Orientacion en Salud Renal"
-        android:textColor="#94A3B8"
-        android:textSize="12sp"
+        android:layout_marginBottom="12dp"
         android:gravity="center"
-        android:layout_marginBottom="12dp"/>
+        android:text="Educación y Orientación en Salud Renal"
+        android:textColor="#94A3B8"
+        android:textSize="12sp" />
 
     <!-- Lista de Mensajes del Chat -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChatMessages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="1"
-        android:layout_marginBottom="12dp"/>
+        android:clipToPadding="false"
+        android:paddingBottom="4dp" />
 
-    <!-- Área de Entrada de Texto -->
+    <!-- 🚀 PREGUNTAS EMERGENTES Y SUGERENCIAS DINÁMICAS -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupPreguntas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="true" />
+
+    </HorizontalScrollView>
+
+    <!-- Área de Entrada de Texto y Botón Enviar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/etChatMessage"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
+            android:autofillHints="none"
             android:background="#1E293B"
             android:hint="Escribe tu consulta sobre salud renal..."
-            android:textColorHint="#64748B"
-            android:textColor="#FFFFFF"
+            android:inputType="textPersonName"
             android:padding="12dp"
-            android:textSize="14sp"
-            android:inputType="textPersonName"/>
+            android:textColor="#FFFFFF"
+            android:textColorHint="#64748B"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnSendChat"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="Enviar"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
             android:backgroundTint="#0284C7"
-            android:textColor="#FFFFFF"
-            android:layout_marginStart="8dp"/>
+            android:text="Enviar"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
+    <!-- Botón Volver con la altura de 48dp requerida -->
     <Button
         android:id="@+id/btnVolverHistorial"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:text="Volver"
+        android:layout_height="48dp"
         android:backgroundTint="#334155"
-        android:textColor="#94A3B8"/>
+        android:text="Volver"
+        android:textColor="#94A3B8" />
 
 </LinearLayout>
