@@ -1,5 +1,6 @@
 package com.insamt.nefroscan
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -31,9 +32,17 @@ class PacienteDashboardActivity : AppCompatActivity() {
     private val database: NefroScanDatabase by lazy { NefroScanDatabase.getDatabase(applicationContext) }
     private var ultimoExpediente: DiagnosticEntity? = null
 
+    private var idUsuarioSesion: String = ""
+    private var nombreUsuarioSesion: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paciente_dashboard)
+
+        // 1. Obtener la sesión activa del paciente
+        val prefs = getSharedPreferences("SesionNefroScan", Context.MODE_PRIVATE)
+        idUsuarioSesion = prefs.getString("ID_USUARIO", "") ?: ""
+        nombreUsuarioSesion = prefs.getString("NOMBRE_USUARIO", "Paciente") ?: "Paciente"
 
         tvNombre = findViewById(R.id.tvNombrePacientePerfil)
         tvEdadSexo = findViewById(R.id.tvEdadSexoPerfil)
@@ -45,10 +54,14 @@ class PacienteDashboardActivity : AppCompatActivity() {
         val btnGuia = findViewById<MaterialButton>(R.id.btnGuiaRenal)
         val btnVolver = findViewById<MaterialButton>(R.id.btnVolverRolesPaciente)
 
+        // 2. Cargar únicamente la ficha médica del paciente en sesión
         cargarDatosFicha()
 
         btnHistorial.setOnClickListener {
-            startActivity(Intent(this, HistorialActivity::class.java))
+            val intent = Intent(this, HistorialActivity::class.java)
+            // Se envía el ID por si HistorialActivity requiere el parámetro explícito
+            intent.putExtra("ID_PACIENTE", idUsuarioSesion)
+            startActivity(intent)
         }
 
         btnChatbot.setOnClickListener {
@@ -69,25 +82,26 @@ class PacienteDashboardActivity : AppCompatActivity() {
     private fun cargarDatosFicha() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Se utiliza la función suspend lista de tu DiagnosticDao
-                val expedientes = database.diagnosticDao().obtenerTodosLista()
-                if (expedientes.isNotEmpty()) {
-                    ultimoExpediente = expedientes.first() // Toma el último diagnóstico (timestamp DESC)
-                    withContext(Dispatchers.Main) {
-                        tvNombre.text = ultimoExpediente?.nombrePaciente ?: "Paciente Comunitario"
+                // Consulta exclusiva para el ID del paciente en sesión
+                val expedientes = database.diagnosticDao().obtenerListaPorPaciente(idUsuarioSesion)
+
+                withContext(Dispatchers.Main) {
+                    if (expedientes.isNotEmpty()) {
+                        ultimoExpediente = expedientes.first() // Primer elemento por ORDER BY timestamp DESC
+                        tvNombre.text = ultimoExpediente?.nombrePaciente ?: nombreUsuarioSesion
                         tvEdadSexo.text = "Edad: ${ultimoExpediente?.edadPaciente ?: "--"} años"
                         tvEstadio.text = "Estado: ${ultimoExpediente?.nivelSeveridad ?: "En evaluación"}"
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        tvNombre.text = "Sin Expediente Guardado"
-                        tvEdadSexo.text = "Realice un tamizaje o ecografía previa"
-                        tvEstadio.text = "Bajo Monitoreo General"
+                    } else {
+                        // Usuario registrado sin evaluaciones previas aún
+                        tvNombre.text = nombreUsuarioSesion
+                        tvEdadSexo.text = "ID: $idUsuarioSesion"
+                        tvEstadio.text = "Sin diagnósticos registrados aún"
                     }
                 }
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    tvNombre.text = "Paciente NefroScan"
+                    tvNombre.text = nombreUsuarioSesion
+                    tvEstadio.text = "Error al sincronizar ficha local"
                 }
             }
         }
@@ -96,14 +110,20 @@ class PacienteDashboardActivity : AppCompatActivity() {
     private fun generarPasaporteQR() {
         val exp = ultimoExpediente
         if (exp == null) {
-            Toast.makeText(this, "No hay expedientes locales registrados para generar el QR.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "No tienes diagnósticos clínicos registrados para generar tu Pasaporte QR.",
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
 
-        val fechaFormateada = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date(exp.fechaRegistroTimestamp))
+        val fechaFormateada = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+            .format(Date(exp.fechaRegistroTimestamp))
 
         val datosQR = """
             --- PASAPORTE NEFROSCAN ---
+            ID Paciente: ${exp.idPaciente}
             Paciente: ${exp.nombrePaciente}
             Edad: ${exp.edadPaciente} años
             Patología: ${exp.patologiaDetectada}
@@ -111,6 +131,7 @@ class PacienteDashboardActivity : AppCompatActivity() {
             Daño Tisular: ${exp.porcentajeDano}%
             eGFR 5y: ${exp.egfrEstimado5Anios} mL/min
             eGFR 10y: ${exp.egfrEstimado10Anios} mL/min
+            Registrado por: ${exp.rolRegistrador} (${exp.idRegistrador})
             Fecha: $fechaFormateada
         """.trimIndent()
 

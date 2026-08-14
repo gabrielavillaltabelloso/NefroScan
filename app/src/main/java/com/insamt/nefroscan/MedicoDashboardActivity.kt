@@ -1,5 +1,6 @@
 package com.insamt.nefroscan
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -26,9 +27,17 @@ class MedicoDashboardActivity : AppCompatActivity() {
     private lateinit var tvAlerta: TextView
     private val database: NefroScanDatabase by lazy { NefroScanDatabase.getDatabase(applicationContext) }
 
+    private var idMedicoSesion: String = ""
+    private var nombreMedicoSesion: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_medico_dashboard)
+
+        // 1. Obtener la sesión activa del médico
+        val prefs = getSharedPreferences("SesionNefroScan", Context.MODE_PRIVATE)
+        idMedicoSesion = prefs.getString("ID_USUARIO", "") ?: ""
+        nombreMedicoSesion = prefs.getString("NOMBRE_USUARIO", "Dr. Especialista") ?: "Dr. Especialista"
 
         tvTotal = findViewById(R.id.tvKpiTotal)
         tvRiesgoAlto = findViewById(R.id.tvKpiRiesgoAlto)
@@ -44,13 +53,14 @@ class MedicoDashboardActivity : AppCompatActivity() {
         val btnRadar = findViewById<Button>(R.id.btnRadarMed)
         val btnVolver = findViewById<Button>(R.id.btnVolverRolesMed)
 
-        // Cargar métricas clínicas
+        // 2. Cargar métricas clínicas exclusivas de este médico
         cargarMetricasClinicas()
 
         // 1. Escaneo por Ecografía e IA
         btnInferencia.setOnClickListener {
             val intent = Intent(this, RegistroActivity::class.java).apply {
                 putExtra("EXTRA_ROL", "MEDICO")
+                putExtra("EXTRA_REGISTRADOR_ID", idMedicoSesion)
             }
             startActivity(intent)
         }
@@ -80,9 +90,13 @@ class MedicoDashboardActivity : AppCompatActivity() {
             generarInformeMedicoOficial()
         }
 
-        // 7. Expedientes en Room
+        // 7. Expedientes en Room (Filtrados por médico)
         btnExpedientes.setOnClickListener {
-            startActivity(Intent(this, HistorialActivity::class.java))
+            val intent = Intent(this, HistorialActivity::class.java).apply {
+                putExtra("EXTRA_ROL", "MEDICO")
+                putExtra("ID_MEDICO", idMedicoSesion)
+            }
+            startActivity(intent)
         }
 
         // 8. Radar Epidemiológico Nacional
@@ -93,10 +107,16 @@ class MedicoDashboardActivity : AppCompatActivity() {
         btnVolver.setOnClickListener { finish() }
     }
 
+    override fun onResume() {
+        super.onResume()
+        cargarMetricasClinicas()
+    }
+
     private fun cargarMetricasClinicas() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerTodosLista()
+                // Consulta segregada para el médico en sesión
+                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerListaPorMedico(idMedicoSesion)
                 val total = expedientes.size
 
                 val riesgoAltoCount = expedientes.count { item ->
@@ -112,9 +132,9 @@ class MedicoDashboardActivity : AppCompatActivity() {
                     tvRiesgoAlto.text = riesgoAltoCount.toString()
 
                     if (riesgoAltoCount > 0) {
-                        tvAlerta.text = "Atención: Se han detectado $riesgoAltoCount caso(s) en RIESGO ALTO derivados desde el tamizaje de campo."
+                        tvAlerta.text = "Atención: Se han detectado $riesgoAltoCount caso(s) en RIESGO ALTO bajo su seguimiento clínico."
                     } else {
-                        tvAlerta.text = "No hay alertas críticas de campo sin revisar. Sistema estable."
+                        tvAlerta.text = "No hay alertas críticas pendientes en sus pacientes asignados. Sistema estable."
                     }
                 }
             } catch (e: Exception) {
@@ -128,7 +148,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     }
 
     // =========================================================================
-    // 💊 FUNCIÓN PLUS 1: FARMACOVIGILANCIA Y TOXICIDAD RENAL
+    // FUNCIÓN PLUS 1: FARMACOVIGILANCIA Y TOXICIDAD RENAL
     // =========================================================================
     private fun mostrarEvaluadorNefrotoxicidad() {
         val builder = AlertDialog.Builder(this)
@@ -220,7 +240,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     }
 
     // =========================================================================
-    // ☀️ FUNCIÓN PLUS 2: PRESCRIPTOR DE HIDRATACIÓN POR CLIMA
+    // FUNCIÓN PLUS 2: PRESCRIPTOR DE HIDRATACIÓN POR CLIMA
     // =========================================================================
     private fun mostrarPrescriptorHidratacion() {
         val builder = AlertDialog.Builder(this)
@@ -283,7 +303,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     }
 
     // =========================================================================
-    // 📉 FUNCIÓN PLUS 3: CALCULADORA KFRE DE RIESGO DE DIÁLISIS
+    // FUNCIÓN PLUS 3: CALCULADORA KFRE DE RIESGO DE DIÁLISIS
     // =========================================================================
     private fun mostrarCalculadoraKfre() {
         val builder = AlertDialog.Builder(this)
@@ -416,10 +436,10 @@ class MedicoDashboardActivity : AppCompatActivity() {
     private fun generarInformeMedicoOficial() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerTodosLista()
+                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerListaPorMedico(idMedicoSesion)
                 withContext(Dispatchers.Main) {
                     if (expedientes.isEmpty()) {
-                        Toast.makeText(this@MedicoDashboardActivity, "No hay expedientes para generar el informe.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MedicoDashboardActivity, "No hay expedientes clínicos asociados a su cuenta para generar el informe.", Toast.LENGTH_SHORT).show()
                         return@withContext
                     }
 
@@ -434,8 +454,9 @@ class MedicoDashboardActivity : AppCompatActivity() {
                     val informeTexto = """
                         INSTITUTO NACIONAL DE SAN MIGUEL TEPEZONTES
                         SISTEMA NEFROSCAN - INFORME CLÍNICO DIAGNÓSTICO
+                        Médico Responsable: $nombreMedicoSesion ($idMedicoSesion)
                         ---------------------------------------------------
-                        Paciente: ${ultimo.nombrePaciente}
+                        Paciente: ${ultimo.nombrePaciente} (ID: ${ultimo.idPaciente})
                         Edad: ${ultimo.edadPaciente} años
                         Fecha de Evaluación: $fechaTexto
                         

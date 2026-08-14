@@ -12,13 +12,36 @@ interface DiagnosticDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarDiagnostico(diagnostico: DiagnosticEntity): Long
 
-    @Query("SELECT * FROM tabla_diagnosticos ORDER BY fechaRegistroTimestamp DESC")
-    fun obtenerTodosLosDiagnosticos(): Flow<List<DiagnosticEntity>>
+    // 1. PACIENTE: Solo sus propios diagnósticos
+    @Query("SELECT * FROM tabla_diagnosticos WHERE idPaciente = :idPaciente ORDER BY fechaRegistroTimestamp DESC")
+    fun obtenerDiagnosticosPorPaciente(idPaciente: String): Flow<List<DiagnosticEntity>>
 
-    // Consulta suspend directa que utiliza el MedicoDashboardActivity
-    @Query("SELECT * FROM tabla_diagnosticos ORDER BY fechaRegistroTimestamp DESC")
-    suspend fun obtenerTodosLista(): List<DiagnosticEntity>
+    @Query("SELECT * FROM tabla_diagnosticos WHERE idPaciente = :idPaciente ORDER BY fechaRegistroTimestamp DESC")
+    suspend fun obtenerListaPorPaciente(idPaciente: String): List<DiagnosticEntity>
 
+    // 2. PROMOTOR: Registros que él mismo levantó en campo
+    @Query("SELECT * FROM tabla_diagnosticos WHERE idRegistrador = :idPromotor ORDER BY fechaRegistroTimestamp DESC")
+    fun obtenerDiagnosticosPorPromotor(idPromotor: String): Flow<List<DiagnosticEntity>>
+
+    @Query("SELECT * FROM tabla_diagnosticos WHERE idRegistrador = :idPromotor ORDER BY fechaRegistroTimestamp DESC")
+    suspend fun obtenerListaPorPromotor(idPromotor: String): List<DiagnosticEntity>
+
+    // 3. MÉDICO: Pacientes asignados a él O diagnósticos registrados por él
+    @Query("""
+        SELECT * FROM tabla_diagnosticos 
+        WHERE idMedicoAsignado = :idMedico OR idRegistrador = :idMedico 
+        ORDER BY fechaRegistroTimestamp DESC
+    """)
+    fun obtenerDiagnosticosPorMedico(idMedico: String): Flow<List<DiagnosticEntity>>
+
+    @Query("""
+        SELECT * FROM tabla_diagnosticos 
+        WHERE idMedicoAsignado = :idMedico OR idRegistrador = :idMedico 
+        ORDER BY fechaRegistroTimestamp DESC
+    """)
+    suspend fun obtenerListaPorMedico(idMedico: String): List<DiagnosticEntity>
+
+    // Utilidades
     @Query("SELECT * FROM tabla_diagnosticos WHERE id = :id LIMIT 1")
     suspend fun obtenerDiagnosticoPorId(id: Long): DiagnosticEntity?
 

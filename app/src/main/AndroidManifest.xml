@@ -24,17 +24,22 @@
         android:theme="@style/Theme.NefroScan"
         tools:targetApi="34">
 
-        <!-- 1. Pantalla de Selección de Roles (Punto de inicio / Launcher) -->
+        <!-- 0. Pantalla de Autenticación / Login (Nuevo Punto de inicio / LAUNCHER) -->
         <activity
-            android:name=".RolSelectorActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 1. Pantalla de Selección de Roles -->
+        <activity
+            android:name=".RolSelectorActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- 2. Dashboard / Menú Principal del Promotor de Salud -->
         <activity

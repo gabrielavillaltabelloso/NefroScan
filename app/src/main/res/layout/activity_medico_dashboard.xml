@@ -102,7 +102,7 @@
         </LinearLayout>
 
         <!-- ============================================================ -->
-        <!-- ENCABEZADO PREMIUM CON GLASSMORFISMO -->
+        <!-- ENCABEZADO CON TARJETA DE CONTROL -->
         <!-- ============================================================ -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -232,7 +232,7 @@
         </androidx.cardview.widget.CardView>
 
         <!-- ============================================================ -->
-        <!-- KPIs CON ANILLOS DE PROGRESO CIRCULAR -->
+        <!-- KPIs CON ANILLOS DE PROGRESO -->
         <!-- ============================================================ -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -287,7 +287,7 @@
                         android:id="@+id/tvKpiTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1,247"
+                        android:text="0"
                         android:textColor="#0F172A"
                         android:textSize="26sp"
                         android:textStyle="bold"
@@ -305,7 +305,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+12 hoy"
+                        android:text="Bajo control"
                         android:textColor="#10B981"
                         android:textSize="10sp"
                         android:textStyle="bold" />
@@ -358,7 +358,7 @@
                         android:id="@+id/tvKpiRiesgoAlto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="287"
+                        android:text="0"
                         android:textColor="#EF4444"
                         android:textSize="26sp"
                         android:textStyle="bold"
@@ -376,7 +376,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="23% del total"
+                        android:text="Atención prioritaria"
                         android:textColor="#EF4444"
                         android:textSize="10sp"
                         android:textStyle="bold" />
@@ -455,7 +455,7 @@
         </LinearLayout>
 
         <!-- ============================================================ -->
-        <!-- ACCIONES RÁPIDAS - CHIPS HORIZONTALES SCROLLEABLES -->
+        <!-- ACCIONES RÁPIDAS - CHIPS HORIZONTALES -->
         <!-- ============================================================ -->
         <TextView
             android:layout_width="wrap_content"
@@ -607,7 +607,7 @@
         </HorizontalScrollView>
 
         <!-- ============================================================ -->
-        <!-- GRÁFICO DE BARRAS DE DISTRIBUCIÓN (COMPONENTE NATIVO) -->
+        <!-- GRÁFICO DE BARRAS DE DISTRIBUCIÓN -->
         <!-- ============================================================ -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -738,7 +738,7 @@
                         android:id="@+id/tvAlertaDerivacion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3 pacientes con eGFR &lt;30 requieren derivación inmediata a nefrología."
+                        android:text="Pacientes con eGFR menor a 30 requieren derivación inmediata a nefrología."
                         android:textColor="#A16207"
                         android:textSize="11sp"
                         android:layout_marginTop="3dp" />
@@ -888,7 +888,7 @@
             android:id="@+id/btnInferenciaEcografia"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="🔬 Nueva Ecografía + IA (TFLite / 3D)"
+            android:text="• Nueva Ecografía + IA (TFLite / 3D)"
             android:backgroundTint="#0284C7"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
@@ -900,7 +900,7 @@
             android:id="@+id/btnCalculadoraEgfr"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="🧮 Calculadora eGFR (CKD-EPI Clínica)"
+            android:text="• Calculadora eGFR (CKD-EPI Clínica)"
             android:backgroundTint="#1E293B"
             android:textColor="#38BDF8"
             android:textSize="14sp"
@@ -912,7 +912,7 @@
             android:id="@+id/btnNefrotoxicidad"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="💊 Evaluador de Nefrotoxicidad por Fármacos"
+            android:text="• Evaluador de Nefrotoxicidad por Fármacos"
             android:backgroundTint="#1E293B"
             android:textColor="#EC4899"
             android:textSize="14sp"
@@ -924,7 +924,7 @@
             android:id="@+id/btnPrescriptorHidratacion"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="☀️ Prescriptor de Hidratación por Clima / Campo"
+            android:text="• Prescriptor de Hidratación por Clima / Campo"
             android:backgroundTint="#1E293B"
             android:textColor="#38BDF8"
             android:textSize="14sp"
@@ -936,7 +936,7 @@
             android:id="@+id/btnCalculadoraKfre"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="📉 Calculadora de Riesgo de Diálisis (KFRE 2/5 años)"
+            android:text="• Calculadora de Riesgo de Diálisis (KFRE 2/5 años)"
             android:backgroundTint="#1E293B"
             android:textColor="#F59E0B"
             android:textSize="14sp"
@@ -948,7 +948,7 @@
             android:id="@+id/btnGenerarInformePdf"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="📄 Exportar Informe Clínico Oficial"
+            android:text="• Exportar Informe Clínico Oficial"
             android:backgroundTint="#10B981"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
@@ -960,7 +960,7 @@
             android:id="@+id/btnExpedientesClinicos"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="📋 Expedientes y Revisiones Médicas"
+            android:text="• Expedientes y Revisiones Médicas"
             android:backgroundTint="#1E293B"
             android:textColor="#E2E8F0"
             android:textSize="14sp"
@@ -972,7 +972,7 @@
             android:id="@+id/btnRadarMed"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:text="🗺️ Radar Epidemiológico Nacional"
+            android:text="• Radar Epidemiológico Nacional"
             android:backgroundTint="#1E293B"
             android:textColor="#F59E0B"
             android:textSize="14sp"

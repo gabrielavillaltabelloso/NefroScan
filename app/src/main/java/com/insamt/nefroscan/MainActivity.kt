@@ -1,6 +1,7 @@
 package com.insamt.nefroscan
 
 import android.animation.ValueAnimator
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -17,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -57,8 +59,13 @@ class MainActivity : AppCompatActivity() {
     private var nivelDanoIA: Float = 0.0f
     private var ultimoResultadoIA: Classifier.DiagnosticResult? = null
 
-    private var nombrePacienteActual: String = "Paciente Anónimo"
-    private var edadPacienteActual: Int = 0
+    // Metadatos de auditoría y segregación de usuario
+    private var idPacienteActual: String = "paciente@nefroscan.sv"
+    private var nombrePacienteActual: String = "Paciente Comunitario"
+    private var edadPacienteActual: Int = 45
+    private var idRegistradorActual: String = ""
+    private var rolRegistradorActual: String = "MEDICO"
+    private var idMedicoAsignadoActual: String? = null
 
     private val database: NefroScanDatabase by lazy { NefroScanDatabase.getDatabase(applicationContext) }
     private val syncManager: FirebaseSyncManager by lazy { FirebaseSyncManager(applicationContext) }
@@ -78,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                 imgPreview.setImageBitmap(bitmap)
                 txtStatusTitle.text = getString(R.string.status_analyzing)
 
-                // Ejecución en hilo IO para mantener la UI fluida
+                // Procesamiento IA en hilo secundario IO
                 lifecycleScope.launch(Dispatchers.IO) {
                     try {
                         val result = localClassifier.processImage(bitmap)
@@ -108,16 +115,23 @@ class MainActivity : AppCompatActivity() {
                         val egfr5Anios = (egfrBase * 0.9).toInt().coerceIn(10, 150)
                         val egfr10Anios = (egfrBase * 0.75).toInt().coerceIn(10, 150)
 
+                        // Creación del expediente clínico con trazabilidad por usuario
                         val expediente = DiagnosticEntity(
+                            idPaciente = idPacienteActual,
+                            idRegistrador = idRegistradorActual,
+                            rolRegistrador = rolRegistradorActual,
+                            idMedicoAsignado = idMedicoAsignadoActual,
                             nombrePaciente = nombrePacienteActual,
                             edadPaciente = edadPacienteActual,
-                            porcentajeDano = result.damagePercentage,
+                            porcentajeDano = result.damagePercentage.toDouble(),
                             patologiaDetectada = result.pathologyLabel,
                             nivelSeveridad = severidadTexto,
-                            litrosAguaDiarios = litrosAgua,
-                            nivelSodio = textoSodio,
-                            egfrEstimado5Anios = egfr5Anios,
-                            egfrEstimado10Anios = egfr10Anios
+                            litrosAguaDiarios = litrosAgua.toDouble(),
+                            nivelSodio = textoSodio.toDoubleOrNull() ?: 1.0,
+                            egfrEstimado5Anios = egfr5Anios.toDouble(),
+                            egfrEstimado10Anios = egfr10Anios.toDouble(),
+                            fechaRegistroTimestamp = System.currentTimeMillis(),
+                            sincronizadoConNube = false
                         )
 
                         database.diagnosticDao().insertarDiagnostico(expediente)
@@ -167,8 +181,20 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        nombrePacienteActual = intent?.getStringExtra("EXTRA_NOMBRE") ?: "Paciente Anónimo"
-        edadPacienteActual = intent?.getIntExtra("EXTRA_EDAD", 0) ?: 0
+        // 1. Obtener la sesión activa del profesional
+        val prefs = getSharedPreferences("SesionNefroScan", Context.MODE_PRIVATE)
+        idRegistradorActual = intent?.getStringExtra("EXTRA_REGISTRADOR_ID")
+            ?: prefs.getString("ID_USUARIO", "medico@nefroscan.sv") ?: "medico@nefroscan.sv"
+        rolRegistradorActual = intent?.getStringExtra("EXTRA_ROL")
+            ?: prefs.getString("ROL_USUARIO", "MEDICO") ?: "MEDICO"
+
+        // 2. Obtener datos del paciente evaluado
+        idPacienteActual = intent?.getStringExtra("EXTRA_PACIENTE_ID")
+            ?: intent?.getStringExtra("EXTRA_DUI")
+                    ?: "paciente@nefroscan.sv"
+        nombrePacienteActual = intent?.getStringExtra("EXTRA_NOMBRE") ?: "Paciente Comunitario"
+        edadPacienteActual = intent?.getIntExtra("EXTRA_EDAD", 45) ?: 45
+        idMedicoAsignadoActual = intent?.getStringExtra("EXTRA_MEDICO_ASIGNADO") ?: idRegistradorActual
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -224,11 +250,13 @@ class MainActivity : AppCompatActivity() {
         try {
             val datosQR = """
                 --- PASAPORTE NEFROSCAN ---
+                ID Paciente: $idPacienteActual
                 Paciente: $nombre
                 Diagnóstico IA: ${resultado.pathologyLabel}
                 Severidad: $severidad
                 Confianza: ${"%.1f".format(resultado.confidence * 100)}%
-                Daño Parenquimatoso: ${"%.1f".format(resultado.damagePercentage)}%
+                Daño Tisular: ${"%.1f".format(resultado.damagePercentage)}%
+                Registrador: $rolRegistradorActual ($idRegistradorActual)
             """.trimIndent()
 
             val bitmap = crearBitmapQR(datosQR)
@@ -240,7 +268,7 @@ class MainActivity : AppCompatActivity() {
             ivQR?.setImageBitmap(bitmap)
             tvInfo?.text = "Paciente: $nombre\nPatología: ${resultado.pathologyLabel} ($severidad)"
 
-            val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            val dialog = AlertDialog.Builder(this)
                 .setView(dialogView)
                 .setPositiveButton("Cerrar") { d, _ -> d.dismiss() }
                 .create()
@@ -365,7 +393,7 @@ class MainActivity : AppCompatActivity() {
                                     material.setParameter("emissiveFactor", 0.3f, 0.1f, 0.1f)
                                 }
                             }
-                        } catch (e: Exception) { }
+                        } catch (_: Exception) { }
                     }
 
                     anatomicalNode = nodeAnat
@@ -432,7 +460,7 @@ class MainActivity : AppCompatActivity() {
                 anatomicalNode?.modelInstance?.materialInstances?.forEach { material ->
                     try {
                         material.setParameter("baseColorFactor", 0.8f, 0.35f, 0.3f, alpha)
-                    } catch (e: Exception) {}
+                    } catch (_: Exception) {}
                 }
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -461,7 +489,7 @@ class MainActivity : AppCompatActivity() {
                     name.contains("pelvis", true) -> material.setParameter("baseColorFactor", 1.0f, 0.85f, 0.6f, alpha)
                     else -> material.setParameter("baseColorFactor", 0.9f, 0.2f, 0.2f, alpha)
                 }
-            } catch (e: Exception) {}
+            } catch (_: Exception) {}
         }
     }
 
@@ -515,7 +543,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     material.setParameter("baseColorFactor", r, g, b, 1.0f)
                     material.setParameter("emissiveFactor", r * 0.4f, g * 0.4f, b * 0.4f)
-                } catch (e: Exception) {}
+                } catch (_: Exception) {}
             }
 
             if (severidadTotal > 0.2f && !isPulseActive) {
@@ -535,7 +563,7 @@ class MainActivity : AppCompatActivity() {
                 heatmapNode?.modelInstance?.materialInstances?.forEach { material ->
                     try {
                         material.setParameter("emissiveFactor", 0.5f * factor, 0.5f * factor, 0.5f * factor)
-                    } catch (e: Exception) {}
+                    } catch (_: Exception) {}
                 }
                 pulseHandler.postDelayed(this, (100 / severidad).toLong())
             }
@@ -551,7 +579,7 @@ class MainActivity : AppCompatActivity() {
         heatmapNode?.modelInstance?.materialInstances?.forEach { material ->
             try {
                 material.setParameter("emissiveFactor", 0.5f, 0.5f, 0.5f)
-            } catch (e: Exception) {}
+            } catch (_: Exception) {}
         }
     }
 
