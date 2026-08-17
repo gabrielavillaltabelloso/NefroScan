@@ -6,14 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [DiagnosticEntity::class, UserEntity::class],
+    entities = [UserEntity::class, DiagnosticEntity::class],
     version = 2,
     exportSchema = false
 )
 abstract class NefroScanDatabase : RoomDatabase() {
 
-    abstract fun diagnosticDao(): DiagnosticDao
     abstract fun userDao(): UserDao
+    abstract fun diagnosticDao(): DiagnosticDao
 
     companion object {
         @Volatile
@@ -24,7 +24,7 @@ abstract class NefroScanDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     NefroScanDatabase::class.java,
-                    "nefroscan_local_db"
+                    "nefroscan_general_database.db"
                 )
                     .fallbackToDestructiveMigration()
                     .build()

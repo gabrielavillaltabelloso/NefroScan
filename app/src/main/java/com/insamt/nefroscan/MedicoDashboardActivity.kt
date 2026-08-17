@@ -43,6 +43,13 @@ class MedicoDashboardActivity : AppCompatActivity() {
         tvRiesgoAlto = findViewById(R.id.tvKpiRiesgoAlto)
         tvAlerta = findViewById(R.id.tvAlertaDerivacion)
 
+        // Botones de Módulos Clínicos Avanzados
+        val btnAbrirCentroAnalitica = findViewById<Button>(R.id.btnAbrirCentroAnalitica)
+        val btnAbrirDictamenMedico = findViewById<Button>(R.id.btnAbrirDictamenMedico)
+        val btnAbrirSimuladorDigital = findViewById<Button>(R.id.btnAbrirSimuladorDigital)
+        val btnAbrirTriajeRadar = findViewById<Button>(R.id.btnAbrirTriajeRadar)
+
+        // Botones de Herramientas Tradicionales
         val btnInferencia = findViewById<Button>(R.id.btnInferenciaEcografia)
         val btnCalculadora = findViewById<Button>(R.id.btnCalculadoraEgfr)
         val btnNefrotoxicidad = findViewById<Button>(R.id.btnNefrotoxicidad)
@@ -53,10 +60,31 @@ class MedicoDashboardActivity : AppCompatActivity() {
         val btnRadar = findViewById<Button>(R.id.btnRadarMed)
         val btnVolver = findViewById<Button>(R.id.btnVolverRolesMed)
 
-        // 2. Cargar métricas clínicas exclusivas de este médico
+        // Cargar métricas clínicas del médico en sesión
         cargarMetricasClinicas()
 
-        // 1. Escaneo por Ecografía e IA
+        // =====================================================================
+        // NAVEGACIÓN A MÓDULOS AVANZADOS
+        // =====================================================================
+        btnAbrirCentroAnalitica.setOnClickListener {
+            startActivity(Intent(this, CentroAnaliticaMedicoActivity::class.java))
+        }
+
+        btnAbrirDictamenMedico.setOnClickListener {
+            startActivity(Intent(this, DictamenMedicoActivity::class.java))
+        }
+
+        btnAbrirSimuladorDigital.setOnClickListener {
+            startActivity(Intent(this, SimuladorNefroDigitalActivity::class.java))
+        }
+
+        btnAbrirTriajeRadar.setOnClickListener {
+            startActivity(Intent(this, TriajeRadarPredictivoActivity::class.java))
+        }
+
+        // =====================================================================
+        // NAVEGACIÓN A HERRAMIENTAS TRADICIONALES
+        // =====================================================================
         btnInferencia.setOnClickListener {
             val intent = Intent(this, RegistroActivity::class.java).apply {
                 putExtra("EXTRA_ROL", "MEDICO")
@@ -65,32 +93,12 @@ class MedicoDashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 2. Calculadora Médica CKD-EPI
-        btnCalculadora.setOnClickListener {
-            mostrarCalculadoraCkdEpi()
-        }
+        btnCalculadora.setOnClickListener { mostrarCalculadoraCkdEpi() }
+        btnNefrotoxicidad.setOnClickListener { mostrarEvaluadorNefrotoxicidad() }
+        btnPrescriptor.setOnClickListener { mostrarPrescriptorHidratacion() }
+        btnKfre.setOnClickListener { mostrarCalculadoraKfre() }
+        btnInforme.setOnClickListener { generarInformeMedicoOficial() }
 
-        // 3. FUNCIÓN PLUS 1: Evaluador de Nefrotoxicidad
-        btnNefrotoxicidad.setOnClickListener {
-            mostrarEvaluadorNefrotoxicidad()
-        }
-
-        // 4. FUNCIÓN PLUS 2: Prescriptor de Hidratación por Clima
-        btnPrescriptor.setOnClickListener {
-            mostrarPrescriptorHidratacion()
-        }
-
-        // 5. FUNCIÓN PLUS 3: Calculadora KFRE Riesgo de Diálisis
-        btnKfre.setOnClickListener {
-            mostrarCalculadoraKfre()
-        }
-
-        // 6. Exportar Informe Médico
-        btnInforme.setOnClickListener {
-            generarInformeMedicoOficial()
-        }
-
-        // 7. Expedientes en Room (Filtrados por médico)
         btnExpedientes.setOnClickListener {
             val intent = Intent(this, HistorialActivity::class.java).apply {
                 putExtra("EXTRA_ROL", "MEDICO")
@@ -99,7 +107,6 @@ class MedicoDashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 8. Radar Epidemiológico Nacional
         btnRadar.setOnClickListener {
             startActivity(Intent(this, MapaRiesgoActivity::class.java))
         }
@@ -115,7 +122,6 @@ class MedicoDashboardActivity : AppCompatActivity() {
     private fun cargarMetricasClinicas() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Consulta segregada para el médico en sesión
                 val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerListaPorMedico(idMedicoSesion)
                 val total = expedientes.size
 
@@ -124,7 +130,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
                             item.nivelSeveridad.contains("Rojo", ignoreCase = true) ||
                             item.patologiaDetectada.contains("G4", ignoreCase = true) ||
                             item.patologiaDetectada.contains("G5", ignoreCase = true) ||
-                            item.porcentajeDano >= 50f
+                            item.porcentajeDano >= 50.0
                 }
 
                 withContext(Dispatchers.Main) {
@@ -148,7 +154,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     }
 
     // =========================================================================
-    // FUNCIÓN PLUS 1: FARMACOVIGILANCIA Y TOXICIDAD RENAL
+    // FARMACOVIGILANCIA Y TOXICIDAD RENAL
     // =========================================================================
     private fun mostrarEvaluadorNefrotoxicidad() {
         val builder = AlertDialog.Builder(this)
@@ -240,7 +246,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     }
 
     // =========================================================================
-    // FUNCIÓN PLUS 2: PRESCRIPTOR DE HIDRATACIÓN POR CLIMA
+    // PRESCRIPTOR DE HIDRATACIÓN POR CLIMA
     // =========================================================================
     private fun mostrarPrescriptorHidratacion() {
         val builder = AlertDialog.Builder(this)
@@ -303,7 +309,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     }
 
     // =========================================================================
-    // FUNCIÓN PLUS 3: CALCULADORA KFRE DE RIESGO DE DIÁLISIS
+    // CALCULADORA KFRE DE RIESGO DE DIÁLISIS
     // =========================================================================
     private fun mostrarCalculadoraKfre() {
         val builder = AlertDialog.Builder(this)
@@ -446,7 +452,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
                     val ultimo = expedientes.first()
                     val esAlto = ultimo.nivelSeveridad.contains("Alto", ignoreCase = true) ||
                             ultimo.nivelSeveridad.contains("Rojo", ignoreCase = true) ||
-                            ultimo.porcentajeDano >= 50f
+                            ultimo.porcentajeDano >= 50.0
 
                     val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
                     val fechaTexto = dateFormat.format(Date(ultimo.fechaRegistroTimestamp))

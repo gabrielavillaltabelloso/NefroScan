@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A"
+    android:orientation="vertical"
+    android:padding="18dp">
+
+    <!-- CABECERA -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Triaje &amp; Radar Predictivo"
+                android:textColor="#F59E0B"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvResumenTriaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monitoreando cohortes en campo..."
+                android:textColor="#94A3B8"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCerrarTriaje"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            app:icon="@android:drawable/ic_menu_close_clear_cancel"
+            app:backgroundTint="#334155" />
+    </LinearLayout>
+
+    <!-- LISTA DE TRIAJE PRIORIZADO -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTriaje"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tvTriajeVacio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No hay pacientes con riesgo registrado en este momento."
+        android:textColor="#94A3B8"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginVertical="40dp" />
+
+</LinearLayout>

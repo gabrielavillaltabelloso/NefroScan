@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="12dp"
             android:paddingHorizontal="4dp">
 
             <LinearLayout
@@ -38,7 +38,7 @@
                 <View
                     android:layout_width="10dp"
                     android:layout_height="10dp"
-                    android:background="@android:drawable/presence_online"
+                    android:background="#10B981"
                     android:layout_marginEnd="6dp" />
 
                 <TextView
@@ -52,23 +52,22 @@
 
             <!-- Badge de notificaciones -->
             <FrameLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_marginEnd="8dp">
 
                 <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="center"
                     android:src="@android:drawable/ic_popup_reminder"
-                    app:tint="#64748B"
-                    android:alpha="0.8" />
+                    app:tint="#64748B" />
 
                 <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_gravity="top|end"
-                    android:background="@android:drawable/presence_online"
+                    android:background="#EF4444"
                     android:gravity="center"
                     android:text="3"
                     android:textColor="#FFFFFF"
@@ -88,7 +87,7 @@
                 <View
                     android:layout_width="8dp"
                     android:layout_height="8dp"
-                    android:background="@android:drawable/presence_online"
+                    android:background="#10B981"
                     android:layout_marginEnd="6dp" />
 
                 <TextView
@@ -102,7 +101,7 @@
         </LinearLayout>
 
         <!-- ============================================================ -->
-        <!-- ENCABEZADO CON TARJETA DE CONTROL -->
+        <!-- ENCABEZADO CON TARJETA DE CONTROL (FIGMA STYLE) -->
         <!-- ============================================================ -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -124,7 +123,7 @@
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
-                    <!-- Avatar médico con marco -->
+                    <!-- Avatar médico -->
                     <FrameLayout
                         android:layout_width="56dp"
                         android:layout_height="56dp"
@@ -133,7 +132,7 @@
                         <View
                             android:layout_width="56dp"
                             android:layout_height="56dp"
-                            android:background="@android:drawable/presence_online"
+                            android:background="#BAE6FD"
                             android:layout_gravity="center" />
 
                         <ImageView
@@ -232,21 +231,21 @@
         </androidx.cardview.widget.CardView>
 
         <!-- ============================================================ -->
-        <!-- KPIs CON ANILLOS DE PROGRESO -->
+        <!-- KPIs CON MEDIDORES LIMPIOS (SIN ERRORES DE RENDERIZADO) -->
         <!-- ============================================================ -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="3"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="24dp">
 
             <!-- KPI 1: Total Pacientes -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="8dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="6dp"
                 app:cardBackgroundColor="#FFFFFF">
@@ -258,30 +257,12 @@
                     android:gravity="center"
                     android:padding="16dp">
 
-                    <FrameLayout
-                        android:layout_width="58dp"
-                        android:layout_height="58dp"
-                        android:layout_marginBottom="8dp">
-
-                        <ProgressBar
-                            android:id="@+id/progressTotal"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="58dp"
-                            android:layout_height="58dp"
-                            android:indeterminate="false"
-                            android:max="100"
-                            android:progress="78"
-                            android:progressTint="#00B4D8"
-                            android:rotation="-90"
-                            android:layout_gravity="center" />
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:src="@android:drawable/ic_menu_myplaces"
-                            app:tint="#00B4D8" />
-                    </FrameLayout>
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@android:drawable/ic_menu_myplaces"
+                        app:tint="#00B4D8"
+                        android:layout_marginBottom="6dp" />
 
                     <TextView
                         android:id="@+id/tvKpiTotal"
@@ -289,17 +270,15 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="#0F172A"
-                        android:textSize="26sp"
-                        android:textStyle="bold"
-                        android:letterSpacing="0.02" />
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pacientes totales"
+                        android:text="Pacientes"
                         android:textColor="#64748B"
                         android:textSize="10sp"
-                        android:letterSpacing="0.04"
                         android:layout_marginTop="2dp" />
 
                     <TextView
@@ -317,7 +296,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="8dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="6dp"
                 app:cardBackgroundColor="#FFFFFF">
@@ -329,30 +308,12 @@
                     android:gravity="center"
                     android:padding="16dp">
 
-                    <FrameLayout
-                        android:layout_width="58dp"
-                        android:layout_height="58dp"
-                        android:layout_marginBottom="8dp">
-
-                        <ProgressBar
-                            android:id="@+id/progressRiesgo"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="58dp"
-                            android:layout_height="58dp"
-                            android:indeterminate="false"
-                            android:max="100"
-                            android:progress="23"
-                            android:progressTint="#EF4444"
-                            android:rotation="-90"
-                            android:layout_gravity="center" />
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:src="@android:drawable/ic_dialog_alert"
-                            app:tint="#EF4444" />
-                    </FrameLayout>
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@android:drawable/ic_dialog_alert"
+                        app:tint="#EF4444"
+                        android:layout_marginBottom="6dp" />
 
                     <TextView
                         android:id="@+id/tvKpiRiesgoAlto"
@@ -360,9 +321,8 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="#EF4444"
-                        android:textSize="26sp"
-                        android:textStyle="bold"
-                        android:letterSpacing="0.02" />
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -370,13 +330,12 @@
                         android:text="Riesgo Alto"
                         android:textColor="#64748B"
                         android:textSize="10sp"
-                        android:letterSpacing="0.04"
                         android:layout_marginTop="2dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Atención prioritaria"
+                        android:text="Prioritario"
                         android:textColor="#EF4444"
                         android:textSize="10sp"
                         android:textStyle="bold" />
@@ -399,30 +358,12 @@
                     android:gravity="center"
                     android:padding="16dp">
 
-                    <FrameLayout
-                        android:layout_width="58dp"
-                        android:layout_height="58dp"
-                        android:layout_marginBottom="8dp">
-
-                        <ProgressBar
-                            android:id="@+id/progressPrecision"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="58dp"
-                            android:layout_height="58dp"
-                            android:indeterminate="false"
-                            android:max="100"
-                            android:progress="94"
-                            android:progressTint="#10B981"
-                            android:rotation="-90"
-                            android:layout_gravity="center" />
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:src="@android:drawable/ic_menu_compass"
-                            app:tint="#10B981" />
-                    </FrameLayout>
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@android:drawable/ic_menu_compass"
+                        app:tint="#10B981"
+                        android:layout_marginBottom="6dp" />
 
                     <TextView
                         android:id="@+id/tvKpiPrecisionIA"
@@ -430,9 +371,8 @@
                         android:layout_height="wrap_content"
                         android:text="94.2%"
                         android:textColor="#10B981"
-                        android:textSize="26sp"
-                        android:textStyle="bold"
-                        android:letterSpacing="0.02" />
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -440,13 +380,12 @@
                         android:text="Precisión IA"
                         android:textColor="#64748B"
                         android:textSize="10sp"
-                        android:letterSpacing="0.04"
                         android:layout_marginTop="2dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="v2.4.1 • Optimizada"
+                        android:text="Optimizada"
                         android:textColor="#10B981"
                         android:textSize="10sp"
                         android:textStyle="bold" />
@@ -455,232 +394,61 @@
         </LinearLayout>
 
         <!-- ============================================================ -->
-        <!-- ACCIONES RÁPIDAS - CHIPS HORIZONTALES -->
+        <!-- MÓDULOS DE SOPORTE DIAGNÓSTICO IA (CDSS) -->
         <!-- ============================================================ -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Acciones rápidas"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
+            android:text="Sistemas de Soporte Diagnóstico IA (CDSS)"
+            android:textColor="#38BDF8"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:letterSpacing="0.03"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="12dp" />
 
-        <HorizontalScrollView
+        <Button
+            android:id="@+id/btnAbrirCentroAnalitica"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:layout_marginBottom="20dp"
-            android:overScrollMode="never">
+            android:layout_height="56dp"
+            android:text="• Centro Analítico &amp; Gráficas de Regresión eGFR"
+            android:backgroundTint="#0284C7"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- Chip 1 -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:background="#1E293B"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="16dp"
-                    android:orientation="horizontal"
-                    android:layout_marginEnd="10dp">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@android:drawable/ic_menu_camera"
-                        app:tint="#0077B6"
-                        android:layout_marginEnd="8dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nueva ecografía"
-                        android:textColor="#0077B6"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Chip 2 -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:background="#1E293B"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="16dp"
-                    android:orientation="horizontal"
-                    android:layout_marginEnd="10dp">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@android:drawable/ic_menu_edit"
-                        app:tint="#64748B"
-                        android:layout_marginEnd="8dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Calcular eGFR"
-                        android:textColor="#E2E8F0"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- Chip 3 -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:background="#1E293B"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="16dp"
-                    android:orientation="horizontal"
-                    android:layout_marginEnd="10dp">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@android:drawable/ic_dialog_info"
-                        app:tint="#DB2777"
-                        android:layout_marginEnd="8dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nefrotoxicidad"
-                        android:textColor="#E2E8F0"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- Chip 4 -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:background="#1E293B"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="16dp"
-                    android:orientation="horizontal"
-                    android:layout_marginEnd="10dp">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@android:drawable/ic_menu_upload"
-                        app:tint="#0EA5E9"
-                        android:layout_marginEnd="8dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hidratación"
-                        android:textColor="#E2E8F0"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- Chip 5 -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:background="#1E293B"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="16dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@android:drawable/ic_menu_mapmode"
-                        app:tint="#B45309"
-                        android:layout_marginEnd="8dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Radar Epi."
-                        android:textColor="#E2E8F0"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </HorizontalScrollView>
-
-        <!-- ============================================================ -->
-        <!-- GRÁFICO DE BARRAS DE DISTRIBUCIÓN -->
-        <!-- ============================================================ -->
-        <androidx.cardview.widget.CardView
+        <Button
+            android:id="@+id/btnAbrirDictamenMedico"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="6dp"
-            app:cardBackgroundColor="#1E293B"
-            android:layout_marginBottom="20dp">
+            android:layout_height="56dp"
+            android:text="• Dictamen Clínico Automatizado &amp; Nota SOAP"
+            android:backgroundTint="#1E293B"
+            android:textColor="#10B981"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+        <Button
+            android:id="@+id/btnAbrirSimuladorDigital"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="• Simulador Hemodinámico &amp; Gemelo Digital 3D"
+            android:backgroundTint="#1E293B"
+            android:textColor="#38BDF8"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Distribución de Pacientes por Riesgo Renal"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.02"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- Riesgo Bajo -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Riesgo Bajo / Estadio G1-G2"
-                    android:textColor="#10B981"
-                    android:textSize="11sp"/>
-                <ProgressBar
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:max="100"
-                    android:progress="65"
-                    android:progressTint="#10B981"
-                    android:layout_marginBottom="8dp"/>
-
-                <!-- Riesgo Moderado -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Riesgo Moderado / Estadio G3a-G3b"
-                    android:textColor="#F59E0B"
-                    android:textSize="11sp"/>
-                <ProgressBar
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:max="100"
-                    android:progress="25"
-                    android:progressTint="#F59E0B"
-                    android:layout_marginBottom="8dp"/>
-
-                <!-- Riesgo Alto -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Riesgo Alto / Estadio G4-G5"
-                    android:textColor="#EF4444"
-                    android:textSize="11sp"/>
-                <ProgressBar
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:max="100"
-                    android:progress="10"
-                    android:progressTint="#EF4444"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/btnAbrirTriajeRadar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="• Triaje &amp; Radar Predictivo de Casos Críticos"
+            android:backgroundTint="#1E293B"
+            android:textColor="#F59E0B"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
 
         <!-- ============================================================ -->
         <!-- ALERTA INTELIGENTE DE TRIAJE -->
@@ -701,14 +469,14 @@
                 android:gravity="center_vertical">
 
                 <FrameLayout
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginEnd="12dp">
 
                     <View
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:background="@android:drawable/presence_online"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="#FEF3C7"
                         android:layout_gravity="center" />
 
                     <ImageView
@@ -731,8 +499,7 @@
                         android:text="Alerta de Tamizaje Comunitario"
                         android:textColor="#92400E"
                         android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:letterSpacing="0.02" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvAlertaDerivacion"
@@ -747,235 +514,103 @@
         </androidx.cardview.widget.CardView>
 
         <!-- ============================================================ -->
-        <!-- ACTIVIDAD RECIENTE -->
+        <!-- HERRAMIENTAS CLÍNICAS TRADICIONALES -->
         <!-- ============================================================ -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Actividad reciente"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.03"
-            android:layout_marginBottom="10dp" />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="#1E293B"
-            android:layout_marginBottom="24dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <!-- Item 1 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="10dp">
-
-                    <View
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
-                        android:background="@android:drawable/presence_online"
-                        android:layout_marginEnd="12dp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ecografía analizada por IA"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Paciente #1042 • Riñón derecho • CKD etapa 2"
-                            android:textColor="#94A3B8"
-                            android:textSize="10sp"
-                            android:layout_marginTop="1dp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hace 12 min"
-                        android:textColor="#94A3B8"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#334155" />
-
-                <!-- Item 2 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="10dp">
-
-                    <View
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
-                        android:background="@android:drawable/presence_away"
-                        android:layout_marginEnd="12dp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Alerta de nefrotoxicidad detectada"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Paciente #891 • Interacción AINE + IECA"
-                            android:textColor="#94A3B8"
-                            android:textSize="10sp"
-                            android:layout_marginTop="1dp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hace 1 h"
-                        android:textColor="#94A3B8"
-                        android:textSize="10sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- ============================================================ -->
-        <!-- HERRAMIENTAS CLÍNICAS - BOTONES -->
-        <!-- ============================================================ -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Herramientas clínicas"
+            android:text="Herramientas de Consulta &amp; Campo"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
             android:letterSpacing="0.03"
             android:layout_marginBottom="12dp" />
 
-        <!-- Botón: Ecografía + IA -->
         <Button
             android:id="@+id/btnInferenciaEcografia"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="54dp"
             android:text="• Nueva Ecografía + IA (TFLite / 3D)"
             android:backgroundTint="#0284C7"
             android:textColor="#FFFFFF"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
 
-        <!-- Botón: Calculadora eGFR -->
         <Button
             android:id="@+id/btnCalculadoraEgfr"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="54dp"
             android:text="• Calculadora eGFR (CKD-EPI Clínica)"
             android:backgroundTint="#1E293B"
             android:textColor="#38BDF8"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
 
-        <!-- Botón: Evaluador de Nefrotoxicidad -->
         <Button
             android:id="@+id/btnNefrotoxicidad"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="54dp"
             android:text="• Evaluador de Nefrotoxicidad por Fármacos"
             android:backgroundTint="#1E293B"
             android:textColor="#EC4899"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
 
-        <!-- Botón: Prescriptor de Hidratación -->
         <Button
             android:id="@+id/btnPrescriptorHidratacion"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="54dp"
             android:text="• Prescriptor de Hidratación por Clima / Campo"
             android:backgroundTint="#1E293B"
             android:textColor="#38BDF8"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
 
-        <!-- Botón: Riesgo Diálisis KFRE -->
         <Button
             android:id="@+id/btnCalculadoraKfre"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="54dp"
             android:text="• Calculadora de Riesgo de Diálisis (KFRE 2/5 años)"
             android:backgroundTint="#1E293B"
             android:textColor="#F59E0B"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
 
-        <!-- Botón: Exportar Informe -->
         <Button
             android:id="@+id/btnGenerarInformePdf"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="54dp"
             android:text="• Exportar Informe Clínico Oficial"
             android:backgroundTint="#10B981"
             android:textColor="#FFFFFF"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
 
-        <!-- Botón: Expedientes -->
         <Button
             android:id="@+id/btnExpedientesClinicos"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="54dp"
             android:text="• Expedientes y Revisiones Médicas"
             android:backgroundTint="#1E293B"
             android:textColor="#E2E8F0"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"/>
 
-        <!-- Botón: Radar Epidemiológico -->
         <Button
             android:id="@+id/btnRadarMed"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="54dp"
             android:text="• Radar Epidemiológico Nacional"
             android:backgroundTint="#1E293B"
             android:textColor="#F59E0B"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             android:layout_marginBottom="20dp"/>
 

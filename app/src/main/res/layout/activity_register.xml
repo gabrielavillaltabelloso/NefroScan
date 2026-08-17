@@ -13,25 +13,23 @@
         android:padding="24dp"
         android:gravity="center_horizontal">
 
-        <!-- LOGO Y TÍTULO -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NefroScan AI"
+            android:text="Crear Nuevo Perfil"
             android:textColor="#38BDF8"
-            android:textSize="32sp"
+            android:textSize="28sp"
             android:textStyle="bold"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="16dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Portal Clínico y Autogestión Renal"
+            android:text="Registro individual en el sistema NefroScan"
             android:textColor="#94A3B8"
             android:textSize="14sp"
             android:layout_marginBottom="24dp" />
 
-        <!-- TARJETA DE LOGIN -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,21 +43,43 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
+                <!-- Selección de Rol -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Iniciar Sesión"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
+                    android:text="Seleccione su Rol:"
+                    android:textColor="#E2E8F0"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp" />
 
-                <!-- Campo Usuario -->
+                <Spinner
+                    android:id="@+id/spRolRegistro"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#334155"
+                    android:paddingHorizontal="12dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Nombre Completo -->
                 <EditText
-                    android:id="@+id/etUsuario"
+                    android:id="@+id/etNombreRegistro"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:hint="DUI / Usuario (ej: med@nefro.sv)"
+                    android:hint="Nombre Completo"
+                    android:textColorHint="#64748B"
+                    android:textColor="#FFFFFF"
+                    android:background="#334155"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="12dp"
+                    android:inputType="textPersonName" />
+
+                <!-- DUI / Correo (ID Unico) -->
+                <EditText
+                    android:id="@+id/etIdUsuarioRegistro"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="DUI o Correo (Será su ID de acceso)"
                     android:textColorHint="#64748B"
                     android:textColor="#FFFFFF"
                     android:background="#334155"
@@ -68,12 +88,26 @@
                     android:layout_marginBottom="12dp"
                     android:inputType="textEmailAddress" />
 
-                <!-- Campo Contraseña -->
+                <!-- Detalle Adicional (Especialidad o Caserío) -->
                 <EditText
-                    android:id="@+id/etContrasena"
+                    android:id="@+id/etDetalleRegistro"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:hint="Contraseña"
+                    android:hint="Especialidad médica / Cantón o Caserío"
+                    android:textColorHint="#64748B"
+                    android:textColor="#FFFFFF"
+                    android:background="#334155"
+                    android:paddingHorizontal="16dp"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="12dp"
+                    android:inputType="text" />
+
+                <!-- Contraseña -->
+                <EditText
+                    android:id="@+id/etContrasenaRegistro"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="Contraseña de seguridad"
                     android:textColorHint="#64748B"
                     android:textColor="#FFFFFF"
                     android:background="#334155"
@@ -82,13 +116,13 @@
                     android:layout_marginBottom="20dp"
                     android:inputType="textPassword" />
 
-                <!-- Botón Ingresar -->
+                <!-- Botón Guardar Cuenta -->
                 <Button
-                    android:id="@+id/btnIngresar"
+                    android:id="@+id/btnGuardarRegistro"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
-                    android:text="Ingresar al Sistema"
-                    android:backgroundTint="#0284C7"
+                    android:text="Crear Mi Cuenta e Iniciar"
+                    android:backgroundTint="#10B981"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -96,64 +130,13 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- BOTÓN NAVEGACIÓN LIBRE A SELECTOR DE ROLES -->
         <Button
-            android:id="@+id/btnSelectorRoles"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="Navegación Libre / Probar Selector de Roles"
-            android:backgroundTint="#1E293B"
-            android:textColor="#38BDF8"
-            android:textSize="13sp"
-            android:layout_marginBottom="20dp" />
-
-        <!-- ACCESOS RÁPIDOS PARA DEMO -->
-        <TextView
+            android:id="@+id/btnVolverLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Accesos Rápidos para Demo (CIMAT):"
-            android:textColor="#94A3B8"
-            android:textSize="12sp"
-            android:layout_marginBottom="10dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <Button
-                android:id="@+id/btnQuickMedico"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:text="Médico"
-                android:textSize="11sp"
-                android:backgroundTint="#334155"
-                android:textColor="#38BDF8"
-                android:layout_marginEnd="4dp" />
-
-            <Button
-                android:id="@+id/btnQuickPromotor"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:text="Promotor"
-                android:textSize="11sp"
-                android:backgroundTint="#334155"
-                android:textColor="#F59E0B"
-                android:layout_marginEnd="4dp" />
-
-            <Button
-                android:id="@+id/btnQuickPaciente"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:text="Paciente"
-                android:textSize="11sp"
-                android:backgroundTint="#334155"
-                android:textColor="#10B981" />
-        </LinearLayout>
+            android:text="¿Ya tienes cuenta? Inicia Sesión"
+            android:textColor="#38BDF8"
+            style="@style/Widget.Material3.Button.TextButton"/>
 
     </LinearLayout>
 </ScrollView>

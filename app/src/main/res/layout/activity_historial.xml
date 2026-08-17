@@ -6,7 +6,6 @@
     android:background="#0F172A"
     android:orientation="vertical">
 
-    <!-- Header con sombra y mejor espaciado -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,43 +17,35 @@
         android:elevation="4dp"
         android:background="#1E293B">
 
-        <!-- Título principal -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Historial de Expedientes"
             android:textColor="#38BDF8"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.01"
-            android:fontFamily="sans-serif-medium" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-        <!-- Subtítulo opcional -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registros locales almacenados"
+            android:text="Registros clínicos almacenados"
             android:textColor="#64748B"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"
-            android:fontFamily="sans-serif" />
+            android:textSize="13sp"
+            android:layout_marginTop="2dp" />
 
-        <!-- Separador decorativo -->
         <View
             android:layout_width="40dp"
             android:layout_height="3dp"
-            android:layout_marginTop="12dp"
-            android:background="#38BDF8"
-            android:backgroundTint="#38BDF8" />
+            android:layout_marginTop="10dp"
+            android:background="#38BDF8" />
     </LinearLayout>
 
-    <!-- Contenedor principal con CardView para el estado vacío -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
 
-        <!-- Estado vacío mejorado (Usa componentes nativos) -->
+        <!-- ID: emptyStateLayout -->
         <LinearLayout
             android:id="@+id/emptyStateLayout"
             android:layout_width="match_parent"
@@ -64,20 +55,16 @@
             android:gravity="center"
             android:padding="32dp"
             android:visibility="gone"
-            android:background="#1E293B"
-            android:elevation="2dp">
+            android:background="#1E293B">
 
-            <!-- Ícono decorativo nativo -->
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
                 android:src="@android:drawable/ic_menu_agenda"
                 app:tint="#64748B"
                 android:alpha="0.5"
-                android:layout_marginBottom="24dp"
-                android:contentDescription="Sin registros" />
+                android:layout_marginBottom="16dp" />
 
-            <!-- Título de estado vacío -->
             <TextView
                 android:id="@+id/tvEmptyTitle"
                 android:layout_width="match_parent"
@@ -86,45 +73,27 @@
                 android:textColor="#E2E8F0"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium" />
+                android:gravity="center" />
 
-            <!-- Mensaje de estado vacío -->
+            <!-- ID: tvHistorialEmpty -->
             <TextView
                 android:id="@+id/tvHistorialEmpty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Aún no se ha almacenado ningún expediente localmente"
+                android:text="No hay registros disponibles."
                 android:textColor="#94A3B8"
                 android:textSize="14sp"
                 android:gravity="center"
-                android:layout_marginTop="8dp"
-                android:lineSpacingExtra="4dp"
-                android:fontFamily="sans-serif" />
-
-            <!-- Botón opcional de acción -->
-            <Button
-                android:id="@+id/btnStartNew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Crear primer registro"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="#3B82F6"
-                android:layout_marginTop="24dp"
-                android:paddingHorizontal="24dp"
-                android:visibility="gone"
-                style="@style/Widget.Material3.Button" />
+                android:layout_marginTop="8dp" />
         </LinearLayout>
 
-        <!-- RecyclerView con margen superior -->
+        <!-- ID: rvHistorial -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHistorial"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
             android:clipToPadding="false"
             android:paddingBottom="16dp"
-            android:scrollbars="vertical"
-            android:fadeScrollbars="true" />
+            android:scrollbars="vertical" />
     </FrameLayout>
 </LinearLayout>
