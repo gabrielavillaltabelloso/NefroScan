@@ -40,10 +40,8 @@ class ChatbotActivity : AppCompatActivity() {
         rvChat.layoutManager = LinearLayoutManager(this)
         rvChat.adapter = adapter
 
-        // Mensaje inicial de bienvenida
         agregarMensajeChat("Hola, soy tu asistente de salud renal NefroScan. Selecciona un tema para orientarte:", esUsuario = false)
 
-        // Carga el menú principal de sugerencias
         mostrarCategoriasPrincipales()
 
         btnEnviar.setOnClickListener {
@@ -55,12 +53,9 @@ class ChatbotActivity : AppCompatActivity() {
             }
         }
 
-        btnVolver.setOnClickListener {
-            finish()
-        }
+        btnVolver.setOnClickListener { finish() }
     }
 
-    // 🚀 NIVEL 1: Categorías Principales
     private fun mostrarCategoriasPrincipales() {
         chipGroup.removeAllViews()
 
@@ -82,66 +77,36 @@ class ChatbotActivity : AppCompatActivity() {
         }
     }
 
-    // 🚀 NIVEL 2: Submenú "Sobre la Enfermedad"
     private fun mostrarMenuEnfermedad() {
         chipGroup.removeAllViews()
-        crearChip("¿Qué hacen los riñones?") {
-            procesarPreguntaUsuario("¿Qué hacen los riñones?")
-        }
-        crearChip("¿Qué es la ERC?") {
-            procesarPreguntaUsuario("¿Qué es la enfermedad renal crónica?")
-        }
-        crearChip("¿Cuáles son los síntomas?") {
-            procesarPreguntaUsuario("¿Cuáles son los síntomas de una enfermedad renal?")
-        }
-        crearChip("¿Tiene cura?") {
-            procesarPreguntaUsuario("¿La enfermedad renal tiene cura?")
-        }
+        crearChip("¿Qué hacen los riñones?") { procesarPreguntaUsuario("¿Qué hacen los riñones?") }
+        crearChip("¿Qué es la ERC?") { procesarPreguntaUsuario("¿Qué es la enfermedad renal crónica?") }
+        crearChip("¿Cuáles son los síntomas?") { procesarPreguntaUsuario("¿Cuáles son los síntomas de la enfermedad?") }
+        crearChip("¿Tiene cura?") { procesarPreguntaUsuario("¿La enfermedad tiene cura?") }
         crearChip("🏠 Menú Principal") { mostrarCategoriasPrincipales() }
     }
 
-    // 🚀 NIVEL 2: Submenú "Factores de Riesgo"
     private fun mostrarMenuRiesgo() {
         chipGroup.removeAllViews()
-        crearChip("¿La Diabetes afecta mis riñones?") {
-            procesarPreguntaUsuario("¿La diabetes puede afectar mis riñones?")
-        }
-        crearChip("¿Y la Presión Alta?") {
-            procesarPreguntaUsuario("¿La presión alta puede dañar los riñones?")
-        }
-        crearChip("¿Medicamentos peligrosos?") {
-            procesarPreguntaUsuario("¿Tomar muchos medicamentos puede dañar los riñones?")
-        }
+        crearChip("¿La Diabetes afecta?") { procesarPreguntaUsuario("¿La diabetes puede afectar mis riñones?") }
+        crearChip("¿Y la Presión Alta?") { procesarPreguntaUsuario("¿La presión alta puede dañar los riñones?") }
+        crearChip("¿Medicamentos peligrosos?") { procesarPreguntaUsuario("¿Tomar muchos medicamentos daña los riñones?") }
         crearChip("🏠 Menú Principal") { mostrarCategoriasPrincipales() }
     }
 
-    // 🚀 NIVEL 2: Submenú "Pruebas y Exámenes"
     private fun mostrarMenuPruebas() {
         chipGroup.removeAllViews()
-        crearChip("¿Qué es el eGFR?") {
-            procesarPreguntaUsuario("¿Qué es el eGFR?")
-        }
-        crearChip("¿Qué es la Creatinina?") {
-            procesarPreguntaUsuario("¿Qué significa la creatinina alta?")
-        }
-        crearChip("Examen de Orina") {
-            procesarPreguntaUsuario("¿Para qué sirve un examen de orina?")
-        }
+        crearChip("¿Qué es el eGFR?") { procesarPreguntaUsuario("¿Qué es el eGFR?") }
+        crearChip("¿Qué es Creatinina?") { procesarPreguntaUsuario("¿Qué significa la creatinina alta?") }
+        crearChip("Examen de Orina") { procesarPreguntaUsuario("¿Para qué sirve el examen de orina?") }
         crearChip("🏠 Menú Principal") { mostrarCategoriasPrincipales() }
     }
 
-    // 🚀 NIVEL 2: Submenú "Prevención y Dieta"
     private fun mostrarMenuPrevencion() {
         chipGroup.removeAllViews()
-        crearChip("¿Cuánta agua tomar?") {
-            procesarPreguntaUsuario("¿Cuánta agua debo tomar al día?")
-        }
-        crearChip("¿Cómo reducir la sal?") {
-            procesarPreguntaUsuario("¿Cómo puedo reducir el consumo de sal?")
-        }
-        crearChip("¿Qué alimentos limitar?") {
-            procesarPreguntaUsuario("¿Qué alimentos debo limitar?")
-        }
+        crearChip("¿Cuánta agua tomar?") { procesarPreguntaUsuario("¿Cuánta agua debo tomar al día?") }
+        crearChip("¿Cómo reducir la sal?") { procesarPreguntaUsuario("¿Cómo puedo reducir el consumo de sal?") }
+        crearChip("¿Alimentos a evitar?") { procesarPreguntaUsuario("¿Qué alimentos debo limitar?") }
         crearChip("🏠 Menú Principal") { mostrarCategoriasPrincipales() }
     }
 
@@ -161,10 +126,8 @@ class ChatbotActivity : AppCompatActivity() {
         etMensaje.setText("")
 
         lifecycleScope.launch(Dispatchers.IO) {
-            delay(500) // Simulación de procesamiento
-
+            delay(500)
             val respuestaIA = generarRespuestaPreventiva(pregunta)
-
             withContext(Dispatchers.Main) {
                 agregarMensajeChat(respuestaIA, esUsuario = false)
             }
@@ -177,54 +140,51 @@ class ChatbotActivity : AppCompatActivity() {
         rvChat.smoothScrollToPosition(listaMensajes.size - 1)
     }
 
-    // 🚀 Motor Extendido de Respuestas
     private fun generarRespuestaPreventiva(pregunta: String): String {
         val p = pregunta.lowercase()
         return when {
-            p.contains("hacen los riñones") ->
-                "Los riñones filtran toxinas y exceso de agua de la sangre para convertirlos en orina. También regulan la presión arterial y producen hormonas para la sangre y huesos."
+            // Evaluaciones específicas primero
+            p.contains("hacen los riñones") || p.contains("función de los riñones") ->
+                "Los riñones filtran toxinas y exceso de agua de la sangre para convertirlos en orina. También regulan la presión arterial y producen hormonas esenciales para los huesos y la sangre."
 
-            p.contains("enfermedad renal") || p.contains("erc") ->
-                "La Enfermedad Renal Crónica es la pérdida gradual de la función renal por más de 3 meses. Si no se controla, las toxinas se acumulan en el cuerpo."
+            p.contains("síntoma") || p.contains("hinchazón") || p.contains("dolor") ->
+                "Presta atención a hinchazón en tobillos o cara (edema), fatiga persistente, espuma en la orina o cambios al orinar. Si los notas, consulta a tu médico."
 
-            p.contains("cura") ->
-                "El daño renal crónico no suele ser reversible, pero un tratamiento médico oportuno y cambios de hábitos pueden frenar su avance significativamente."
+            p.contains("cura") || p.contains("reversible") ->
+                "El daño renal crónico no suele ser reversible, pero un tratamiento médico adecuado, control de presión y buena alimentación pueden detener o retrasar su avance."
 
-            p.contains("diabetes") ->
-                "El nivel alto de azúcar en sangre daña los diminutos vasos sanguíneos del riñón con el tiempo. Controlar la glucosa es esencial."
+            p.contains("diabetes") || p.contains("azúcar") ->
+                "Los niveles altos de glucosa dañan los filtros sanguíneos de los riñones (nefronas). Mantener la glucosa en rango protege la función renal."
 
             p.contains("presión") || p.contains("hipertensión") ->
-                "La presión alta ejerce demasiada fuerza sobre las arterias renales, debilitándolas e impidiendo que filtren la sangre adecuadamente."
+                "La presión alta debilita y endurece las arterias renales, impidiendo que filtren los desechos de forma adecuada."
 
-            p.contains("medicamento") || p.contains("analgésico") ->
-                "El uso frecuente y sin receta médica de analgésicos (como ibuprofeno o ketorolaco) puede causar toxicidad renal severa."
+            p.contains("medicamento") || p.contains("analgésico") || p.contains("ibuprofeno") ->
+                "El abuso sin receta de analgésicos comunes (como ibuprofeno o ketorolaco) puede generar toxicidad y daño renal severo."
 
             p.contains("egfr") || p.contains("filtrado") ->
-                "El eGFR mide la capacidad de filtración de tus riñones. Un valor mayor a 90 es ideal; si es menor a 60 por 3 meses, indica enfermedad renal."
+                "El eGFR mide la capacidad de filtración de tus riñones. Un valor superior a 60 suele ser favorable; menor a 60 por más de 3 meses indica ERC."
 
             p.contains("creatinina") ->
-                "La creatinina es un desecho del trabajo muscular. Si los riñones no filtran bien, se acumula en la sangre, indicando menor función renal."
+                "La creatinina es un residuo del trabajo muscular. Si los riñones no filtran bien, sus niveles en sangre se elevan."
 
             p.contains("orina") ->
-                "El examen de orina permite detectar si tus riñones dejan escapar proteínas (proteinuria) o sangre, señales tempranas de daño renal."
+                "El análisis de orina detecta si se están perdiendo proteínas (proteinuria) o sangre, señales tempranas de daño en el tejido renal."
 
             p.contains("agua") || p.contains("líquido") || p.contains("hidratación") ->
-                "Para adultos se recomienda un consumo de 1.5 a 2 litros de agua al día, evitando bebidas azucaradas. Si tienes restricción médica, respeta la dosis de tu doctor."
+                "Se aconseja consumir entre 1.5 y 2 litros diarios de agua natural, salvo que tu médico te haya ordenado restricción por retención de líquidos."
 
-            p.contains("sodio") || p.contains("sal") ->
-                "Reducir el consumo de sal previene la hipertensión arterial. Evita embutidos y sazona con hierbas naturales como ajo, orégano o limón."
+            p.contains("sal") || p.contains("sodio") ->
+                "Reducir el consumo de sal ayuda a controlar la presión arterial. Evita embutidos y sazona con hierbas como orégano, ajo o limón."
 
-            p.contains("limitar") || p.contains("alimentos") ->
-                "Limita ultraprocesados, gaseosas, bebidas energéticas y carnes muy procesadas. Consulta a tu nutriólogo sobre los niveles de potasio si tienes daño renal."
+            p.contains("alimento") || p.contains("limitar") || p.contains("comida") ->
+                "Limita productos ultraprocesados, bebidas gaseosas/energéticas y carnes muy procesadas. Consulta a tu médico sobre el potasio si tienes daño renal."
 
-            p.contains("síntoma") || p.contains("dolor") || p.contains("hinchazón") ->
-                "Atento a hinchazón en piernas/rostro (edema), fatiga constante y cambios en la orina. Si notas estos síntomas, acude a tu unidad de salud."
-
-            p.contains("cálculo") || p.contains("piedra") ->
-                "Los cálculos renales se forman por baja ingesta de agua y exceso de sales. Beber suficiente líquido ayuda a prevenir su formación."
+            p.contains("erc") || p.contains("enfermedad renal") || p.contains("crónica") ->
+                "La Enfermedad Renal Crónica es la pérdida gradual y progresiva de la función de los riñones por más de 3 meses. Si no se trata a tiempo, los desechos se acumulan en el cuerpo."
 
             else ->
-                "Recuerda mantener una hidratación adecuada, controlar tu presión arterial y realizar evaluaciones médicas periódicas para cuidar tu salud renal."
+                "Para proteger tus riñones: mantén una hidratación balanceada, modera la sal, controla tu presión y asiste a tus evaluaciones médicas periódicas."
         }
     }
 
