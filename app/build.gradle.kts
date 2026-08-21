@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
     // TensorFlow Lite (IA On-Device)
     implementation("org.tensorflow:tensorflow-lite:2.14.0")
