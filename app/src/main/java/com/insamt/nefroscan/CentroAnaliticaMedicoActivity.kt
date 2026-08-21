@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.BarChart
@@ -20,6 +21,7 @@ import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class CentroAnaliticaMedicoActivity : AppCompatActivity() {
 
@@ -30,6 +32,7 @@ class CentroAnaliticaMedicoActivity : AppCompatActivity() {
 
     private val database: NefroScanDatabase by lazy { NefroScanDatabase.getDatabase(applicationContext) }
     private var idMedicoSesion: String = ""
+    private var listaExpedientesActual: List<DiagnosticEntity> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +51,25 @@ class CentroAnaliticaMedicoActivity : AppCompatActivity() {
         tvSubtituloAnalitica.text = "Médico a cargo: $nombreMedico ($idMedicoSesion)"
         btnCerrar.setOnClickListener { finish() }
 
+        // Al tocar el panel de insights o la gráfica se abre la simulación de sobrevida
+        tvInsightIA.setOnClickListener {
+            if (listaExpedientesActual.isNotEmpty()) {
+                val ultimo = listaExpedientesActual.first()
+                mostrarSimuladorKaplanMeier(
+                    egfr = ultimo.egfrEstimado5Anios,
+                    edad = ultimo.edadPaciente.toDouble(),
+                    dano = ultimo.porcentajeDano
+                )
+            }
+        }
+
         cargarYRenderizarAnalitica()
     }
 
     private fun cargarYRenderizarAnalitica() {
         lifecycleScope.launch(Dispatchers.IO) {
             val expedientes = database.diagnosticDao().obtenerListaPorMedico(idMedicoSesion)
+            listaExpedientesActual = expedientes
 
             withContext(Dispatchers.Main) {
                 if (expedientes.isNotEmpty()) {
@@ -173,8 +189,41 @@ class CentroAnaliticaMedicoActivity : AppCompatActivity() {
         tvInsightIA.text = """
             • Cohorte Analizada: $total pacientes activos.
             • Alerta KDIGO: $criticos paciente(s) en riesgo de terapia sustitutiva (G4/G5).
-            • Daño Parenquimatoso Medio: ${"%.1f".format(promedioDano)}%.
+            • Daño Parenquimatoso Medio: ${"%.1f".format(Locale.US, promedioDano)}%.
             • Algoritmo Predictivo: Se sugiere ajustar planes de hidratación y seguimiento quincenal en pacientes con eGFR < 45 mL/min.
+            
+            👉 Toca este panel para abrir la Simulación de Sobrevida Renal (Modelo Cox / Kaplan-Meier).
         """.trimIndent()
+    }
+
+    private fun mostrarSimuladorKaplanMeier(egfr: Double, edad: Double, dano: Double) {
+        val sim = CoxSurvivalEngine.simularSobrevida(
+            egfr = egfr,
+            edad = edad,
+            danoPorcentaje = dano,
+            usoAines = true,
+            hipertensionDescontrolada = true
+        )
+
+        val tablaTexto = StringBuilder()
+        tablaTexto.append("PROYECCIÓN DE SOBREVIDA RENAL (10 AÑOS)\n")
+        tablaTexto.append("Año | Sin Tratamiento | Con NefroScan\n")
+        tablaTexto.append("--------------------------------------\n")
+
+        for (p in sim.puntos) {
+            val base = String.format(Locale.US, "%.1f%%", p.probabilidadBase)
+            val opt = String.format(Locale.US, "%.1f%%", p.probabilidadIntervencion)
+            tablaTexto.append("Año ${p.anio.toString().padEnd(2)} | ${base.padEnd(15)} | $opt\n")
+        }
+
+        tablaTexto.append("--------------------------------------\n")
+        tablaTexto.append("💡 Ganancia estimada: +${String.format(Locale.US, "%.1f", sim.gananciaAniosLibres)} años libres de diálisis.\n")
+        tablaTexto.append("📉 Reducción del riesgo relativo: ${String.format(Locale.US, "%.1f", sim.reduccionRiesgoRelativo)}%")
+
+        AlertDialog.Builder(this)
+            .setTitle("Simulador de Sobrevida (Modelo de Cox)")
+            .setMessage(tablaTexto.toString())
+            .setPositiveButton("Cerrar", null)
+            .show()
     }
 }

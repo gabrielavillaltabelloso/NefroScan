@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F172A"
+    android:background="#FFFFFF"
     android:fillViewport="true"
     android:padding="20dp"
     android:scrollbarStyle="outsideOverlay"
@@ -44,8 +44,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sistema activo • Sincronizado"
-                    android:textColor="#94A3B8"
+                    android:text="Sistema activo · Sincronizado"
+                    android:textColor="#64748B"
                     android:textSize="11sp"
                     android:letterSpacing="0.03" />
             </LinearLayout>
@@ -54,7 +54,8 @@
             <FrameLayout
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_marginEnd="8dp">
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Notificaciones, 3 pendientes">
 
                 <ImageView
                     android:layout_width="28dp"
@@ -79,7 +80,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:background="#1E293B"
+                android:background="#E8F4FD"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="10dp"
                 android:orientation="horizontal">
@@ -103,11 +104,11 @@
         <!-- ============================================================ -->
         <!-- ENCABEZADO CON TARJETA DE CONTROL (FIGMA STYLE) -->
         <!-- ============================================================ -->
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="24dp"
-            app:cardElevation="8dp"
+            app:cardElevation="4dp"
             app:cardBackgroundColor="#E8F4FD"
             android:layout_marginBottom="24dp">
 
@@ -127,7 +128,8 @@
                     <FrameLayout
                         android:layout_width="56dp"
                         android:layout_height="56dp"
-                        android:layout_marginEnd="14dp">
+                        android:layout_marginEnd="14dp"
+                        android:contentDescription="Avatar del médico">
 
                         <View
                             android:layout_width="56dp"
@@ -153,7 +155,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Consola Diagnóstica Médica"
-                            android:textColor="#0F172A"
+                            android:textColor="#03045E"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:letterSpacing="0.02" />
@@ -161,7 +163,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="NefroScan AI • Centro de Mando Nefrológico"
+                            android:text="NefroScan AI · Centro de Mando Nefrológico"
                             android:textColor="#64748B"
                             android:textSize="12sp"
                             android:letterSpacing="0.03"
@@ -188,7 +190,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Hospital Central • Nefrología"
+                                android:text="Hospital Central · Nefrología"
                                 android:textColor="#0077B6"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
@@ -213,13 +215,16 @@
                         app:tint="#94A3B8"
                         android:layout_marginEnd="10dp" />
 
-                    <TextView
+                    <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Buscar paciente, expediente o estudio..."
-                        android:textColor="#94A3B8"
-                        android:textSize="13sp" />
+                        android:hint="Buscar paciente, expediente o estudio..."
+                        android:textColorHint="#94A3B8"
+                        android:textColor="#03045E"
+                        android:textSize="13sp"
+                        android:background="@null"
+                        android:inputType="text" />
 
                     <ImageView
                         android:layout_width="18dp"
@@ -228,7 +233,7 @@
                         app:tint="#0077B6" />
                 </LinearLayout>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- ============================================================ -->
         <!-- KPIs CON MEDIDORES LIMPIOS (SIN ERRORES DE RENDERIZADO) -->
@@ -241,13 +246,13 @@
             android:layout_marginBottom="24dp">
 
             <!-- KPI 1: Total Pacientes -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
@@ -269,7 +274,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="#0F172A"
+                        android:textColor="#03045E"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -289,16 +294,16 @@
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- KPI 2: Riesgo Alto -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
@@ -340,15 +345,15 @@
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- KPI 3: Precisión IA -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
@@ -390,7 +395,7 @@
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
         <!-- ============================================================ -->
@@ -400,64 +405,80 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sistemas de Soporte Diagnóstico IA (CDSS)"
-            android:textColor="#38BDF8"
+            android:textColor="#0077B6"
             android:textSize="16sp"
             android:textStyle="bold"
             android:letterSpacing="0.03"
             android:layout_marginBottom="12dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAbrirCentroAnalitica"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="• Centro Analítico &amp; Gráficas de Regresión eGFR"
-            android:backgroundTint="#0284C7"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:text="Centro Analítico &amp; Gráficas de Regresión eGFR"
             android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            app:backgroundTint="#0077B6"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_compass"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAbrirDictamenMedico"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="• Dictamen Clínico Automatizado &amp; Nota SOAP"
-            android:backgroundTint="#1E293B"
-            android:textColor="#10B981"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:text="Dictamen Clínico Automatizado &amp; Nota SOAP"
+            android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            app:backgroundTint="#10B981"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_agenda"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAbrirSimuladorDigital"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="• Simulador Hemodinámico &amp; Gemelo Digital 3D"
-            android:backgroundTint="#1E293B"
-            android:textColor="#38BDF8"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:text="Simulador Hemodinámico &amp; Gemelo Digital 3D"
+            android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            app:backgroundTint="#00B4D8"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_myplaces"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAbrirTriajeRadar"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="• Triaje &amp; Radar Predictivo de Casos Críticos"
-            android:backgroundTint="#1E293B"
-            android:textColor="#F59E0B"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:text="Triaje &amp; Radar Predictivo de Casos Críticos"
+            android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp"/>
+            app:backgroundTint="#F59E0B"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_dialog_alert"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="24dp" />
 
         <!-- ============================================================ -->
         <!-- ALERTA INTELIGENTE DE TRIAJE -->
         <!-- ============================================================ -->
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
+            app:cardElevation="2dp"
             app:cardBackgroundColor="#FFFBF5"
             android:layout_marginBottom="24dp">
 
@@ -471,7 +492,8 @@
                 <FrameLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginEnd="12dp">
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="Alerta">
 
                     <View
                         android:layout_width="40dp"
@@ -511,7 +533,7 @@
                         android:layout_marginTop="3dp" />
                 </LinearLayout>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- ============================================================ -->
         <!-- HERRAMIENTAS CLÍNICAS TRADICIONALES -->
@@ -520,108 +542,143 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Herramientas de Consulta &amp; Campo"
-            android:textColor="#FFFFFF"
+            android:textColor="#03045E"
             android:textSize="16sp"
             android:textStyle="bold"
             android:letterSpacing="0.03"
             android:layout_marginBottom="12dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnInferenciaEcografia"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:text="• Nueva Ecografía + IA (TFLite / 3D)"
-            android:backgroundTint="#0284C7"
+            android:layout_height="wrap_content"
+            android:minHeight="54dp"
+            android:text="Nueva Ecografía + IA (TFLite / 3D)"
             android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            app:backgroundTint="#0077B6"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_camera"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCalculadoraEgfr"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:text="• Calculadora eGFR (CKD-EPI Clínica)"
-            android:backgroundTint="#1E293B"
-            android:textColor="#38BDF8"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
-
-        <Button
-            android:id="@+id/btnNefrotoxicidad"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:text="• Evaluador de Nefrotoxicidad por Fármacos"
-            android:backgroundTint="#1E293B"
-            android:textColor="#EC4899"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
-
-        <Button
-            android:id="@+id/btnPrescriptorHidratacion"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:text="• Prescriptor de Hidratación por Clima / Campo"
-            android:backgroundTint="#1E293B"
-            android:textColor="#38BDF8"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
-
-        <Button
-            android:id="@+id/btnCalculadoraKfre"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:text="• Calculadora de Riesgo de Diálisis (KFRE 2/5 años)"
-            android:backgroundTint="#1E293B"
-            android:textColor="#F59E0B"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
-
-        <Button
-            android:id="@+id/btnGenerarInformePdf"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:text="• Exportar Informe Clínico Oficial"
-            android:backgroundTint="#10B981"
+            android:layout_height="wrap_content"
+            android:minHeight="54dp"
+            android:text="Calculadora eGFR (CKD-EPI Clínica)"
             android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            app:backgroundTint="#00B4D8"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_edit"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNefrotoxicidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="54dp"
+            android:text="Evaluador de Nefrotoxicidad por Fármacos"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:backgroundTint="#EC4899"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_dialog_alert"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPrescriptorHidratacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="54dp"
+            android:text="Prescriptor de Hidratación por Clima / Campo"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:backgroundTint="#0077B6"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_myplaces"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCalculadoraKfre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="54dp"
+            android:text="Calculadora de Riesgo de Diálisis (KFRE 2/5 años)"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:backgroundTint="#F59E0B"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_calculator"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGenerarInformePdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="54dp"
+            android:text="Exportar Informe Clínico Oficial"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:backgroundTint="#10B981"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_save"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnExpedientesClinicos"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:text="• Expedientes y Revisiones Médicas"
-            android:backgroundTint="#1E293B"
-            android:textColor="#E2E8F0"
+            android:layout_height="wrap_content"
+            android:minHeight="54dp"
+            android:text="Expedientes y Revisiones Médicas"
+            android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            app:backgroundTint="#0077B6"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_agenda"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="10dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRadarMed"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:text="• Radar Epidemiológico Nacional"
-            android:backgroundTint="#1E293B"
-            android:textColor="#F59E0B"
+            android:layout_height="wrap_content"
+            android:minHeight="54dp"
+            android:text="Radar Epidemiológico Nacional"
+            android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginBottom="20dp"/>
+            app:backgroundTint="#F59E0B"
+            app:cornerRadius="12dp"
+            app:icon="@android:drawable/ic_menu_compass"
+            app:iconGravity="textStart"
+            android:layout_marginBottom="20dp" />
 
         <!-- Botón Volver -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVolverRolesMed"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="Volver a Selección de Perfil"
-            android:backgroundTint="#334155"
-            android:textColor="#94A3B8"/>
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:backgroundTint="#64748B"
+            app:cornerRadius="12dp" />
 
     </LinearLayout>
 </ScrollView>

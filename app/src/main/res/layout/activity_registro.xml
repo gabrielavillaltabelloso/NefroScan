@@ -1,76 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F172A"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
+    android:fillViewport="true"
+    android:background="#FFFFFF">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="Logo NefroScan" />
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nuevo Registro de Paciente"
-        android:textColor="#38BDF8"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="24dp"/>
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center">
 
-    <!-- Campo: Nombre -->
-    <EditText
-        android:id="@+id/etNombrePaciente"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#1E293B"
-        android:hint="Nombre Completo del Paciente"
-        android:textColorHint="#64748B"
-        android:textColor="#FFFFFF"
-        android:padding="12dp"
-        android:layout_marginBottom="12dp"
-        android:inputType="textPersonName"/>
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Logo NefroScan"
+            android:background="#CAF0F8"
+            android:padding="12dp"
+            android:elevation="4dp" />
 
-    <!-- Campo: DUI o Correo del Paciente -->
-    <EditText
-        android:id="@+id/etIdPacienteDui"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#1E293B"
-        android:hint="DUI o Correo del Paciente (Para su perfil)"
-        android:textColorHint="#64748B"
-        android:textColor="#FFFFFF"
-        android:padding="12dp"
-        android:layout_marginBottom="12dp"
-        android:inputType="text"/>
+        <!-- Título -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Registro de Paciente"
+            android:textColor="#03045E"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
 
-    <!-- Campo: Edad -->
-    <EditText
-        android:id="@+id/etEdadPaciente"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#1E293B"
-        android:hint="Edad del Paciente"
-        android:textColorHint="#64748B"
-        android:textColor="#FFFFFF"
-        android:padding="12dp"
-        android:layout_marginBottom="24dp"
-        android:inputType="number"/>
+        <!-- Subtítulo -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingrese los datos básicos para comenzar el análisis"
+            android:textColor="#0077B6"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
 
-    <Button
-        android:id="@+id/btnIniciarEscaneo"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="Iniciar Escaneo IA"
-        android:backgroundTint="#0284C7"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        <!-- Tarjeta con el formulario -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="24dp">
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Campo: Nombre -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre Completo"
+                    app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="#0077B6"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNombrePaciente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:textColor="#03045E"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo: DUI o Correo -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="DUI o Correo Electrónico"
+                    app:startIconDrawable="@android:drawable/ic_dialog_email"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="#0077B6"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etIdPacienteDui"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#03045E"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Campo: Edad -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Edad"
+                    app:startIconDrawable="@android:drawable/ic_menu_agenda"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="#0077B6"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEdadPaciente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="#03045E"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Botón de acción -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnIniciarEscaneo"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Iniciar Escaneo IA"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="#0077B6"
+            app:cornerRadius="28dp"
+            app:icon="@android:drawable/ic_menu_camera"
+            app:iconGravity="textStart"
+            android:contentDescription="Botón para iniciar el escaneo con IA" />
+    </LinearLayout>
+</ScrollView>

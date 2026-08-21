@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F172A"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
+    <!-- Encabezado superior -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,14 +15,14 @@
         android:paddingTop="24dp"
         android:paddingEnd="20dp"
         android:paddingBottom="16dp"
-        android:elevation="4dp"
-        android:background="#1E293B">
+        android:background="#0077B6"
+        android:elevation="4dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Historial de Expedientes"
-            android:textColor="#38BDF8"
+            android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -29,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Registros clínicos almacenados"
-            android:textColor="#64748B"
+            android:textColor="#CAF0F8"
             android:textSize="13sp"
             android:layout_marginTop="2dp" />
 
@@ -37,15 +38,110 @@
             android:layout_width="40dp"
             android:layout_height="3dp"
             android:layout_marginTop="10dp"
-            android:background="#38BDF8" />
+            android:background="#00B4D8" />
     </LinearLayout>
 
-    <FrameLayout
+    <!-- Barra de búsqueda y filtros -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- ID: emptyStateLayout -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilBuscarHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Buscar paciente o diagnóstico"
+            app:startIconDrawable="@android:drawable/ic_menu_search"
+            app:endIconMode="clear_text"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxStrokeColor="#0077B6"
+            app:hintTextColor="#0077B6">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etBuscarHistorial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="#03045E"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Filtros por estadio renal -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupFiltroHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTodosHistorial"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Todos"
+                android:checked="true"
+                android:textColor="#03045E"
+                app:chipBackgroundColor="#90E0EF"
+                app:checkedIconVisible="false" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipG1G2Historial"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="G1 - G2"
+                android:textColor="#03045E"
+                app:chipBackgroundColor="#90E0EF"
+                app:checkedIconVisible="false" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipG3Historial"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="G3a - G3b"
+                android:textColor="#03045E"
+                app:chipBackgroundColor="#90E0EF"
+                app:checkedIconVisible="false" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipG4G5Historial"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="G4 - G5"
+                android:textColor="#03045E"
+                app:chipBackgroundColor="#90E0EF"
+                app:checkedIconVisible="false" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipAltoRiesgoHistorial"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alto Riesgo"
+                android:textColor="#03045E"
+                app:chipBackgroundColor="#90E0EF"
+                app:checkedIconVisible="false" />
+        </com.google.android.material.chip.ChipGroup>
+    </LinearLayout>
+
+    <!-- Contenedor de lista / estado vacío -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <!-- Estado vacío -->
         <LinearLayout
             android:id="@+id/emptyStateLayout"
             android:layout_width="match_parent"
@@ -54,15 +150,16 @@
             android:orientation="vertical"
             android:gravity="center"
             android:padding="32dp"
-            android:visibility="gone"
-            android:background="#1E293B">
+            android:background="#CAF0F8"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:src="@android:drawable/ic_menu_agenda"
-                app:tint="#64748B"
-                android:alpha="0.5"
+                android:contentDescription="Icono de historial vacío"
+                app:tint="#0077B6"
+                android:alpha="0.8"
                 android:layout_marginBottom="16dp" />
 
             <TextView
@@ -70,24 +167,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sin registros"
-                android:textColor="#E2E8F0"
+                android:textColor="#03045E"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:gravity="center" />
 
-            <!-- ID: tvHistorialEmpty -->
             <TextView
                 android:id="@+id/tvHistorialEmpty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="No hay registros disponibles."
-                android:textColor="#94A3B8"
+                android:textColor="#0077B6"
                 android:textSize="14sp"
                 android:gravity="center"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
-        <!-- ID: rvHistorial -->
+        <!-- Lista de expedientes -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHistorial"
             android:layout_width="match_parent"
@@ -96,4 +192,21 @@
             android:paddingBottom="16dp"
             android:scrollbars="vertical" />
     </FrameLayout>
+
+    <!-- Botón para agregar nuevo expediente -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnNuevoExpediente"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="16dp"
+        android:text="Nuevo Expediente"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:contentDescription="Botón para crear un nuevo expediente"
+        app:backgroundTint="#0077B6"
+        app:cornerRadius="16dp"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconGravity="textStart" />
+
 </LinearLayout>

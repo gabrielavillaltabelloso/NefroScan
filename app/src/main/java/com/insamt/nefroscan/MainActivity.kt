@@ -83,9 +83,22 @@ class MainActivity : AppCompatActivity() {
             val bitmap = uriToBitmap(selectedUri)
             if (bitmap != null) {
                 imgPreview.setImageBitmap(bitmap)
+
+                // 1. Evaluación de Calidad de Imagen Previa a la Inferencia (Filtro Anti-Artefactos)
+                val resultadoCalidad = ImageQualityEvaluator.evaluarCalidadEcografia(bitmap)
+                if (!resultadoCalidad.isApta) {
+                    AlertDialog.Builder(this)
+                        .setTitle("⚠️ Captura No Apta para Diagnóstico")
+                        .setMessage(resultadoCalidad.mensajeDiagnostico)
+                        .setPositiveButton("Repetir Captura", null)
+                        .show()
+                    txtStatusTitle.text = "Captura rechazada por baja calidad"
+                    return@registerForActivityResult
+                }
+
                 txtStatusTitle.text = getString(R.string.status_analyzing)
 
-                // Procesamiento IA en hilo secundario IO
+                // 2. Procesamiento IA en hilo secundario IO si pasa el filtro de calidad
                 lifecycleScope.launch(Dispatchers.IO) {
                     try {
                         val result = localClassifier.processImage(bitmap)
