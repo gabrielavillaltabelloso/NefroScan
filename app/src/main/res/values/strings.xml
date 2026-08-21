@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Nombre de la aplicación -->
     <string name="app_name">NefroScan</string>
     <string name="subtitle_simulation">Ecosistema de Bio-Simulación Avanzada</string>
     <string name="btn_load_ultrasound">Cargar Ecografía</string>
 
+    <!-- Pantalla de simulación -->
     <string name="title_anatomy_3d">1. ANATOMÍA 3D INTERACTIVA</string>
     <string name="lbl_opacity_default">Ver Estructura Interna (Transparencia): %1$d%%</string>
     <string name="lbl_layers">Capas visibles: %1$s</string>
@@ -27,4 +29,63 @@
     <string name="sodium_low">Bajo</string>
     <string name="sodium_normal">Normal</string>
     <string name="sodium_high">Alto (Exceso)</string>
+
+    <!-- Textos para pantalla de analítica -->
+    <string name="title_dashboard">Dashboard Clínico &amp; Analítica IA</string>
+    <string name="subtitle_dashboard">Monitoreo hemodinámico y progresión de ERC</string>
+    <string name="metric_total_patients">Pacientes</string>
+    <string name="metric_avg_egfr">eGFR promedio</string>
+    <string name="metric_high_risk">Riesgo alto</string>
+    <string name="filter_3m">3M</string>
+    <string name="filter_6m">6M</string>
+    <string name="filter_1y">1A</string>
+    <string name="filter_all">Todo</string>
+    <string name="chart_line_title">Proyección eGFR vs. Daño Parenquimatoso</string>
+    <string name="chart_line_subtitle">Trayectoria histórica y decaimiento proyectado con IA</string>
+    <string name="chart_bar_title">Distribución de Cohorte por Estadio Renal</string>
+    <string name="chart_bar_subtitle">Total de pacientes evaluados categorizados en G1, G2, G3a, G3b, G4 y G5</string>
+    <string name="insight_title">Análisis Predictivo de Riesgo Poblacional</string>
+    <string name="insight_default">Analizando cohortes asignadas...</string>
+    <string name="btn_export_pdf">Exportar Informe PDF</string>
+    <string name="btn_close_dashboard">Cerrar panel de analítica</string>
+
+    <!-- Textos para registro de paciente -->
+    <string name="title_new_patient">Nuevo Registro de Paciente</string>
+    <string name="subtitle_new_patient">Ingrese los datos básicos para comenzar el análisis</string>
+    <string name="hint_name">Nombre Completo</string>
+    <string name="hint_dui_email">DUI o Correo Electrónico</string>
+    <string name="hint_age">Edad</string>
+    <string name="btn_start_scan">Iniciar Escaneo IA</string>
+
+    <!-- Textos para historial -->
+    <string name="title_history">Historial de Expedientes</string>
+    <string name="subtitle_history">Registros clínicos almacenados</string>
+    <string name="search_hint">Buscar paciente o diagnóstico</string>
+    <string name="filter_all_hist">Todos</string>
+    <string name="filter_g1g2">G1 - G2</string>
+    <string name="filter_g3">G3a - G3b</string>
+    <string name="filter_g4g5">G4 - G5</string>
+    <string name="filter_high_risk_hist">Alto Riesgo</string>
+    <string name="empty_title">Sin registros</string>
+    <string name="empty_message">No hay registros disponibles.</string>
+    <string name="btn_new_record">Nuevo Expediente</string>
+
+    <!-- Textos para registro de perfil -->
+    <string name="title_create_profile">Crear Nuevo Perfil</string>
+    <string name="subtitle_create_profile">Registro individual en el sistema NefroScan</string>
+    <string name="hint_role">Seleccione su Rol</string>
+    <string name="hint_full_name">Nombre Completo</string>
+    <string name="hint_id_user">DUI o Correo (ID de acceso)</string>
+    <string name="hint_detail">Especialidad / Cantón o Caserío</string>
+    <string name="hint_password">Contraseña de seguridad</string>
+    <string name="btn_create_account">Crear Mi Cuenta e Iniciar</string>
+    <string name="btn_back_login">¿Ya tienes cuenta? Inicia Sesión</string>
+
+    <!-- Array de roles para el spinner -->
+    <string-array name="roles_registro">
+        <item>Médico</item>
+        <item>Paciente</item>
+        <item>Enfermero/a</item>
+        <item>Administrador</item>
+    </string-array>
 </resources>

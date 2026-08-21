@@ -1,5 +1,6 @@
 package com.insamt.nefroscan
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -26,14 +27,29 @@ class MedicoDashboardActivity : AppCompatActivity() {
     private lateinit var tvAlerta: TextView
     private val database: NefroScanDatabase by lazy { NefroScanDatabase.getDatabase(applicationContext) }
 
+    private var idMedicoSesion: String = ""
+    private var nombreMedicoSesion: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_medico_dashboard)
+
+        // 1. Obtener la sesión activa del médico
+        val prefs = getSharedPreferences("SesionNefroScan", Context.MODE_PRIVATE)
+        idMedicoSesion = prefs.getString("ID_USUARIO", "") ?: ""
+        nombreMedicoSesion = prefs.getString("NOMBRE_USUARIO", "Dr. Especialista") ?: "Dr. Especialista"
 
         tvTotal = findViewById(R.id.tvKpiTotal)
         tvRiesgoAlto = findViewById(R.id.tvKpiRiesgoAlto)
         tvAlerta = findViewById(R.id.tvAlertaDerivacion)
 
+        // Botones de Módulos Clínicos Avanzados
+        val btnAbrirCentroAnalitica = findViewById<Button>(R.id.btnAbrirCentroAnalitica)
+        val btnAbrirDictamenMedico = findViewById<Button>(R.id.btnAbrirDictamenMedico)
+        val btnAbrirSimuladorDigital = findViewById<Button>(R.id.btnAbrirSimuladorDigital)
+        val btnAbrirTriajeRadar = findViewById<Button>(R.id.btnAbrirTriajeRadar)
+
+        // Botones de Herramientas Tradicionales
         val btnInferencia = findViewById<Button>(R.id.btnInferenciaEcografia)
         val btnCalculadora = findViewById<Button>(R.id.btnCalculadoraEgfr)
         val btnNefrotoxicidad = findViewById<Button>(R.id.btnNefrotoxicidad)
@@ -44,48 +60,53 @@ class MedicoDashboardActivity : AppCompatActivity() {
         val btnRadar = findViewById<Button>(R.id.btnRadarMed)
         val btnVolver = findViewById<Button>(R.id.btnVolverRolesMed)
 
-        // Cargar métricas clínicas
+        // Cargar métricas clínicas del médico en sesión
         cargarMetricasClinicas()
 
-        // 1. Escaneo por Ecografía e IA
+        // =====================================================================
+        // NAVEGACIÓN A MÓDULOS AVANZADOS
+        // =====================================================================
+        btnAbrirCentroAnalitica.setOnClickListener {
+            startActivity(Intent(this, CentroAnaliticaMedicoActivity::class.java))
+        }
+
+        btnAbrirDictamenMedico.setOnClickListener {
+            startActivity(Intent(this, DictamenMedicoActivity::class.java))
+        }
+
+        btnAbrirSimuladorDigital.setOnClickListener {
+            startActivity(Intent(this, SimuladorNefroDigitalActivity::class.java))
+        }
+
+        btnAbrirTriajeRadar.setOnClickListener {
+            startActivity(Intent(this, TriajeRadarPredictivoActivity::class.java))
+        }
+
+        // =====================================================================
+        // NAVEGACIÓN A HERRAMIENTAS TRADICIONALES
+        // =====================================================================
         btnInferencia.setOnClickListener {
             val intent = Intent(this, RegistroActivity::class.java).apply {
                 putExtra("EXTRA_ROL", "MEDICO")
+                putExtra("EXTRA_REGISTRADOR_ID", idMedicoSesion)
             }
             startActivity(intent)
         }
 
-        // 2. Calculadora Médica CKD-EPI
-        btnCalculadora.setOnClickListener {
-            mostrarCalculadoraCkdEpi()
-        }
+        btnCalculadora.setOnClickListener { mostrarCalculadoraCkdEpi() }
+        btnNefrotoxicidad.setOnClickListener { mostrarEvaluadorNefrotoxicidad() }
+        btnPrescriptor.setOnClickListener { mostrarPrescriptorHidratacion() }
+        btnKfre.setOnClickListener { mostrarCalculadoraKfre() }
+        btnInforme.setOnClickListener { generarInformeMedicoOficial() }
 
-        // 3. FUNCIÓN PLUS 1: Evaluador de Nefrotoxicidad
-        btnNefrotoxicidad.setOnClickListener {
-            mostrarEvaluadorNefrotoxicidad()
-        }
-
-        // 4. FUNCIÓN PLUS 2: Prescriptor de Hidratación por Clima
-        btnPrescriptor.setOnClickListener {
-            mostrarPrescriptorHidratacion()
-        }
-
-        // 5. FUNCIÓN PLUS 3: Calculadora KFRE Riesgo de Diálisis
-        btnKfre.setOnClickListener {
-            mostrarCalculadoraKfre()
-        }
-
-        // 6. Exportar Informe Médico
-        btnInforme.setOnClickListener {
-            generarInformeMedicoOficial()
-        }
-
-        // 7. Expedientes en Room
         btnExpedientes.setOnClickListener {
-            startActivity(Intent(this, HistorialActivity::class.java))
+            val intent = Intent(this, HistorialActivity::class.java).apply {
+                putExtra("EXTRA_ROL", "MEDICO")
+                putExtra("ID_MEDICO", idMedicoSesion)
+            }
+            startActivity(intent)
         }
 
-        // 8. Radar Epidemiológico Nacional
         btnRadar.setOnClickListener {
             startActivity(Intent(this, MapaRiesgoActivity::class.java))
         }
@@ -93,10 +114,15 @@ class MedicoDashboardActivity : AppCompatActivity() {
         btnVolver.setOnClickListener { finish() }
     }
 
+    override fun onResume() {
+        super.onResume()
+        cargarMetricasClinicas()
+    }
+
     private fun cargarMetricasClinicas() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerTodosLista()
+                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerListaPorMedico(idMedicoSesion)
                 val total = expedientes.size
 
                 val riesgoAltoCount = expedientes.count { item ->
@@ -104,7 +130,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
                             item.nivelSeveridad.contains("Rojo", ignoreCase = true) ||
                             item.patologiaDetectada.contains("G4", ignoreCase = true) ||
                             item.patologiaDetectada.contains("G5", ignoreCase = true) ||
-                            item.porcentajeDano >= 50f
+                            item.porcentajeDano >= 50.0
                 }
 
                 withContext(Dispatchers.Main) {
@@ -112,9 +138,9 @@ class MedicoDashboardActivity : AppCompatActivity() {
                     tvRiesgoAlto.text = riesgoAltoCount.toString()
 
                     if (riesgoAltoCount > 0) {
-                        tvAlerta.text = "Atención: Se han detectado $riesgoAltoCount caso(s) en RIESGO ALTO derivados desde el tamizaje de campo."
+                        tvAlerta.text = "Atención: Se han detectado $riesgoAltoCount caso(s) en RIESGO ALTO bajo su seguimiento clínico."
                     } else {
-                        tvAlerta.text = "No hay alertas críticas de campo sin revisar. Sistema estable."
+                        tvAlerta.text = "No hay alertas críticas pendientes en sus pacientes asignados. Sistema estable."
                     }
                 }
             } catch (e: Exception) {
@@ -128,7 +154,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     }
 
     // =========================================================================
-    // 💊 FUNCIÓN PLUS 1: FARMACOVIGILANCIA Y TOXICIDAD RENAL
+    // FARMACOVIGILANCIA Y TOXICIDAD RENAL
     // =========================================================================
     private fun mostrarEvaluadorNefrotoxicidad() {
         val builder = AlertDialog.Builder(this)
@@ -220,7 +246,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     }
 
     // =========================================================================
-    // ☀️ FUNCIÓN PLUS 2: PRESCRIPTOR DE HIDRATACIÓN POR CLIMA
+    // PRESCRIPTOR DE HIDRATACIÓN POR CLIMA
     // =========================================================================
     private fun mostrarPrescriptorHidratacion() {
         val builder = AlertDialog.Builder(this)
@@ -283,7 +309,7 @@ class MedicoDashboardActivity : AppCompatActivity() {
     }
 
     // =========================================================================
-    // 📉 FUNCIÓN PLUS 3: CALCULADORA KFRE DE RIESGO DE DIÁLISIS
+    // CALCULADORA KFRE DE RIESGO DE DIÁLISIS
     // =========================================================================
     private fun mostrarCalculadoraKfre() {
         val builder = AlertDialog.Builder(this)
@@ -416,17 +442,17 @@ class MedicoDashboardActivity : AppCompatActivity() {
     private fun generarInformeMedicoOficial() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerTodosLista()
+                val expedientes: List<DiagnosticEntity> = database.diagnosticDao().obtenerListaPorMedico(idMedicoSesion)
                 withContext(Dispatchers.Main) {
                     if (expedientes.isEmpty()) {
-                        Toast.makeText(this@MedicoDashboardActivity, "No hay expedientes para generar el informe.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MedicoDashboardActivity, "No hay expedientes clínicos asociados a su cuenta para generar el informe.", Toast.LENGTH_SHORT).show()
                         return@withContext
                     }
 
                     val ultimo = expedientes.first()
                     val esAlto = ultimo.nivelSeveridad.contains("Alto", ignoreCase = true) ||
                             ultimo.nivelSeveridad.contains("Rojo", ignoreCase = true) ||
-                            ultimo.porcentajeDano >= 50f
+                            ultimo.porcentajeDano >= 50.0
 
                     val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
                     val fechaTexto = dateFormat.format(Date(ultimo.fechaRegistroTimestamp))
@@ -434,8 +460,9 @@ class MedicoDashboardActivity : AppCompatActivity() {
                     val informeTexto = """
                         INSTITUTO NACIONAL DE SAN MIGUEL TEPEZONTES
                         SISTEMA NEFROSCAN - INFORME CLÍNICO DIAGNÓSTICO
+                        Médico Responsable: $nombreMedicoSesion ($idMedicoSesion)
                         ---------------------------------------------------
-                        Paciente: ${ultimo.nombrePaciente}
+                        Paciente: ${ultimo.nombrePaciente} (ID: ${ultimo.idPaciente})
                         Edad: ${ultimo.edadPaciente} años
                         Fecha de Evaluación: $fechaTexto
                         

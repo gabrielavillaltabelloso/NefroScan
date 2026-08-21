@@ -19,6 +19,10 @@ class FirebaseSyncManager(private val context: Context) {
         for (expediente in pendientes) {
             val datosFirebase = hashMapOf(
                 "idLocal" to expediente.id,
+                "idPaciente" to expediente.idPaciente,
+                "idRegistrador" to expediente.idRegistrador,
+                "rolRegistrador" to expediente.rolRegistrador,
+                "idMedicoAsignado" to expediente.idMedicoAsignado,
                 "nombrePaciente" to expediente.nombrePaciente,
                 "edadPaciente" to expediente.edadPaciente,
                 "porcentajeDano" to expediente.porcentajeDano,
@@ -32,14 +36,13 @@ class FirebaseSyncManager(private val context: Context) {
             )
 
             try {
-                // Corrección aplicada: Se usa .await() para asegurar que Firebase confirme la subida antes de actualizar Room
                 db.collection("expedientes_nefroscan")
                     .add(datosFirebase)
                     .await()
 
                 localDao.marcarComoSincronizado(expediente.id)
                 contSincronizados++
-                Log.d("NefroScanSync", "Expediente ${expediente.id} subido y sincronizado con éxito.")
+                Log.d("NefroScanSync", "Expediente ${expediente.id} sincronizado exitosamente.")
             } catch (e: Exception) {
                 Log.e("NefroScanSync", "Error al sincronizar expediente ${expediente.id}: ${e.message}")
             }

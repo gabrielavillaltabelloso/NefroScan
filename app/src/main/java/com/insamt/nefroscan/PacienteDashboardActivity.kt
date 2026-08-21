@@ -47,11 +47,8 @@ class PacienteDashboardActivity : AppCompatActivity() {
 
         cargarDatosFicha()
 
-        // 🚀 ADAPTADO: Pasa el nombre del paciente para ver solo su historial
         btnHistorial.setOnClickListener {
-            val intent = Intent(this, HistorialActivity::class.java)
-            intent.putExtra("EXTRA_NOMBRE_PACIENTE", ultimoExpediente?.nombrePaciente ?: "")
-            startActivity(intent)
+            startActivity(Intent(this, HistorialActivity::class.java))
         }
 
         btnChatbot.setOnClickListener {
@@ -72,9 +69,10 @@ class PacienteDashboardActivity : AppCompatActivity() {
     private fun cargarDatosFicha() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
+                // Se utiliza la función suspend lista de tu DiagnosticDao
                 val expedientes = database.diagnosticDao().obtenerTodosLista()
                 if (expedientes.isNotEmpty()) {
-                    ultimoExpediente = expedientes.first()
+                    ultimoExpediente = expedientes.first() // Toma el último diagnóstico (timestamp DESC)
                     withContext(Dispatchers.Main) {
                         tvNombre.text = ultimoExpediente?.nombrePaciente ?: "Paciente Comunitario"
                         tvEdadSexo.text = "Edad: ${ultimoExpediente?.edadPaciente ?: "--"} años"
