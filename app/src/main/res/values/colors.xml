@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="nefro_deep_navy">#03071E</color>     <!-- Azul marino muy profundo y oscuro -->
+    <color name="nefro_dark_slate">#0F172A</color>    <!-- Fondo general de pantalla -->
+    <color name="nefro_card_bg">#1E293B</color>       <!-- Fondo de las tarjetas (Cards) -->
+    <color name="nefro_blue_intense">#0077b6</color>  <!-- Azul medio intenso -->
+    <color name="nefro_cyan_bright">#00b4d8</color>   <!-- Azul cian brillante -->
+    <color name="nefro_sky_light">#90e0ef</color>     <!-- Azul cielo claro -->
+    <color name="nefro_pastel_pale">#caf0f8</color>   <!-- Azul pastel muy pálido --><!-- Blanco puro -->
+    <color name="text_muted">#94A3B8</color>
 </resources>

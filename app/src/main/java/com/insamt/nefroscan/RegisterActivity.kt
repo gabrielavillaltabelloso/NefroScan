@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +19,8 @@ import kotlinx.coroutines.withContext
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var spRol: Spinner
+    // 1. CORRECCIÓN: Ahora coincide con el XML (AutoCompleteTextView en lugar de Spinner)
+    private lateinit var spRol: AutoCompleteTextView
     private lateinit var etNombre: EditText
     private lateinit var etIdUsuario: EditText
     private lateinit var etDetalle: EditText
@@ -39,21 +40,23 @@ class RegisterActivity : AppCompatActivity() {
         val btnGuardar = findViewById<Button>(R.id.btnGuardarRegistro)
         val btnVolver = findViewById<Button>(R.id.btnVolverLogin)
 
+        // Llenamos el menú desplegable con las opciones
         val roles = arrayOf("PACIENTE", "MEDICO", "PROMOTOR")
-        spRol.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
+        spRol.setAdapter(ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, roles))
 
         btnGuardar.setOnClickListener { registrarNuevoUsuario() }
         btnVolver.setOnClickListener { finish() }
     }
 
     private fun registrarNuevoUsuario() {
-        val rol = spRol.selectedItem.toString()
+        // 2. CORRECCIÓN: Se usa .text.toString() para leer el menú desplegable moderno
+        val rol = spRol.text.toString().trim()
         val nombre = etNombre.text.toString().trim()
         val idUsuario = etIdUsuario.text.toString().trim()
         val detalle = etDetalle.text.toString().trim()
         val pass = etContrasena.text.toString().trim()
 
-        if (nombre.isEmpty() || idUsuario.isEmpty() || pass.isEmpty()) {
+        if (nombre.isEmpty() || idUsuario.isEmpty() || pass.isEmpty() || rol.isEmpty()) {
             Toast.makeText(this, "Por favor llena todos los campos obligatorios", Toast.LENGTH_SHORT).show()
             return
         }
@@ -68,7 +71,7 @@ class RegisterActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // 1. Crear usuario en Firebase Authentication (Para que aparezca en la lista oficial)
+                // 1. Crear usuario en Firebase Authentication
                 val authResult = auth.createUserWithEmailAndPassword(emailParaAuth, pass).await()
                 val uidFirebase = authResult.user?.uid ?: idUsuario
 
@@ -97,7 +100,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@RegisterActivity, "¡Cuenta creada en Firebase Auth!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegisterActivity, "¡Cuenta creada con éxito!", Toast.LENGTH_SHORT).show()
 
                     val intent = when (rol) {
                         "MEDICO" -> Intent(this@RegisterActivity, MedicoDashboardActivity::class.java)

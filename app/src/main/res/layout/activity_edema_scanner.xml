@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A"
+    android:fillViewport="true"
+    tools:context=".EdemaScannerActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Encabezado -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Evaluación Clínica de Edema"
+            android:textColor="#38BDF8"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Detección de sobrecarga hídrica y riesgo renal"
+            android:textColor="#94A3B8"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Card 1: Video de Evaluación con Fóvea -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#1E293B"
+            android:layout_marginBottom="14dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1. Evidencia en Video (Prueba de Fóvea)"
+                    android:textColor="#38BDF8"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Presione firmemente durante 5 seg sobre el maléolo o tibia y grabe la recuperación del tejido."
+                    android:textColor="#94A3B8"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="10dp"/>
+
+                <!-- Contenedor de VideoView con Badge de Estado -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="#090D16"
+                    android:layout_marginBottom="10dp">
+
+                    <VideoView
+                        android:id="@+id/videoViewEdema"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true" />
+
+                    <TextView
+                        android:id="@+id/txtEstadoVideo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="Sin video adjunto"
+                        android:textColor="#64748B"
+                        android:textSize="13sp"/>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/btnGrabarVideo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Grabar Video"
+                        android:backgroundTint="#059669"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="4dp"/>
+
+                    <Button
+                        android:id="@+id/btnSubirVideo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Subir Galería"
+                        android:backgroundTint="#0284C7"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:layout_marginStart="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Card 2: Exploración Física (Fóvea y Simetría) -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#1E293B"
+            android:layout_marginBottom="14dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2. Signos Físicos de Retención"
+                    android:textColor="#38BDF8"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Grado de hundimiento (Signo de Godet):"
+                    android:textColor="#E2E8F0"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <Spinner
+                    android:id="@+id/spinnerFovea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#38BDF8"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Localización principal:"
+                    android:textColor="#E2E8F0"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <Spinner
+                    android:id="@+id/spinnerUbicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#38BDF8"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Switch Clínico: Bilateralidad -->
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchBilateral"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="¿Edema Bilateral? (Presente en ambos lados)"
+                    android:textColor="#F8FAFC"
+                    android:textSize="13sp"
+                    android:checked="true"
+                    app:thumbTint="#38BDF8"
+                    app:trackTint="#0284C7"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="* El edema renal es simétrico. Si es unilateral, puede sugerir trombosis venosa o causa local."
+                    android:textColor="#64748B"
+                    android:textSize="11sp"
+                    android:layout_marginBottom="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Aumento de peso en los últimos 2 días (kg):"
+                    android:textColor="#E2E8F0"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="4dp"/>
+
+                <EditText
+                    android:id="@+id/etAumentoPeso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ej. 1.5 kg (0 si no hubo aumento)"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#64748B"
+                    android:inputType="numberDecimal"
+                    android:backgroundTint="#38BDF8"
+                    android:padding="8dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Card 3: Parámetros Clínicos & Síntomas de Alarma -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#1E293B"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="3. Síntomas de Sobrecarga Hídrica"
+                    android:textColor="#38BDF8"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"/>
+
+                <!-- Disminución de Diuresis -->
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchDiuresis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Disminución notable del volumen de orina (24h)"
+                    android:textColor="#F8FAFC"
+                    android:textSize="13sp"
+                    app:thumbTint="#38BDF8"
+                    app:trackTint="#0284C7"
+                    android:layout_marginBottom="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Signos de Alarma Cardiopulmonar (Congestión):"
+                    android:textColor="#F59E0B"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp"/>
+
+                <CheckBox
+                    android:id="@+id/chkDisnea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Disnea (Falta de aire en reposo o al menor esfuerzo)"
+                    android:textColor="#E2E8F0"
+                    android:textSize="12sp"
+                    android:buttonTint="#EF4444"/>
+
+                <CheckBox
+                    android:id="@+id/chkOrtopnea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ortopnea (Necesidad de elevar cabecera para respirar)"
+                    android:textColor="#E2E8F0"
+                    android:textSize="12sp"
+                    android:buttonTint="#EF4444"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Botón de Acción Principal -->
+        <Button
+            android:id="@+id/btnCalcularEdema"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Analizar Riesgo Hídrico"
+            android:backgroundTint="#0284C7"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:padding="12dp"
+            android:layout_marginBottom="14dp"/>
+
+        <!-- Card de Resultado Detallado (Inicialmente oculta o en estado pendiente) -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardResultado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#1E293B"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/txtNivelRiesgo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Resultado: Pendiente de evaluación"
+                    android:textColor="#38BDF8"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/txtDetalleDiagnostico"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Complete el formulario y adjunte el video para generar el diagnóstico clínico."
+                    android:textColor="#94A3B8"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="3dp"
+                    android:layout_marginBottom="12dp"/>
+
+                <Button
+                    android:id="@+id/btnGuardarExpediente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Guardar en Expediente / Sincronizar"
+                    android:backgroundTint="#059669"
+                    android:textColor="#FFFFFF"
+                    android:visibility="gone"
+                    android:layout_marginBottom="8dp"/>
+
+                <Button
+                    android:id="@+id/btnNotificarMedico"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🚨 Enviar Alerta Inmediata al Nefrólogo"
+                    android:backgroundTint="#DC2626"
+                    android:textColor="#FFFFFF"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>
