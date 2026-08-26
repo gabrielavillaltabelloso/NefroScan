@@ -15,15 +15,16 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Títulos con mejor jerarquía -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:textColor="@color/nefro_cyan_bright"
-            android:textSize="28sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="4dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -32,13 +33,14 @@
             android:textColor="@color/nefro_sky_light"
             android:textSize="14sp"
             android:gravity="center"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="16dp"/>
 
         <!-- Card de Carga de Ecografía -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
             app:cardBackgroundColor="@color/nefro_card_bg"
             android:layout_marginBottom="16dp">
 
@@ -51,27 +53,31 @@
 
                 <ImageView
                     android:id="@+id/imgPreview"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"
                     android:src="@android:drawable/ic_menu_gallery"
                     android:contentDescription="Ecografia renal"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="12dp" />
 
                 <Button
                     android:id="@+id/btnSelect"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:text="@string/btn_load_ultrasound"
                     android:backgroundTint="@color/nefro_blue_intense"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:cornerRadius="8dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Card Anatomía 3D -->
+        <!-- Card Visor 3D Unificado -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
             app:cardBackgroundColor="@color/nefro_card_bg"
             android:layout_marginBottom="16dp">
 
@@ -79,23 +85,150 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
-                android:gravity="center">
+                android:padding="16dp">
 
                 <TextView
+                    android:id="@+id/lblTitleVisor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_anatomy_3d"
                     android:textColor="@color/nefro_cyan_bright"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="12dp"/>
 
-                <io.github.sceneview.SceneView
-                    android:id="@+id/anatomicalSceneView"
+                <!-- Contenedor del SceneView + controles organizados -->
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_height="320dp"
+                    android:layout_marginBottom="12dp">
+
+                    <io.github.sceneview.SceneView
+                        android:id="@+id/singleSceneView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <!-- PANEL IZQUIERDO: Zoom y Reset flotantes -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|start"
+                        android:layout_margin="12dp"
+                        android:orientation="vertical"
+                        android:background="#8003045e"
+                        android:padding="6dp"
+                        android:elevation="4dp">
+
+                        <ImageButton
+                            android:id="@+id/btnZoomIn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Acercar"
+                            android:src="@android:drawable/ic_menu_zoom"
+                            app:tint="@color/nefro_cyan_bright" />
+
+                        <ImageButton
+                            android:id="@+id/btnZoomOut"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Alejar"
+                            android:src="@android:drawable/ic_menu_zoom"
+                            app:tint="@color/nefro_cyan_bright" />
+
+                        <ImageButton
+                            android:id="@+id/btnResetView"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Restablecer vista"
+                            android:src="@android:drawable/ic_menu_rotate"
+                            app:tint="@color/nefro_cyan_bright" />
+                    </LinearLayout>
+
+                    <!-- PANEL DERECHO: Grid de movimiento direccional corregido -->
+                    <GridLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="12dp"
+                        android:background="#8003045e"
+                        android:padding="6dp"
+                        android:elevation="4dp"
+                        android:rowCount="3"
+                        android:columnCount="3">
+
+                        <!-- Fila superior -->
+                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+                        <ImageButton
+                            android:id="@+id/btnUp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@android:drawable/arrow_up_float"
+                            app:tint="@color/nefro_cyan_bright"
+                            android:contentDescription="Mover arriba"/>
+                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+
+                        <!-- Fila media (Usando rotaciones con android:rotation para izquierda y derecha de forma segura) -->
+                        <ImageButton
+                            android:id="@+id/btnLeft"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@android:drawable/arrow_up_float"
+                            android:rotation="270"
+                            app:tint="@color/nefro_cyan_bright"
+                            android:contentDescription="Mover izquierda"/>
+                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+                        <ImageButton
+                            android:id="@+id/btnRight"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@android:drawable/arrow_up_float"
+                            android:rotation="90"
+                            app:tint="@color/nefro_cyan_bright"
+                            android:contentDescription="Mover derecha"/>
+
+                        <!-- Fila inferior -->
+                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+                        <ImageButton
+                            android:id="@+id/btnDown"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@android:drawable/arrow_down_float"
+                            app:tint="@color/nefro_cyan_bright"
+                            android:contentDescription="Mover abajo"/>
+                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+                    </GridLayout>
+                </FrameLayout>
+
+                <!-- Botón para alternar el modo de visualización -->
+                <Button
+                    android:id="@+id/btnToggleViewMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Cambiar Modo: Gemelo Digital"
+                    android:backgroundTint="@color/nefro_blue_intense"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:cornerRadius="8dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:id="@+id/txtStatusTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_waiting"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
 
                 <TextView
                     android:id="@+id/lblOpacity"
@@ -111,7 +244,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="100"
-                    android:progress="0"/>
+                    android:progress="0"
+                    android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:id="@+id/lblLayers"
@@ -120,7 +254,6 @@
                     android:text="@string/lbl_layers"
                     android:textColor="@color/nefro_sky_light"
                     android:textSize="12sp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="4dp"/>
 
                 <SeekBar
@@ -132,52 +265,12 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Card Gemelo Digital -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardBackgroundColor="@color/nefro_card_bg"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_digital_twin"
-                    android:textColor="@color/nefro_cyan_bright"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp"/>
-
-                <io.github.sceneview.SceneView
-                    android:id="@+id/heatmapSceneView"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:id="@+id/txtStatusTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/status_waiting"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
         <!-- Card Proyección Temporal -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
             app:cardBackgroundColor="@color/nefro_card_bg"
             android:layout_marginBottom="16dp">
 
@@ -192,7 +285,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title_temporal_projection"
                     android:textColor="@color/nefro_cyan_bright"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp"/>
 
@@ -202,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/prediction_calculating"
                     android:textColor="@color/nefro_pastel_pale"
-                    android:textSize="14sp"/>
+                    android:textSize="13sp"/>
                 <SeekBar
                     android:id="@+id/sbWater"
                     android:layout_width="match_parent"
@@ -217,7 +310,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/prediction_calculating"
                     android:textColor="@color/nefro_pastel_pale"
-                    android:textSize="14sp"/>
+                    android:textSize="13sp"/>
                 <SeekBar
                     android:id="@+id/sbSodium"
                     android:layout_width="match_parent"
@@ -230,7 +323,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/nefro_blue_intense"
-                    android:layout_marginVertical="12dp"/>
+                    android:layout_marginVertical="8dp"/>
 
                 <TextView
                     android:id="@+id/txtPrediction5Years"
@@ -238,7 +331,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/prediction_calculating"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:layout_marginBottom="4dp"/>
 
                 <TextView
@@ -247,7 +340,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/prediction_calculating"
                     android:textColor="@color/white"
-                    android:textSize="15sp"/>
+                    android:textSize="14sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>

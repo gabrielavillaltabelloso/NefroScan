@@ -39,12 +39,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var imgPreview: ImageView
     private lateinit var txtStatusTitle: TextView
+    private lateinit var lblTitleVisor: TextView
+    private lateinit var btnToggleViewMode: Button
 
-    private lateinit var anatomicalSceneView: SceneView
-    private lateinit var heatmapSceneView: SceneView
-
-    private var anatomicalNode: ModelNode? = null
-    private var heatmapNode: ModelNode? = null
+    private lateinit var singleSceneView: SceneView
+    private var singleModelNode: ModelNode? = null
+    private var isHeatmapMode = false
 
     private lateinit var sbWater: SeekBar
     private lateinit var sbSodium: SeekBar
@@ -75,7 +75,6 @@ class MainActivity : AppCompatActivity() {
     private var pulseRunnable: Runnable? = null
 
     private var rotationAnimator: ValueAnimator? = null
-
     private val localClassifier: Classifier by lazy { Classifier(applicationContext) }
 
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -167,13 +166,13 @@ class MainActivity : AppCompatActivity() {
                             actualizarGemeloDigital()
 
                             applyHoloShaderTo3DModel(
-                                modelNode = anatomicalNode,
+                                modelNode = singleModelNode,
                                 pathologyLabel = result.pathologyLabel,
                                 damagePercentage = porcentajeAfeccion
                             )
 
                             if (result.pathologyLabel != "Riñón Normal" || porcentajeAfeccion > 2.0f) {
-                                start3DScanningAnimation(anatomicalNode)
+                                start3DScanningAnimation(singleModelNode)
                             } else {
                                 stop3DScanningAnimation()
                             }
@@ -225,6 +224,8 @@ class MainActivity : AppCompatActivity() {
 
         imgPreview = findViewById(R.id.imgPreview)
         txtStatusTitle = findViewById(R.id.txtStatusTitle)
+        lblTitleVisor = findViewById(R.id.lblTitleVisor)
+        btnToggleViewMode = findViewById(R.id.btnToggleViewMode)
         val btnSelect: Button = findViewById(R.id.btnSelect)
 
         sbWater = findViewById(R.id.sbWater)
@@ -238,11 +239,31 @@ class MainActivity : AppCompatActivity() {
         txtPrediction5Years = findViewById(R.id.txtPrediction5Years)
         txtPrediction10Years = findViewById(R.id.txtPrediction10Years)
 
-        anatomicalSceneView = findViewById(R.id.anatomicalSceneView)
-        heatmapSceneView = findViewById(R.id.heatmapSceneView)
+        singleSceneView = findViewById(R.id.singleSceneView)
 
         btnSelect.setOnClickListener {
             galleryLauncher.launch("image/*")
+        }
+
+        btnToggleViewMode.setOnClickListener {
+            isHeatmapMode = !isHeatmapMode
+            if (isHeatmapMode) {
+                lblTitleVisor.text = "Gemelo Digital (Mapa de Calor)"
+                btnToggleViewMode.text = "Cambiar a Modo: Anatomía 3D"
+                actualizarGemeloDigital()
+            } else {
+                lblTitleVisor.text = getString(R.string.title_anatomy_3d)
+                btnToggleViewMode.text = "Cambiar a Modo: Gemelo Digital (Calor)"
+                detenerPulsoSimple()
+                // Restaurar color base anatómico y escala por defecto
+                singleModelNode?.scale = Scale(1.0f, 1.0f, 1.0f)
+                singleModelNode?.modelInstance?.materialInstances?.forEach { material ->
+                    try {
+                        material.setParameter("baseColorFactor", 0.8f, 0.35f, 0.3f, 1.0f)
+                        material.setParameter("emissiveFactor", 0.0f, 0.0f, 0.0f)
+                    } catch (_: Exception) {}
+                }
+            }
         }
 
         configurarControlesSimulacion()
@@ -250,10 +271,9 @@ class MainActivity : AppCompatActivity() {
         lblOpacity.text = getString(R.string.lbl_opacity_default, sbOpacity.progress)
         lblLayers.text = getString(R.string.lbl_layers, getString(R.string.layer_all))
 
-        // Inicialización segura con retardo leve para liberar el hilo de renderizado principal
         lifecycleScope.launch {
             delay(300)
-            inicializarModelos3D()
+            inicializarModelo3DUnico()
         }
     }
 
@@ -271,7 +291,6 @@ class MainActivity : AppCompatActivity() {
             """.trimIndent()
 
             val bitmap = crearBitmapQR(datosQR)
-
             val dialogView = layoutInflater.inflate(R.layout.dialog_tarjeta_qr, null)
             val ivQR = dialogView.findViewById<ImageView>(R.id.ivQrCodeDialog)
             val tvInfo = dialogView.findViewById<TextView>(R.id.tvInfoQrDialog)
@@ -336,7 +355,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun start3DScanningAnimation(modelNode: ModelNode?) {
         stop3DScanningAnimation()
-
         rotationAnimator = ValueAnimator.ofFloat(0f, 360f).apply {
             duration = 8000
             repeatCount = ValueAnimator.INFINITE
@@ -369,47 +387,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun inicializarModelos3D() {
-        // Carga escalonada estricta para evitar bloqueos del motor gráfico (Filament)
+    private fun inicializarModelo3DUnico() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val anatomicalInstance = anatomicalSceneView.modelLoader.loadModelInstance("kidney_model.glb")
+                val modelInstance = singleSceneView.modelLoader.loadModelInstance("kidney_model.glb")
                 withContext(Dispatchers.Main) {
-                    if (anatomicalInstance != null) {
-                        val nodeAnat = ModelNode(
-                            modelInstance = anatomicalInstance,
+                    if (modelInstance != null) {
+                        val node = ModelNode(
+                            modelInstance = modelInstance,
                             scaleToUnits = 1.0f
                         ).apply {
                             position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
                             isRotationEditable = true
                             isScaleEditable = true
                         }
-                        anatomicalNode = nodeAnat
-                        anatomicalSceneView.addChildNode(nodeAnat)
-                    }
-                }
-
-                // Pequeña pausa para que el motor procese el primer modelo sin congelarse
-                delay(150)
-
-                val heatmapInstance = heatmapSceneView.modelLoader.loadModelInstance("kidney_model.glb")
-                withContext(Dispatchers.Main) {
-                    if (heatmapInstance != null) {
-                        val nodeHeat = ModelNode(
-                            modelInstance = heatmapInstance,
-                            scaleToUnits = 1.0f
-                        ).apply {
-                            position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
-                            isRotationEditable = true
-                            isScaleEditable = true
-                        }
-                        heatmapNode = nodeHeat
-                        heatmapSceneView.addChildNode(nodeHeat)
-                        actualizarGemeloDigital()
+                        singleModelNode = node
+                        singleSceneView.addChildNode(node)
                     }
                 }
             } catch (e: Exception) {
-                Log.e("NephroScan3D", "Error cargando modelos 3D: ${e.message}")
+                Log.e("NephroScan3D", "Error cargando modelo 3D único: ${e.message}")
             }
         }
     }
@@ -417,7 +414,7 @@ class MainActivity : AppCompatActivity() {
     private fun configurarControlesSimulacion() {
         val listenerHabitos = object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                actualizarGemeloDigital()
+                if (isHeatmapMode) actualizarGemeloDigital()
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
@@ -444,7 +441,8 @@ class MainActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 lblOpacity.text = getString(R.string.lbl_opacity_default, progress)
                 val alpha = 1.0f - (progress / 100.0f)
-                anatomicalNode?.modelInstance?.materialInstances?.forEach { material ->
+
+                singleModelNode?.modelInstance?.materialInstances?.forEach { material ->
                     try {
                         material.setParameter("baseColorFactor", 0.8f, 0.35f, 0.3f, alpha)
                     } catch (_: Exception) {}
@@ -456,7 +454,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun aplicarCapas(progress: Int) {
-        anatomicalNode?.modelInstance?.materialInstances?.forEach { material ->
+        singleModelNode?.modelInstance?.materialInstances?.forEach { material ->
             try {
                 val name = material.getName() ?: ""
                 val alpha = when {
@@ -504,15 +502,16 @@ class MainActivity : AppCompatActivity() {
         txtPrediction5Years.text = getString(R.string.prediction_5_years, egfr5Anios)
         txtPrediction10Years.text = getString(R.string.prediction_10_years, egfr10Anios)
 
-        heatmapNode?.let { node ->
+        singleModelNode?.let { node ->
             val materials = node.modelInstance?.materialInstances ?: return
 
             val factorHabitos = ((1.5f - litrosAgua).coerceAtLeast(0f) / 1.5f) + (if (sodioAlto) 0.3f else 0.0f)
             val severidadTotal = (nivelDanoIA + factorHabitos).coerceIn(0.0f, 1.0f)
 
-            val deformacionX = 1.0f - (severidadTotal * 0.20f)
-            val deformacionY = 1.0f - (severidadTotal * 0.15f)
-            val deformacionZ = 1.0f - (severidadTotal * 0.10f)
+            // Deformaciones significativamente más prominentes y visibles en la presentación
+            val deformacionX = 1.0f - (severidadTotal * 0.60f)
+            val deformacionY = 1.0f - (severidadTotal * 0.45f)
+            val deformacionZ = 1.0f - (severidadTotal * 0.40f)
             node.scale = Scale(deformacionX, deformacionY, deformacionZ)
 
             materials.forEach { material ->
@@ -536,9 +535,7 @@ class MainActivity : AppCompatActivity() {
                                 else -> Triple(1.0f, 0.4f, 0.0f)
                             }
                         }
-                        else -> {
-                            Triple(0.0f, 0.3f, 0.8f)
-                        }
+                        else -> Triple(0.0f, 0.3f, 0.8f)
                     }
 
                     material.setParameter("baseColorFactor", r, g, b, 1.0f)
@@ -546,9 +543,9 @@ class MainActivity : AppCompatActivity() {
                 } catch (_: Exception) {}
             }
 
-            if (severidadTotal > 0.2f && !isPulseActive) {
+            if (isHeatmapMode && severidadTotal > 0.2f && !isPulseActive) {
                 iniciarPulsoSimple(severidadTotal)
-            } else if (severidadTotal <= 0.2f) {
+            } else if (!isHeatmapMode || severidadTotal <= 0.2f) {
                 detenerPulsoSimple()
             }
         }
@@ -559,13 +556,14 @@ class MainActivity : AppCompatActivity() {
         isPulseActive = true
         val runnable = object : Runnable {
             override fun run() {
+                if (!isHeatmapMode) return
                 val factor = 0.5f + Math.sin((System.currentTimeMillis() / (200f / severidad)).toDouble()).toFloat() * 0.5f
-                heatmapNode?.modelInstance?.materialInstances?.forEach { material ->
+                singleModelNode?.modelInstance?.materialInstances?.forEach { material ->
                     try {
                         material.setParameter("emissiveFactor", 0.5f * factor, 0.2f * factor, 0.1f * factor)
                     } catch (_: Exception) {}
                 }
-                pulseHandler.postDelayed(this, (100 / severidad).toLong())
+                pulseHandler.postDelayed(this, (120 / severidad).toLong())
             }
         }
         pulseRunnable = runnable
@@ -576,11 +574,6 @@ class MainActivity : AppCompatActivity() {
         pulseRunnable?.let { pulseHandler.removeCallbacks(it) }
         pulseRunnable = null
         isPulseActive = false
-        heatmapNode?.modelInstance?.materialInstances?.forEach { material ->
-            try {
-                material.setParameter("emissiveFactor", 0.2f, 0.2f, 0.2f)
-            } catch (_: Exception) {}
-        }
     }
 
     private fun uriToBitmap(uri: Uri): Bitmap? {
@@ -620,8 +613,7 @@ class MainActivity : AppCompatActivity() {
         detenerPulsoSimple()
         stop3DScanningAnimation()
         try {
-            anatomicalNode?.let { anatomicalSceneView.removeChildNode(it) }
-            heatmapNode?.let { heatmapSceneView.removeChildNode(it) }
+            singleModelNode?.let { singleSceneView.removeChildNode(it) }
         } catch (e: Exception) {
             e.printStackTrace()
         }
