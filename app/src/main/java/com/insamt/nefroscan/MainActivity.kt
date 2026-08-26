@@ -31,6 +31,7 @@ import io.github.sceneview.math.Rotation
 import io.github.sceneview.math.Scale
 import io.github.sceneview.node.ModelNode
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -249,8 +250,9 @@ class MainActivity : AppCompatActivity() {
         lblOpacity.text = getString(R.string.lbl_opacity_default, sbOpacity.progress)
         lblLayers.text = getString(R.string.lbl_layers, getString(R.string.layer_all))
 
-        // Carga segura y secuencial de modelos para evitar cuelgues de memoria gráfica
-        window.decorView.post {
+        // Inicialización segura con retardo leve para liberar el hilo de renderizado principal
+        lifecycleScope.launch {
+            delay(300)
             inicializarModelos3D()
         }
     }
@@ -368,12 +370,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inicializarModelos3D() {
-        // Carga secuenciada en hilo IO para evitar cuelgues del hilo principal (UI Thread)
+        // Carga escalonada estricta para evitar bloqueos del motor gráfico (Filament)
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val anatomicalInstance = anatomicalSceneView.modelLoader.loadModelInstance("kidney_model.glb")
-                val heatmapInstance = heatmapSceneView.modelLoader.loadModelInstance("kidney_model.glb")
-
                 withContext(Dispatchers.Main) {
                     if (anatomicalInstance != null) {
                         val nodeAnat = ModelNode(
@@ -387,7 +387,13 @@ class MainActivity : AppCompatActivity() {
                         anatomicalNode = nodeAnat
                         anatomicalSceneView.addChildNode(nodeAnat)
                     }
+                }
 
+                // Pequeña pausa para que el motor procese el primer modelo sin congelarse
+                delay(150)
+
+                val heatmapInstance = heatmapSceneView.modelLoader.loadModelInstance("kidney_model.glb")
+                withContext(Dispatchers.Main) {
                     if (heatmapInstance != null) {
                         val nodeHeat = ModelNode(
                             modelInstance = heatmapInstance,
