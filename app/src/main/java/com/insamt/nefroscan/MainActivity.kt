@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
     private var nivelDanoIA: Float = 0.0f
     private var ultimoResultadoIA: Classifier.DiagnosticResult? = null
 
-    // Metadatos de auditoría y segregación de usuario
     private var idPacienteActual: String = "paciente@nefroscan.sv"
     private var nombrePacienteActual: String = "Paciente Comunitario"
     private var edadPacienteActual: Int = 45
@@ -84,7 +83,6 @@ class MainActivity : AppCompatActivity() {
             if (bitmap != null) {
                 imgPreview.setImageBitmap(bitmap)
 
-                // 1. Evaluación de Calidad de Imagen Previa a la Inferencia (Filtro Anti-Artefactos)
                 val resultadoCalidad = ImageQualityEvaluator.evaluarCalidadEcografia(bitmap)
                 if (!resultadoCalidad.isApta) {
                     AlertDialog.Builder(this)
@@ -98,16 +96,28 @@ class MainActivity : AppCompatActivity() {
 
                 txtStatusTitle.text = getString(R.string.status_analyzing)
 
-                // 2. Procesamiento IA en hilo secundario IO si pasa el filtro de calidad
                 lifecycleScope.launch(Dispatchers.IO) {
                     try {
                         val result = localClassifier.processImage(bitmap)
+                        if (result == null) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(this@MainActivity, "Error al ejecutar el modelo.", Toast.LENGTH_SHORT).show()
+                            }
+                            return@launch
+                        }
+
                         ultimoResultadoIA = result
 
+                        val porcentajeAfeccion = when (result.pathologyLabel) {
+                            "Riñón Normal" -> 0f
+                            "Anomalía Física (Litiasis / Quiste)" -> result.anomalyPercentage
+                            else -> result.nephropathyPercentage
+                        }
+
                         val severidadTexto = when {
-                            result.damagePercentage < 10f -> "Leve"
-                            result.damagePercentage < 30f -> "Moderada"
-                            else -> "Severa"
+                            porcentajeAfeccion < 15f -> "Normal/Leve"
+                            porcentajeAfeccion < 45f -> "Moderada"
+                            else -> "Severa/Crítica"
                         }
 
                         val litrosAgua = withContext(Dispatchers.Main) { sbWater.progress / 10.0f }
@@ -122,13 +132,12 @@ class MainActivity : AppCompatActivity() {
                         var egfrBase = 90
                         if (litrosAgua < 1.0f) egfrBase -= 20
                         if (sodioProgreso == 2) egfrBase -= 15
-                        val danoTemp = (result.damagePercentage / 100f).coerceIn(0.0f, 1.0f)
+                        val danoTemp = (porcentajeAfeccion / 100f).coerceIn(0.0f, 1.0f)
                         egfrBase = (egfrBase - (danoTemp * 45f)).toInt().coerceIn(15, 120)
 
                         val egfr5Anios = (egfrBase * 0.9).toInt().coerceIn(10, 150)
                         val egfr10Anios = (egfrBase * 0.75).toInt().coerceIn(10, 150)
 
-                        // Creación del expediente clínico con trazabilidad por usuario
                         val expediente = DiagnosticEntity(
                             idPaciente = idPacienteActual,
                             idRegistrador = idRegistradorActual,
@@ -136,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                             idMedicoAsignado = idMedicoAsignadoActual,
                             nombrePaciente = nombrePacienteActual,
                             edadPaciente = edadPacienteActual,
-                            porcentajeDano = result.damagePercentage.toDouble(),
+                            porcentajeDano = porcentajeAfeccion.toDouble(),
                             patologiaDetectada = result.pathologyLabel,
                             nivelSeveridad = severidadTexto,
                             litrosAguaDiarios = litrosAgua.toDouble(),
@@ -150,8 +159,8 @@ class MainActivity : AppCompatActivity() {
                         database.diagnosticDao().insertarDiagnostico(expediente)
 
                         withContext(Dispatchers.Main) {
-                            txtStatusTitle.text = "Patología: ${result.pathologyLabel} (${"%.1f".format(result.confidence * 100)}%)\n" +
-                                    "Área Afectada: ${"%.1f".format(result.damagePercentage)}% ($severidadTexto)"
+                            txtStatusTitle.text = "Patología: ${result.pathologyLabel} (${"%.1f".format(result.confidence)}%)\n" +
+                                    "Afección: ${"%.1f".format(porcentajeAfeccion)}% ($severidadTexto)"
 
                             nivelDanoIA = danoTemp
                             actualizarGemeloDigital()
@@ -159,10 +168,10 @@ class MainActivity : AppCompatActivity() {
                             applyHoloShaderTo3DModel(
                                 modelNode = anatomicalNode,
                                 pathologyLabel = result.pathologyLabel,
-                                damagePercentage = result.damagePercentage
+                                damagePercentage = porcentajeAfeccion
                             )
 
-                            if (result.pathologyLabel != "Normal" || result.damagePercentage > 2.0f) {
+                            if (result.pathologyLabel != "Riñón Normal" || porcentajeAfeccion > 2.0f) {
                                 start3DScanningAnimation(anatomicalNode)
                             } else {
                                 stop3DScanningAnimation()
@@ -172,7 +181,7 @@ class MainActivity : AppCompatActivity() {
                             intentarSincronizacionFirebase()
 
                             if (!isFinishing && !isDestroyed) {
-                                mostrarPasaporteQR(nombrePacienteActual, result, severidadTexto)
+                                mostrarPasaporteQR(nombrePacienteActual, result, severidadTexto, porcentajeAfeccion)
                             }
                         }
                     } catch (e: Exception) {
@@ -194,14 +203,12 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // 1. Obtener la sesión activa del profesional
         val prefs = getSharedPreferences("SesionNefroScan", Context.MODE_PRIVATE)
         idRegistradorActual = intent?.getStringExtra("EXTRA_REGISTRADOR_ID")
             ?: prefs.getString("ID_USUARIO", "medico@nefroscan.sv") ?: "medico@nefroscan.sv"
         rolRegistradorActual = intent?.getStringExtra("EXTRA_ROL")
             ?: prefs.getString("ROL_USUARIO", "MEDICO") ?: "MEDICO"
 
-        // 2. Obtener datos del paciente evaluado
         idPacienteActual = intent?.getStringExtra("EXTRA_PACIENTE_ID")
             ?: intent?.getStringExtra("EXTRA_DUI")
                     ?: "paciente@nefroscan.sv"
@@ -218,7 +225,6 @@ class MainActivity : AppCompatActivity() {
         imgPreview = findViewById(R.id.imgPreview)
         txtStatusTitle = findViewById(R.id.txtStatusTitle)
         val btnSelect: Button = findViewById(R.id.btnSelect)
-        val btnProyectarAR: Button = findViewById(R.id.btnProyectarAR)
 
         sbWater = findViewById(R.id.sbWater)
         sbSodium = findViewById(R.id.sbSodium)
@@ -238,28 +244,18 @@ class MainActivity : AppCompatActivity() {
             galleryLauncher.launch("image/*")
         }
 
-        btnProyectarAR.setOnClickListener {
-            Toast.makeText(this, "Modo AR Activo: Apunte a una superficie plana.", Toast.LENGTH_LONG).show()
-            anatomicalNode?.let { node ->
-                node.isPositionEditable = true
-                node.isScaleEditable = true
-                Toast.makeText(this, "¡Riñón holográfico proyectado en el espacio real!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
         configurarControlesSimulacion()
 
         lblOpacity.text = getString(R.string.lbl_opacity_default, sbOpacity.progress)
         lblLayers.text = getString(R.string.lbl_layers, getString(R.string.layer_all))
 
-        anatomicalSceneView.post {
-            heatmapSceneView.post {
-                inicializarModelos3D()
-            }
+        // Carga segura y secuencial de modelos para evitar cuelgues de memoria gráfica
+        window.decorView.post {
+            inicializarModelos3D()
         }
     }
 
-    private fun mostrarPasaporteQR(nombre: String, resultado: Classifier.DiagnosticResult, severidad: String) {
+    private fun mostrarPasaporteQR(nombre: String, resultado: Classifier.DiagnosticResult, severidad: String, porcentajeAfeccion: Float) {
         try {
             val datosQR = """
                 --- PASAPORTE NEFROSCAN ---
@@ -267,8 +263,8 @@ class MainActivity : AppCompatActivity() {
                 Paciente: $nombre
                 Diagnóstico IA: ${resultado.pathologyLabel}
                 Severidad: $severidad
-                Confianza: ${"%.1f".format(resultado.confidence * 100)}%
-                Daño Tisular: ${"%.1f".format(resultado.damagePercentage)}%
+                Confianza: ${"%.1f".format(resultado.confidence)}%
+                Nivel Afección: ${"%.1f".format(porcentajeAfeccion)}%
                 Registrador: $rolRegistradorActual ($idRegistradorActual)
             """.trimIndent()
 
@@ -311,7 +307,7 @@ class MainActivity : AppCompatActivity() {
         damagePercentage: Float
     ) {
         modelNode?.let { node ->
-            val isLesionDetected = pathologyLabel != "Normal" || damagePercentage > 2.0f
+            val isLesionDetected = pathologyLabel != "Riñón Normal" || damagePercentage > 2.0f
 
             node.modelInstance?.materialInstances?.forEach { material ->
                 try {
@@ -372,70 +368,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inicializarModelos3D() {
-        lifecycleScope.launch {
+        // Carga secuenciada en hilo IO para evitar cuelgues del hilo principal (UI Thread)
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val modelInstance = anatomicalSceneView.modelLoader.loadModelInstance("kidney_model.glb")
-                if (modelInstance != null) {
-                    val nodeAnat = ModelNode(
-                        modelInstance = modelInstance,
-                        scaleToUnits = 1.0f
-                    ).apply {
-                        position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
-                        isRotationEditable = true
-                        isScaleEditable = true
+                val anatomicalInstance = anatomicalSceneView.modelLoader.loadModelInstance("kidney_model.glb")
+                val heatmapInstance = heatmapSceneView.modelLoader.loadModelInstance("kidney_model.glb")
+
+                withContext(Dispatchers.Main) {
+                    if (anatomicalInstance != null) {
+                        val nodeAnat = ModelNode(
+                            modelInstance = anatomicalInstance,
+                            scaleToUnits = 1.0f
+                        ).apply {
+                            position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
+                            isRotationEditable = true
+                            isScaleEditable = true
+                        }
+                        anatomicalNode = nodeAnat
+                        anatomicalSceneView.addChildNode(nodeAnat)
                     }
 
-                    nodeAnat.modelInstance?.materialInstances?.forEach { material ->
-                        try {
-                            val name = material.getName() ?: ""
-                            when {
-                                name.contains("cortex", true) -> {
-                                    material.setParameter("baseColorFactor", 0.8f, 0.35f, 0.3f, 1.0f)
-                                    material.setParameter("emissiveFactor", 0.2f, 0.1f, 0.05f)
-                                }
-                                name.contains("medulla", true) -> {
-                                    material.setParameter("baseColorFactor", 0.9f, 0.6f, 0.4f, 1.0f)
-                                    material.setParameter("emissiveFactor", 0.1f, 0.05f, 0.0f)
-                                }
-                                name.contains("pelvis", true) -> {
-                                    material.setParameter("baseColorFactor", 1.0f, 0.85f, 0.6f, 1.0f)
-                                    material.setParameter("emissiveFactor", 0.0f, 0.0f, 0.0f)
-                                }
-                                else -> {
-                                    material.setParameter("baseColorFactor", 0.9f, 0.2f, 0.2f, 1.0f)
-                                    material.setParameter("emissiveFactor", 0.3f, 0.1f, 0.1f)
-                                }
-                            }
-                        } catch (_: Exception) { }
+                    if (heatmapInstance != null) {
+                        val nodeHeat = ModelNode(
+                            modelInstance = heatmapInstance,
+                            scaleToUnits = 1.0f
+                        ).apply {
+                            position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
+                            isRotationEditable = true
+                            isScaleEditable = true
+                        }
+                        heatmapNode = nodeHeat
+                        heatmapSceneView.addChildNode(nodeHeat)
+                        actualizarGemeloDigital()
                     }
-
-                    anatomicalNode = nodeAnat
-                    anatomicalSceneView.addChildNode(nodeAnat)
                 }
             } catch (e: Exception) {
-                Log.e("NephroScan3D", "Error cargando modelo anatómico: ${e.message}")
-            }
-        }
-
-        lifecycleScope.launch {
-            try {
-                val modelInstance = heatmapSceneView.modelLoader.loadModelInstance("kidney_model.glb")
-                if (modelInstance != null) {
-                    val nodeHeat = ModelNode(
-                        modelInstance = modelInstance,
-                        scaleToUnits = 1.0f
-                    ).apply {
-                        position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
-                        isRotationEditable = true
-                        isScaleEditable = true
-                    }
-
-                    heatmapNode = nodeHeat
-                    heatmapSceneView.addChildNode(nodeHeat)
-                    actualizarGemeloDigital()
-                }
-            } catch (e: Exception) {
-                Log.e("NephroScan3D", "Error cargando modelo de calor: ${e.message}")
+                Log.e("NephroScan3D", "Error cargando modelos 3D: ${e.message}")
             }
         }
     }
@@ -543,19 +511,32 @@ class MainActivity : AppCompatActivity() {
 
             materials.forEach { material ->
                 try {
+                    val name = material.getName() ?: ""
                     val t = severidadTotal
+
                     val (r, g, b) = when {
-                        t < 0.5f -> {
-                            val localT = t / 0.5f
-                            Triple(localT, 1.0f, 0.0f)
+                        name.contains("cortex", true) -> {
+                            when {
+                                t < 0.3f -> Triple(0.0f, 0.7f, 1.0f)
+                                t < 0.6f -> Triple(0.2f, 0.9f, 0.2f)
+                                t < 0.85f -> Triple(1.0f, 0.8f, 0.0f)
+                                else -> Triple(1.0f, 0.1f, 0.1f)
+                            }
+                        }
+                        name.contains("medulla", true) -> {
+                            when {
+                                t < 0.4f -> Triple(0.0f, 0.5f, 0.9f)
+                                t < 0.7f -> Triple(0.8f, 0.9f, 0.1f)
+                                else -> Triple(1.0f, 0.4f, 0.0f)
+                            }
                         }
                         else -> {
-                            val localT = (t - 0.5f) / 0.5f
-                            Triple(1.0f, 1.0f - localT, 0.0f)
+                            Triple(0.0f, 0.3f, 0.8f)
                         }
                     }
+
                     material.setParameter("baseColorFactor", r, g, b, 1.0f)
-                    material.setParameter("emissiveFactor", r * 0.4f, g * 0.4f, b * 0.4f)
+                    material.setParameter("emissiveFactor", r * 0.5f, g * 0.3f, b * 0.2f)
                 } catch (_: Exception) {}
             }
 
@@ -575,7 +556,7 @@ class MainActivity : AppCompatActivity() {
                 val factor = 0.5f + Math.sin((System.currentTimeMillis() / (200f / severidad)).toDouble()).toFloat() * 0.5f
                 heatmapNode?.modelInstance?.materialInstances?.forEach { material ->
                     try {
-                        material.setParameter("emissiveFactor", 0.5f * factor, 0.5f * factor, 0.5f * factor)
+                        material.setParameter("emissiveFactor", 0.5f * factor, 0.2f * factor, 0.1f * factor)
                     } catch (_: Exception) {}
                 }
                 pulseHandler.postDelayed(this, (100 / severidad).toLong())
@@ -591,7 +572,7 @@ class MainActivity : AppCompatActivity() {
         isPulseActive = false
         heatmapNode?.modelInstance?.materialInstances?.forEach { material ->
             try {
-                material.setParameter("emissiveFactor", 0.5f, 0.5f, 0.5f)
+                material.setParameter("emissiveFactor", 0.2f, 0.2f, 0.2f)
             } catch (_: Exception) {}
         }
     }

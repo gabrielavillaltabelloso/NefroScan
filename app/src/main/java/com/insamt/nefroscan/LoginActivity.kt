@@ -29,9 +29,33 @@ class LoginActivity : AppCompatActivity() {
         val btnIngresar = findViewById<Button>(R.id.btnIngresar)
         val btnCrearCuenta = findViewById<Button>(R.id.btnSelectorRoles)
 
+        // Botones de Modo Demo agregados en el layout
+        val btnDemoMedico = findViewById<Button>(R.id.btnDemoMedico)
+        val btnDemoPromotor = findViewById<Button>(R.id.btnDemoPromotor)
+        val btnDemoPaciente = findViewById<Button>(R.id.btnDemoPaciente)
+
         btnCrearCuenta.text = "Crear Cuenta Nueva"
         btnCrearCuenta.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
+        // Lógica de Autocompletado para el Modo Demo
+        btnDemoMedico.setOnClickListener {
+            etUsuario.setText("binnivillalta@gmail.com")
+            etContrasena.setText("200826")
+            Toast.makeText(this, "Demo Médico cargado", Toast.LENGTH_SHORT).show()
+        }
+
+        btnDemoPromotor.setOnClickListener {
+            etUsuario.setText("promotor_demo@nefroscan.sv")
+            etContrasena.setText("123456")
+            Toast.makeText(this, "Demo Promotor cargado", Toast.LENGTH_SHORT).show()
+        }
+
+        btnDemoPaciente.setOnClickListener {
+            etUsuario.setText("paciente_demo@nefroscan.sv")
+            etContrasena.setText("123456")
+            Toast.makeText(this, "Demo Paciente cargado", Toast.LENGTH_SHORT).show()
         }
 
         btnIngresar.setOnClickListener {

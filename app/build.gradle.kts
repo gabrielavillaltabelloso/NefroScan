@@ -4,13 +4,16 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinKapt)
 }
+
 android {
     namespace = "com.insamt.nefroscan"
     compileSdk = 34
+
     @Suppress("DEPRECATION")
     aaptOptions {
         noCompress("tflite")
     }
+
     defaultConfig {
         applicationId = "com.insamt.nefroscan"
         minSdk = 24
@@ -19,6 +22,7 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,16 +32,19 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlin {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
 }
+
 dependencies {
     // Librerías Base
     implementation(libs.androidx.core.ktx)
@@ -74,6 +81,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
 
     // Corrutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
@@ -85,6 +93,4 @@ dependencies {
 
     // Gráficos interactivos
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-    implementation("com.google.firebase:firebase-auth-ktx")
 }

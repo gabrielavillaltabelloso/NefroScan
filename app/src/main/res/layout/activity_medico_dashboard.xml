@@ -44,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sistema activo · Sincronizado"
+                    android:text="Sistema activo � Sincronizado"
                     android:textColor="#64748B"
                     android:textSize="11sp"
                     android:letterSpacing="0.03" />
@@ -163,7 +163,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="NefroScan AI · Centro de Mando Nefrológico"
+                            android:text="NefroScan AI � Centro de Mando Nefrológico"
                             android:textColor="#64748B"
                             android:textSize="12sp"
                             android:letterSpacing="0.03"
@@ -190,7 +190,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Hospital Central · Nefrología"
+                                android:text="Hospital Central � Nefrología"
                                 android:textColor="#0077B6"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
@@ -619,7 +619,7 @@
             android:textStyle="bold"
             app:backgroundTint="#F59E0B"
             app:cornerRadius="12dp"
-            app:icon="@android:drawable/ic_menu_calculator"
+            app:icon="@android:drawable/ic_menu_edit"
             app:iconGravity="textStart"
             android:layout_marginBottom="10dp" />
 
