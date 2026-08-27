@@ -147,6 +147,34 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- 17. Rutas y Citas de Control ERC -->
+        <activity
+            android:name=".AgendaVisitasActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 18. Historial de Fichas Comunitarias -->
+        <activity
+            android:name=".HistorialFichasActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 19. Casos Derivados y Trazabilidad Médica -->
+        <activity
+            android:name=".DerivacionesMedicasActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 20. Guías y Educación Comunitaria -->
+        <activity
+            android:name=".GuiasEducacionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

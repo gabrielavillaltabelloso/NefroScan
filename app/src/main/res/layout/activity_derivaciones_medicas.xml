@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0F172A"
+    android:fitsSystemWindows="true"
+    android:padding="16dp"
+    tools:ignore="HardcodedText,VisualLintTextFieldSize,VisualLintButtonSize">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Casos Derivados y Trazabilidad Médica"
+        android:textColor="#34D399"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Formulario de derivación -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#1E293B"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp">
+
+        <EditText
+            android:id="@+id/etPacienteDerivacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="Nombre del Paciente"
+            android:inputType="textPersonName"
+            android:importantForAutofill="no"
+            android:textColorHint="#94A3B8"
+            android:textColor="#FFFFFF" />
+
+        <EditText
+            android:id="@+id/etMotivoDerivacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="Motivo (ej. PA > 160/100, Proteinuria +++)"
+            android:inputType="text"
+            android:importantForAutofill="no"
+            android:textColorHint="#94A3B8"
+            android:textColor="#FFFFFF" />
+
+        <EditText
+            android:id="@+id/etCentroSalud"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="Centro de Salud / Unidad Comunitaria"
+            android:inputType="textPostalAddress"
+            android:importantForAutofill="no"
+            android:textColorHint="#94A3B8"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnCrearDerivacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="Generar Derivación Clínica"
+            android:backgroundTint="#059669"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trazabilidad de Pacientes Remitidos"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:contentDescription="Lista de derivaciones activas">
+
+        <LinearLayout
+            android:id="@+id/layoutContenedorDerivaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+</LinearLayout>

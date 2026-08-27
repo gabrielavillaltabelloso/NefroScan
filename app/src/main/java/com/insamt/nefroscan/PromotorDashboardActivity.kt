@@ -25,7 +25,7 @@ class PromotorDashboardActivity : AppCompatActivity() {
     }
 
     private fun configurarVistas() {
-        // Enlace de vistas con el layout actualizado
+        // Enlace de vistas con el layout
         val btnNuevaVisita = findViewById<Button>(R.id.btnNuevaVisita)
         val btnCalendarioVisitas = findViewById<Button>(R.id.btnCalendarioVisitas)
         val btnHistorialFichas = findViewById<Button>(R.id.btnHistorialFichas)
@@ -36,7 +36,7 @@ class PromotorDashboardActivity : AppCompatActivity() {
         val btnEstadoSincronizacion = findViewById<Button>(R.id.btnEstadoSincronizacion)
         val btnVolverRoles = findViewById<Button>(R.id.btnVolverRoles)
 
-        // 1. Nueva Visita / Tamizaje y Alertas de Riesgo (CKD)
+        // 1. Tamizaje y Alertas de Riesgo (CKD)
         btnNuevaVisita.setOnClickListener {
             val intent = Intent(this, PromotorActivity::class.java).apply {
                 putExtra("EXTRA_ROL", "PROMOTOR")
@@ -46,29 +46,29 @@ class PromotorDashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 2. Rutas y Citas de Control ERC (Calendario de visitas)
+        // 2. Rutas y Citas de Control ERC
         btnCalendarioVisitas.setOnClickListener {
             abrirActivitySegura("AgendaVisitasActivity")
         }
 
-        // 3. Historial de Fichas Comunitarias (Consultas Room locales)
+        // 3. Historial de Fichas Comunitarias
         btnHistorialFichas.setOnClickListener {
             abrirActivitySegura("HistorialFichasActivity")
         }
 
-        // 4. Módulo: Comunicación y Derivaciones Médicas
+        // 4. Casos Derivados y Trazabilidad Médica
         btnDerivacionesMedicas.setOnClickListener {
             abrirActivitySegura("DerivacionesMedicasActivity")
         }
 
-        // 5. Chatbot de Consulta Rápida / Chat del Promotor (Preguntas Cerradas de Campo)
+        // 5. Chat de Consulta Rápida
         btnChatConsultaRapida.setOnClickListener {
             abrirActivitySegura("ChatPromotor")
         }
 
-        // 6. Educación Comunitaria y Recursos Offline
+        // 6. Guías y Educación Comunitaria
         btnRecursosEducativos.setOnClickListener {
-            abrirActivitySegura("RecursosEducativosActivity")
+            abrirActivitySegura("GuiasEducacionActivity")
         }
 
         // 7. Radar Epidemiológico Nacional
@@ -85,16 +85,12 @@ class PromotorDashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 9. Regresar al selector de roles
+        // 9. Cambiar de Rol
         btnVolverRoles.setOnClickListener {
             finish()
         }
     }
 
-    /**
-     * Permite abrir Activities pasando la trazabilidad de la sesión de forma segura,
-     * evitando caídas de la app (Crash) si la clase aún no ha sido creada en el paquete.
-     */
     private fun abrirActivitySegura(nombreClase: String) {
         try {
             val claseDestino = Class.forName("com.insamt.nefroscan.$nombreClase")
