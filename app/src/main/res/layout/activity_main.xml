@@ -5,8 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nefro_dark_slate"
+    android:background="#F8FAFC"
     android:fillViewport="true"
+    android:scrollbars="none"
+    android:overScrollMode="ifContentScrolls"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -20,28 +22,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textColor="@color/nefro_cyan_bright"
-            android:textSize="26sp"
+            android:textColor="#03045E"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginBottom="4dp"/>
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/subtitle_simulation"
-            android:textColor="@color/nefro_sky_light"
+            android:textColor="#0077B6"
             android:textSize="14sp"
             android:gravity="center"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp" />
 
         <!-- Card de Carga de Ecografía -->
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/nefro_card_bg"
+            app:cardBackgroundColor="#FFFFFF"
             android:layout_marginBottom="16dp">
 
             <LinearLayout
@@ -53,32 +55,37 @@
 
                 <ImageView
                     android:id="@+id/imgPreview"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
                     android:scaleType="centerCrop"
                     android:src="@android:drawable/ic_menu_gallery"
-                    android:contentDescription="Ecografia renal"
-                    android:layout_marginBottom="12dp" />
+                    android:contentDescription="Ecografía renal"
+                    android:layout_marginBottom="12dp"
+                    app:tint="#0077B6" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSelect"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="52dp"
                     android:text="@string/btn_load_ultrasound"
-                    android:backgroundTint="@color/nefro_blue_intense"
-                    android:textColor="@color/white"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
                     android:textStyle="bold"
-                    app:cornerRadius="8dp" />
+                    app:backgroundTint="#0077B6"
+                    app:cornerRadius="12dp"
+                    app:icon="@android:drawable/ic_menu_upload"
+                    app:iconTint="#FFFFFF"
+                    app:iconGravity="textStart" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Card Visor 3D Unificado -->
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/nefro_card_bg"
+            app:cardBackgroundColor="#FFFFFF"
             android:layout_marginBottom="16dp">
 
             <LinearLayout
@@ -92,16 +99,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_anatomy_3d"
-                    android:textColor="@color/nefro_cyan_bright"
-                    android:textSize="15sp"
+                    android:textColor="#03045E"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="12dp"/>
+                    android:layout_marginBottom="12dp" />
 
                 <!-- Contenedor del SceneView + controles organizados -->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="320dp"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="12dp"
+                    android:background="#0F172A">
 
                     <io.github.sceneview.SceneView
                         android:id="@+id/singleSceneView"
@@ -115,38 +123,38 @@
                         android:layout_gravity="top|start"
                         android:layout_margin="12dp"
                         android:orientation="vertical"
-                        android:background="#8003045e"
+                        android:background="#8003045E"
                         android:padding="6dp"
                         android:elevation="4dp">
 
                         <ImageButton
                             android:id="@+id/btnZoomIn"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:layout_marginBottom="4dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:contentDescription="Acercar"
                             android:src="@android:drawable/ic_menu_zoom"
-                            app:tint="@color/nefro_cyan_bright" />
+                            app:tint="#38BDF8" />
 
                         <ImageButton
                             android:id="@+id/btnZoomOut"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:layout_marginBottom="4dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:contentDescription="Alejar"
                             android:src="@android:drawable/ic_menu_zoom"
-                            app:tint="@color/nefro_cyan_bright" />
+                            app:tint="#38BDF8" />
 
                         <ImageButton
                             android:id="@+id/btnResetView"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:contentDescription="Restablecer vista"
                             android:src="@android:drawable/ic_menu_rotate"
-                            app:tint="@color/nefro_cyan_bright" />
+                            app:tint="#38BDF8" />
                     </LinearLayout>
 
                     <!-- PANEL DERECHO: Grid de movimiento direccional corregido -->
@@ -155,89 +163,92 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|end"
                         android:layout_margin="12dp"
-                        android:background="#8003045e"
+                        android:background="#8003045E"
                         android:padding="6dp"
                         android:elevation="4dp"
                         android:rowCount="3"
                         android:columnCount="3">
 
                         <!-- Fila superior -->
-                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+                        <Space android:layout_width="44dp" android:layout_height="44dp"/>
                         <ImageButton
                             android:id="@+id/btnUp"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:src="@android:drawable/arrow_up_float"
-                            app:tint="@color/nefro_cyan_bright"
+                            app:tint="#38BDF8"
                             android:contentDescription="Mover arriba"/>
-                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+                        <Space android:layout_width="44dp" android:layout_height="44dp"/>
 
-                        <!-- Fila media (Usando rotaciones con android:rotation para izquierda y derecha de forma segura) -->
+                        <!-- Fila media -->
                         <ImageButton
                             android:id="@+id/btnLeft"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:src="@android:drawable/arrow_up_float"
                             android:rotation="270"
-                            app:tint="@color/nefro_cyan_bright"
+                            app:tint="#38BDF8"
                             android:contentDescription="Mover izquierda"/>
-                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+                        <Space android:layout_width="44dp" android:layout_height="44dp"/>
                         <ImageButton
                             android:id="@+id/btnRight"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:src="@android:drawable/arrow_up_float"
                             android:rotation="90"
-                            app:tint="@color/nefro_cyan_bright"
+                            app:tint="#38BDF8"
                             android:contentDescription="Mover derecha"/>
 
                         <!-- Fila inferior -->
-                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+                        <Space android:layout_width="44dp" android:layout_height="44dp"/>
                         <ImageButton
                             android:id="@+id/btnDown"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:src="@android:drawable/arrow_down_float"
-                            app:tint="@color/nefro_cyan_bright"
+                            app:tint="#38BDF8"
                             android:contentDescription="Mover abajo"/>
-                        <Space android:layout_width="40dp" android:layout_height="40dp"/>
+                        <Space android:layout_width="44dp" android:layout_height="44dp"/>
                     </GridLayout>
                 </FrameLayout>
 
                 <!-- Botón para alternar el modo de visualización -->
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnToggleViewMode"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="52dp"
                     android:text="Cambiar Modo: Gemelo Digital"
-                    android:backgroundTint="@color/nefro_blue_intense"
-                    android:textColor="@color/white"
+                    android:textColor="#FFFFFF"
                     android:textStyle="bold"
-                    app:cornerRadius="8dp"
-                    android:layout_marginBottom="16dp"/>
+                    app:backgroundTint="#0077B6"
+                    app:cornerRadius="12dp"
+                    app:icon="@android:drawable/ic_menu_view"
+                    app:iconTint="#FFFFFF"
+                    app:iconGravity="textStart"
+                    android:layout_marginBottom="16dp" />
 
                 <TextView
                     android:id="@+id/txtStatusTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/status_waiting"
-                    android:textColor="@color/white"
+                    android:textColor="#03045E"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="12dp"/>
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:id="@+id/lblOpacity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_opacity_default"
-                    android:textColor="@color/nefro_sky_light"
+                    android:textColor="#64748B"
                     android:textSize="12sp"
-                    android:layout_marginBottom="4dp"/>
+                    android:layout_marginBottom="4dp" />
 
                 <SeekBar
                     android:id="@+id/sbOpacity"
@@ -245,33 +256,33 @@
                     android:layout_height="wrap_content"
                     android:max="100"
                     android:progress="0"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:id="@+id/lblLayers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_layers"
-                    android:textColor="@color/nefro_sky_light"
+                    android:textColor="#64748B"
                     android:textSize="12sp"
-                    android:layout_marginBottom="4dp"/>
+                    android:layout_marginBottom="4dp" />
 
                 <SeekBar
                     android:id="@+id/sbLayers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="100"
-                    android:progress="0"/>
+                    android:progress="0" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Card Proyección Temporal -->
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/nefro_card_bg"
+            app:cardBackgroundColor="#FFFFFF"
             android:layout_marginBottom="16dp">
 
             <LinearLayout
@@ -284,64 +295,68 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_temporal_projection"
-                    android:textColor="@color/nefro_cyan_bright"
-                    android:textSize="15sp"
+                    android:textColor="#03045E"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_marginBottom="16dp" />
 
                 <TextView
                     android:id="@+id/lblWater"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/prediction_calculating"
-                    android:textColor="@color/nefro_pastel_pale"
-                    android:textSize="13sp"/>
+                    android:textColor="#64748B"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="4dp" />
+
                 <SeekBar
                     android:id="@+id/sbWater"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="30"
                     android:progress="15"
-                    android:layout_marginBottom="12dp"/>
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:id="@+id/lblSodium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/prediction_calculating"
-                    android:textColor="@color/nefro_pastel_pale"
-                    android:textSize="13sp"/>
+                    android:textColor="#64748B"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="4dp" />
+
                 <SeekBar
                     android:id="@+id/sbSodium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:max="2"
                     android:progress="1"
-                    android:layout_marginBottom="12dp"/>
+                    android:layout_marginBottom="12dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/nefro_blue_intense"
-                    android:layout_marginVertical="8dp"/>
+                    android:background="#0077B6"
+                    android:layout_marginVertical="8dp" />
 
                 <TextView
                     android:id="@+id/txtPrediction5Years"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/prediction_calculating"
-                    android:textColor="@color/white"
+                    android:textColor="#03045E"
                     android:textSize="14sp"
-                    android:layout_marginBottom="4dp"/>
+                    android:layout_marginBottom="4dp" />
 
                 <TextView
                     android:id="@+id/txtPrediction10Years"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/prediction_calculating"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"/>
+                    android:textColor="#03045E"
+                    android:textSize="14sp" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </ScrollView>

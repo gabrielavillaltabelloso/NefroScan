@@ -5,9 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#F8FAFC"
     android:fillViewport="true"
-    android:padding="20dp"
+    android:padding="16dp"
     android:scrollbarStyle="outsideOverlay"
     android:overScrollMode="ifContentScrolls">
 
@@ -15,18 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="40dp">
+        android:paddingBottom="32dp">
 
-        <!-- ============================================================ -->
-        <!-- BARRA DE ESTADO DEL SISTEMA + NOTIFICACIONES -->
-        <!-- ============================================================ -->
+        <!-- BARRA SUPERIOR -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="12dp"
-            android:paddingHorizontal="4dp">
+            android:layout_marginBottom="16dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -44,18 +41,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sistema activo � Sincronizado"
+                    android:text="Sistema activo - Sincronizado"
                     android:textColor="#64748B"
                     android:textSize="11sp"
                     android:letterSpacing="0.03" />
             </LinearLayout>
 
-            <!-- Badge de notificaciones -->
             <FrameLayout
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:id="@+id/btnNotificaciones"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
-                android:contentDescription="Notificaciones, 3 pendientes">
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Notificaciones pendientes">
 
                 <ImageView
                     android:layout_width="28dp"
@@ -65,18 +65,18 @@
                     app:tint="#64748B" />
 
                 <TextView
+                    android:id="@+id/tvBadgeNotif"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_gravity="top|end"
                     android:background="#EF4444"
                     android:gravity="center"
-                    android:text="3"
+                    android:text="0"
                     android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     android:textStyle="bold" />
             </FrameLayout>
 
-            <!-- Indicador de IA activa -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
@@ -101,116 +101,61 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- ============================================================ -->
-        <!-- ENCABEZADO CON TARJETA DE CONTROL (FIGMA STYLE) -->
-        <!-- ============================================================ -->
+        <!-- TARJETA DE BIENVENIDA -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="#E8F4FD"
-            android:layout_marginBottom="24dp">
+            app:cardBackgroundColor="#FFFFFF"
+            android:layout_marginBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="18dp">
+                android:padding="20dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:text="Bienvenido de nuevo,"
+                    android:textColor="#64748B"
+                    android:textSize="14sp" />
 
-                    <!-- Avatar médico -->
-                    <FrameLayout
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_marginEnd="14dp"
-                        android:contentDescription="Avatar del médico">
+                <TextView
+                    android:id="@+id/tvBienvenida"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dr. Especialista"
+                    android:textColor="#03045E"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.02"
+                    android:layout_marginTop="4dp" />
 
-                        <View
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:background="#BAE6FD"
-                            android:layout_gravity="center" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Centro de Mando Nefrológico"
+                    android:textColor="#0077B6"
+                    android:textSize="13sp"
+                    android:layout_marginTop="6dp" />
 
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_gravity="center"
-                            android:src="@android:drawable/ic_menu_add"
-                            app:tint="#0077B6" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Consola Diagnóstica Médica"
-                            android:textColor="#03045E"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.02" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="NefroScan AI � Centro de Mando Nefrológico"
-                            android:textColor="#64748B"
-                            android:textSize="12sp"
-                            android:letterSpacing="0.03"
-                            android:layout_marginTop="2dp" />
-
-                        <!-- Chip de ubicación -->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="6dp"
-                            android:background="#E2E8F0"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="3dp">
-
-                            <ImageView
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
-                                android:src="@android:drawable/ic_menu_mylocation"
-                                app:tint="#0077B6"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Hospital Central � Nefrología"
-                                android:textColor="#0077B6"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Barra de búsqueda rápida -->
+                <!-- Búsqueda -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="42dp"
+                    android:layout_height="46dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:background="#FFFFFF"
+                    android:background="#F1F5F9"
                     android:paddingHorizontal="14dp"
-                    android:layout_marginTop="14dp">
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="23dp">
 
                     <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@android:drawable/ic_menu_search"
                         app:tint="#94A3B8"
                         android:layout_marginEnd="10dp" />
@@ -225,33 +170,24 @@
                         android:textSize="13sp"
                         android:background="@null"
                         android:inputType="text" />
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@android:drawable/ic_menu_manage"
-                        app:tint="#0077B6" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- ============================================================ -->
-        <!-- KPIs CON MEDIDORES LIMPIOS (SIN ERRORES DE RENDERIZADO) -->
-        <!-- ============================================================ -->
+        <!-- KPIs -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="3"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="20dp">
 
-            <!-- KPI 1: Total Pacientes -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF">
 
@@ -260,11 +196,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="16dp">
+                    android:padding="14dp">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@android:drawable/ic_menu_myplaces"
                         app:tint="#00B4D8"
                         android:layout_marginBottom="6dp" />
@@ -275,7 +211,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="#03045E"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -283,7 +219,7 @@
                         android:layout_height="wrap_content"
                         android:text="Pacientes"
                         android:textColor="#64748B"
-                        android:textSize="10sp"
+                        android:textSize="11sp"
                         android:layout_marginTop="2dp" />
 
                     <TextView
@@ -296,13 +232,12 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- KPI 2: Riesgo Alto -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF">
 
@@ -311,11 +246,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="16dp">
+                    android:padding="14dp">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@android:drawable/ic_dialog_alert"
                         app:tint="#EF4444"
                         android:layout_marginBottom="6dp" />
@@ -326,7 +261,7 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="#EF4444"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -334,7 +269,7 @@
                         android:layout_height="wrap_content"
                         android:text="Riesgo Alto"
                         android:textColor="#64748B"
-                        android:textSize="10sp"
+                        android:textSize="11sp"
                         android:layout_marginTop="2dp" />
 
                     <TextView
@@ -347,12 +282,11 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- KPI 3: Precisión IA -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="#FFFFFF">
 
@@ -361,11 +295,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:padding="16dp">
+                    android:padding="14dp">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@android:drawable/ic_menu_compass"
                         app:tint="#10B981"
                         android:layout_marginBottom="6dp" />
@@ -376,7 +310,7 @@
                         android:layout_height="wrap_content"
                         android:text="94.2%"
                         android:textColor="#10B981"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -384,7 +318,7 @@
                         android:layout_height="wrap_content"
                         android:text="Precisión IA"
                         android:textColor="#64748B"
-                        android:textSize="10sp"
+                        android:textSize="11sp"
                         android:layout_marginTop="2dp" />
 
                     <TextView
@@ -398,112 +332,125 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- ============================================================ -->
-        <!-- MÓDULOS DE SOPORTE DIAGNÓSTICO IA (CDSS) -->
-        <!-- ============================================================ -->
+        <!-- MÓDULOS CDSS -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sistemas de Soporte Diagnóstico IA (CDSS)"
+            android:text="Sistemas de Soporte Diagnóstico IA"
             android:textColor="#0077B6"
             android:textSize="16sp"
             android:textStyle="bold"
             android:letterSpacing="0.03"
             android:layout_marginBottom="12dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAbrirCentroAnalitica"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:text="Centro Analítico &amp; Gráficas de Regresión eGFR"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:backgroundTint="#0077B6"
-            app:cornerRadius="12dp"
-            app:icon="@android:drawable/ic_menu_compass"
-            app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="20dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAbrirDictamenMedico"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAbrirCentroAnalitica"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="56dp"
+                android:text="Centro Analítico"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="#0077B6"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_menu_compass"
+                app:iconGravity="textStart"
+                android:layout_marginEnd="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAbrirDictamenMedico"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="56dp"
+                android:text="Dictamen SOAP"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="#10B981"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_menu_agenda"
+                app:iconGravity="textStart" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:text="Dictamen Clínico Automatizado &amp; Nota SOAP"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:backgroundTint="#10B981"
-            app:cornerRadius="12dp"
-            app:icon="@android:drawable/ic_menu_agenda"
-            app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="24dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAbrirSimuladorDigital"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:text="Simulador Hemodinámico &amp; Gemelo Digital 3D"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:backgroundTint="#00B4D8"
-            app:cornerRadius="12dp"
-            app:icon="@android:drawable/ic_menu_myplaces"
-            app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAbrirSimuladorDigital"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="56dp"
+                android:text="Gemelo Digital 3D"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="#00B4D8"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_menu_myplaces"
+                app:iconGravity="textStart"
+                android:layout_marginEnd="8dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAbrirTriajeRadar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:text="Triaje &amp; Radar Predictivo de Casos Críticos"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:backgroundTint="#F59E0B"
-            app:cornerRadius="12dp"
-            app:icon="@android:drawable/ic_dialog_alert"
-            app:iconGravity="textStart"
-            android:layout_marginBottom="24dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAbrirTriajeRadar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="56dp"
+                android:text="Triaje Predictivo"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="#F59E0B"
+                app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_dialog_alert"
+                app:iconGravity="textStart" />
+        </LinearLayout>
 
-        <!-- ============================================================ -->
-        <!-- ALERTA INTELIGENTE DE TRIAJE -->
-        <!-- ============================================================ -->
+        <!-- ALERTA INTELIGENTE -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
             app:cardBackgroundColor="#FFFBF5"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp"
+                android:padding="14dp"
                 android:gravity="center_vertical">
 
                 <FrameLayout
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="12dp"
-                    android:contentDescription="Alerta">
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="12dp">
 
                     <View
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:background="#FEF3C7"
                         android:layout_gravity="center" />
 
                     <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@android:drawable/ic_dialog_alert"
                         app:tint="#F59E0B" />
@@ -535,9 +482,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- ============================================================ -->
-        <!-- HERRAMIENTAS CLÍNICAS TRADICIONALES -->
-        <!-- ============================================================ -->
+        <!-- HERRAMIENTAS TRADICIONALES -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -552,130 +497,130 @@
             android:id="@+id/btnInferenciaEcografia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="54dp"
+            android:minHeight="52dp"
             android:text="Nueva Ecografía + IA (TFLite / 3D)"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#0077B6"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_menu_camera"
             app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCalculadoraEgfr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="54dp"
-            android:text="Calculadora eGFR (CKD-EPI Clínica)"
+            android:minHeight="52dp"
+            android:text="Calculadora eGFR (CKD-EPI)"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#00B4D8"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_menu_edit"
             app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNefrotoxicidad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="54dp"
-            android:text="Evaluador de Nefrotoxicidad por Fármacos"
+            android:minHeight="52dp"
+            android:text="Evaluador de Nefrotoxicidad"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#EC4899"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_dialog_alert"
             app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPrescriptorHidratacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="54dp"
-            android:text="Prescriptor de Hidratación por Clima / Campo"
+            android:minHeight="52dp"
+            android:text="Prescriptor de Hidratación"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#0077B6"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_menu_myplaces"
             app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCalculadoraKfre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="54dp"
-            android:text="Calculadora de Riesgo de Diálisis (KFRE 2/5 años)"
+            android:minHeight="52dp"
+            android:text="Calculadora KFRE (Riesgo Diálisis)"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#F59E0B"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_menu_edit"
             app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGenerarInformePdf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="54dp"
-            android:text="Exportar Informe Clínico Oficial"
+            android:minHeight="52dp"
+            android:text="Exportar Informe Clínico PDF"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#10B981"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_menu_save"
             app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnExpedientesClinicos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="54dp"
+            android:minHeight="52dp"
             android:text="Expedientes y Revisiones Médicas"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#0077B6"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_menu_agenda"
             app:iconGravity="textStart"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRadarMed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="54dp"
+            android:minHeight="52dp"
             android:text="Radar Epidemiológico Nacional"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#F59E0B"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_menu_compass"
             app:iconGravity="textStart"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="16dp" />
 
         <!-- Botón Volver -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVolverRolesMed"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="Volver a Selección de Perfil"
+            android:layout_height="46dp"
+            android:text="Cerrar Sesión / Ir al Login"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="#64748B"
             app:cornerRadius="12dp" />

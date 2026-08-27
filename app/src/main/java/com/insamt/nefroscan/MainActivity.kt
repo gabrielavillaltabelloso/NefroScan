@@ -12,6 +12,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.animation.LinearInterpolator
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
@@ -34,6 +35,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,6 +48,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var singleSceneView: SceneView
     private var singleModelNode: ModelNode? = null
     private var isHeatmapMode = false
+
+    // Variables de control de posición y zoom 3D
+    private var currentModelX = 0.0f
+    private var currentModelY = 0.0f
+    private var currentModelZ = -1.2f
+    private var currentScaleFactor = 1.0f
 
     private lateinit var sbWater: SeekBar
     private lateinit var sbSodium: SeekBar
@@ -241,6 +250,50 @@ class MainActivity : AppCompatActivity() {
 
         singleSceneView = findViewById(R.id.singleSceneView)
 
+        // --- CONFIGURACIÓN DE LOS BOTONES DE MOVIMIENTO Y ZOOM 3D ---
+        val btnUp: ImageButton = findViewById(R.id.btnUp)
+        val btnDown: ImageButton = findViewById(R.id.btnDown)
+        val btnLeft: ImageButton = findViewById(R.id.btnLeft)
+        val btnRight: ImageButton = findViewById(R.id.btnRight)
+        val btnZoomIn: ImageButton = findViewById(R.id.btnZoomIn)
+        val btnZoomOut: ImageButton = findViewById(R.id.btnZoomOut)
+        val btnResetView: ImageButton = findViewById(R.id.btnResetView)
+
+        btnUp.setOnClickListener {
+            currentModelY += 0.1f
+            actualizarTransformacionModelo()
+        }
+        btnDown.setOnClickListener {
+            currentModelY -= 0.1f
+            actualizarTransformacionModelo()
+        }
+        btnLeft.setOnClickListener {
+            currentModelX -= 0.1f
+            actualizarTransformacionModelo()
+        }
+        btnRight.setOnClickListener {
+            currentModelX += 0.1f
+            actualizarTransformacionModelo()
+        }
+        btnZoomIn.setOnClickListener {
+            currentModelZ += 0.15f
+            actualizarTransformacionModelo()
+        }
+        btnZoomOut.setOnClickListener {
+            currentModelZ -= 0.15f
+            actualizarTransformacionModelo()
+        }
+        btnResetView.setOnClickListener {
+            currentModelX = 0.0f
+            currentModelY = 0.0f
+            currentModelZ = -1.2f
+            currentScaleFactor = 1.0f
+            sbOpacity.progress = 0
+            sbLayers.progress = 0
+            actualizarTransformacionModelo()
+            Toast.makeText(this, "Vista 3D restablecida", Toast.LENGTH_SHORT).show()
+        }
+
         btnSelect.setOnClickListener {
             galleryLauncher.launch("image/*")
         }
@@ -255,8 +308,7 @@ class MainActivity : AppCompatActivity() {
                 lblTitleVisor.text = getString(R.string.title_anatomy_3d)
                 btnToggleViewMode.text = "Cambiar a Modo: Gemelo Digital (Calor)"
                 detenerPulsoSimple()
-                // Restaurar color base anatómico y escala por defecto
-                singleModelNode?.scale = Scale(1.0f, 1.0f, 1.0f)
+                singleModelNode?.scale = Scale(currentScaleFactor, currentScaleFactor, currentScaleFactor)
                 singleModelNode?.modelInstance?.materialInstances?.forEach { material ->
                     try {
                         material.setParameter("baseColorFactor", 0.8f, 0.35f, 0.3f, 1.0f)
@@ -274,6 +326,22 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             delay(300)
             inicializarModelo3DUnico()
+        }
+    }
+
+    private fun actualizarTransformacionModelo() {
+        singleModelNode?.let { node ->
+            node.position = Position(x = currentModelX, y = currentModelY, z = currentModelZ)
+            val baseScale = if (isHeatmapMode) {
+                val litrosAgua = sbWater.progress / 10.0f
+                val sodioAlto = sbSodium.progress == 2
+                val factorHabitos = ((1.5f - litrosAgua).coerceAtLeast(0f) / 1.5f) + (if (sodioAlto) 0.3f else 0.0f)
+                val severidadTotal = (nivelDanoIA + factorHabitos).coerceIn(0.0f, 1.0f)
+                1.0f - (severidadTotal * 0.60f)
+            } else {
+                1.0f
+            }
+            node.scale = Scale(baseScale * currentScaleFactor, baseScale * currentScaleFactor, baseScale * currentScaleFactor)
         }
     }
 
@@ -397,7 +465,7 @@ class MainActivity : AppCompatActivity() {
                             modelInstance = modelInstance,
                             scaleToUnits = 1.0f
                         ).apply {
-                            position = Position(x = 0.0f, y = 0.0f, z = -1.2f)
+                            position = Position(x = currentModelX, y = currentModelY, z = currentModelZ)
                             isRotationEditable = true
                             isScaleEditable = true
                         }
@@ -508,11 +576,12 @@ class MainActivity : AppCompatActivity() {
             val factorHabitos = ((1.5f - litrosAgua).coerceAtLeast(0f) / 1.5f) + (if (sodioAlto) 0.3f else 0.0f)
             val severidadTotal = (nivelDanoIA + factorHabitos).coerceIn(0.0f, 1.0f)
 
-            // Deformaciones significativamente más prominentes y visibles en la presentación
             val deformacionX = 1.0f - (severidadTotal * 0.60f)
             val deformacionY = 1.0f - (severidadTotal * 0.45f)
             val deformacionZ = 1.0f - (severidadTotal * 0.40f)
-            node.scale = Scale(deformacionX, deformacionY, deformacionZ)
+
+            currentScaleFactor = deformacionX // Guardamos base de escala del gemelo
+            actualizarTransformacionModelo()
 
             materials.forEach { material ->
                 try {
