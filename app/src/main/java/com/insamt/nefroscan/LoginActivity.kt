@@ -3,12 +3,13 @@ package com.insamt.nefroscan
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +26,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // 1. Enlazar vistas de manera segura según el XML proporcionado
         etUsuario = findViewById(R.id.etUsuario)
         etContrasena = findViewById(R.id.etContrasena)
 
@@ -86,56 +86,62 @@ class LoginActivity : AppCompatActivity() {
                 val uidFirebase = firebaseUser?.uid ?: ""
                 val emailFirebase = firebaseUser?.email ?: emailParaAuth
 
-                // Definir el rol correcto de manera estricta según el correo
-                val rolCorrecto = when {
-                    emailFirebase.equals("binnivillalta@gmail.com", ignoreCase = true) -> "MEDICO"
-                    emailFirebase.contains("promotor", ignoreCase = true) -> "PROMOTOR"
-                    else -> "PACIENTE"
-                }
+                // 2. OBTENER EL ROL REAL DIRECTAMENTE DESDE FIRESTORE (La fuente de la verdad)
+                var rolFinal = "PACIENTE"
+                try {
+                    val firestoreDoc = FirebaseFirestore.getInstance()
+                        .collection("usuarios")
+                        .document(uidFirebase)
+                        .get()
+                        .await()
 
-                // 2. Obtener los datos del usuario desde Room local
-                val dbGeneral = UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
-                var userEntity = dbGeneral.userDao().obtenerUsuarioPorId(emailFirebase)
-                    ?: dbGeneral.userDao().obtenerUsuarioPorId(usuario)
-
-                // 3. Si no existe localmente, lo creamos con el rol correcto
-                if (userEntity == null) {
-                    val nombreGenerado = emailFirebase.substringBefore("@")
-                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-
-                    userEntity = UserEntity(
-                        idUsuario = emailFirebase,
-                        nombreCompleto = nombreGenerado,
-                        contrasena = pass,
-                        rol = rolCorrecto
-                    )
-                    dbGeneral.userDao().insertarUsuario(userEntity)
-                } else {
-                    // Si ya existía pero tenía un rol incorrecto, lo actualizamos
-                    if (userEntity.rol != rolCorrecto) {
-                        userEntity = userEntity.copy(rol = rolCorrecto, contrasena = pass)
-                        dbGeneral.userDao().insertarUsuario(userEntity)
+                    if (firestoreDoc.exists()) {
+                        rolFinal = firestoreDoc.getString("rol")?.uppercase(Locale.getDefault()) ?: "PACIENTE"
+                    } else {
+                        // Fallback estricto basado en correos conocidos si no está el documento en Firestore
+                        rolFinal = when {
+                            emailFirebase.equals("binnivillalta@gmail.com", ignoreCase = true) -> "MEDICO"
+                            emailFirebase.contains("promotor", ignoreCase = true) || emailFirebase.contains("prom") -> "PROMOTOR"
+                            else -> "PACIENTE"
+                        }
                     }
+                } catch (e: Exception) {
+                    Log.e("LoginFirestore", "No se pudo leer de Firestore, usando respaldo local", e)
+                    // Si falla internet, leemos el rol que ya estaba guardado localmente
+                    val dbFallback = UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
+                    val localUser = dbFallback.userDao().obtenerUsuarioPorId(emailFirebase)
+                    rolFinal = localUser?.rol?.uppercase(Locale.getDefault()) ?: "PACIENTE"
                 }
 
-                val finalUserEntity = userEntity
+                // 3. Guardar o actualizar la entidad en Room local con el rol verificado
+                val dbGeneral = UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
+                val nombreGenerado = emailFirebase.substringBefore("@")
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+
+                val userEntity = UserEntity(
+                    idUsuario = emailFirebase,
+                    nombreCompleto = nombreGenerado,
+                    contrasena = pass,
+                    rol = rolFinal
+                )
+                dbGeneral.userDao().insertarUsuario(userEntity)
 
                 withContext(Dispatchers.Main) {
-                    // 4. Guardar la sesión activa limpiando preferencias anteriores
+                    // 4. Guardar la sesión activa con el rol correcto
                     val prefs = getSharedPreferences("SesionNefroScan", Context.MODE_PRIVATE)
                     prefs.edit().clear().apply {
-                        putString("ID_USUARIO", finalUserEntity.idUsuario)
+                        putString("ID_USUARIO", userEntity.idUsuario)
                         putString("UID_FIREBASE", uidFirebase)
-                        putString("NOMBRE_USUARIO", finalUserEntity.nombreCompleto)
-                        putString("ROL_USUARIO", finalUserEntity.rol)
+                        putString("NOMBRE_USUARIO", userEntity.nombreCompleto)
+                        putString("ROL_USUARIO", rolFinal)
                         apply()
                     }
 
                     // 5. Inicializar la base de datos privada del usuario
-                    UserDatabaseFactory.getDatabaseForUser(applicationContext, finalUserEntity.idUsuario)
+                    UserDatabaseFactory.getDatabaseForUser(applicationContext, userEntity.idUsuario)
 
-                    // 6. Redirigir al Dashboard exacto según su rol
-                    val intent = when (finalUserEntity.rol) {
+                    // 6. Redirigir al Dashboard exacto según el rol real
+                    val intent = when (rolFinal) {
                         "MEDICO" -> Intent(this@LoginActivity, MedicoDashboardActivity::class.java)
                         "PROMOTOR" -> Intent(this@LoginActivity, PromotorDashboardActivity::class.java)
                         else -> Intent(this@LoginActivity, PacienteDashboardActivity::class.java)
