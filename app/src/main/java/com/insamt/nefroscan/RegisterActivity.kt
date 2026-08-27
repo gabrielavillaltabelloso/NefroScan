@@ -12,14 +12,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class RegisterActivity : AppCompatActivity() {
 
-    // 1. CORRECCIÓN: Ahora coincide con el XML (AutoCompleteTextView en lugar de Spinner)
     private lateinit var spRol: AutoCompleteTextView
     private lateinit var etNombre: EditText
     private lateinit var etIdUsuario: EditText
@@ -49,8 +50,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registrarNuevoUsuario() {
-        // 2. CORRECCIÓN: Se usa .text.toString() para leer el menú desplegable moderno
-        val rol = spRol.text.toString().trim()
+        val rol = spRol.text.toString().trim().uppercase(Locale.getDefault())
         val nombre = etNombre.text.toString().trim()
         val idUsuario = etIdUsuario.text.toString().trim()
         val detalle = etDetalle.text.toString().trim()
@@ -75,10 +75,21 @@ class RegisterActivity : AppCompatActivity() {
                 val authResult = auth.createUserWithEmailAndPassword(emailParaAuth, pass).await()
                 val uidFirebase = authResult.user?.uid ?: idUsuario
 
-                // 2. Guardar en Room local general
+                // 2. GUARDAR EN FIRESTORE (Nube) - Permite sincronizar el rol
+                val dbFirestore = FirebaseFirestore.getInstance()
+                val usuarioMap = hashMapOf(
+                    "idUsuario" to emailParaAuth,
+                    "uid" to uidFirebase,
+                    "nombreCompleto" to nombre,
+                    "rol" to rol,
+                    "detalleAdicional" to detalle
+                )
+                dbFirestore.collection("usuarios").document(uidFirebase).set(usuarioMap).await()
+
+                // 3. Guardar en Room local general
                 val dbGeneral = NefroScanDatabase.getDatabase(applicationContext)
                 val nuevoUsuario = UserEntity(
-                    idUsuario = idUsuario,
+                    idUsuario = emailParaAuth,
                     nombreCompleto = nombre,
                     contrasena = pass,
                     rol = rol,
@@ -86,13 +97,13 @@ class RegisterActivity : AppCompatActivity() {
                 )
                 dbGeneral.userDao().insertarUsuario(nuevoUsuario)
 
-                // 3. Crear base de datos aislada local
-                UserDatabaseFactory.getDatabaseForUser(applicationContext, idUsuario)
+                // 4. Crear base de datos aislada local
+                UserDatabaseFactory.getDatabaseForUser(applicationContext, emailParaAuth)
 
-                // 4. Guardar sesión
+                // 5. Guardar sesión activa
                 val prefs = getSharedPreferences("SesionNefroScan", Context.MODE_PRIVATE)
                 prefs.edit().apply {
-                    putString("ID_USUARIO", idUsuario)
+                    putString("ID_USUARIO", emailParaAuth)
                     putString("UID_FIREBASE", uidFirebase)
                     putString("NOMBRE_USUARIO", nombre)
                     putString("ROL_USUARIO", rol)

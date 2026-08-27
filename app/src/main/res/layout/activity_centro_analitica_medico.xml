@@ -1,62 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="#F8FAFC">
 
-    <!-- Barra superior -->
-    <LinearLayout
+    <!-- Barra superior con degradado -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="16dp"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        app:elevation="0dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbarAnalitica"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FFFFFF"
+            app:navigationIcon="@android:drawable/ic_menu_close_clear_cancel"
+            app:title="Dashboard Clínico &amp; Analítica IA"
+            app:titleTextColor="#03045E"
+            app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            app:subtitle="Monitoreo hemodinámico y progresión de ERC"
+            app:subtitleTextColor="#0077B6">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dashboard Clínico &amp; Analítica IA"
-                android:textColor="#03045E"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:layout_gravity="end"
+                android:orientation="horizontal"
+                android:paddingEnd="8dp">
 
-            <TextView
-                android:id="@+id/tvSubtituloAnalitica"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Monitoreo hemodinámico y progresión de ERC"
-                android:textColor="#0077B6"
-                android:textSize="12sp" />
-        </LinearLayout>
+                <!-- Indicador de sincronización -->
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="Estado de sincronización"
+                    android:padding="8dp">
 
-        <!-- Botón de cierre corregido: 48dp y descripción para accesibilidad -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCerrarAnalitica"
-            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="Cerrar panel de analítica"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            app:icon="@android:drawable/ic_menu_close_clear_cancel"
-            app:backgroundTint="#90E0EF" />
-    </LinearLayout>
+                    <View
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center"
+                        android:background="#10B981" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_menu_upload"
+                        app:tint="#64748B" />
+                </FrameLayout>
+
+                <!-- Botón de notificaciones -->
+                <FrameLayout
+                    android:id="@+id/btnNotificacionesAnalitica"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="Notificaciones"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_popup_reminder"
+                        app:tint="#64748B" />
+
+                    <TextView
+                        android:id="@+id/tvBadgeNotifAnalitica"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="top|end"
+                        android:background="#EF4444"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+            </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Contenido desplazable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:background="#FFFFFF">
+        android:background="#F8FAFC"
+        android:scrollbars="none"
+        android:overScrollMode="ifContentScrolls">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,7 +100,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Resumen de métricas clave -->
+            <!-- Resumen de métricas clave con tarjetas mejoradas -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,30 +115,46 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     app:cardCornerRadius="16dp"
-                    app:cardBackgroundColor="#CAF0F8"
-                    app:cardElevation="2dp">
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="14dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@android:drawable/ic_menu_myplaces"
+                            app:tint="#0077B6"
+                            android:layout_marginBottom="6dp" />
 
                         <TextView
                             android:id="@+id/tvTotalPacientes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="128"
+                            android:text="0"
                             android:textColor="#03045E"
-                            android:textSize="24sp"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pacientes"
-                            android:textColor="#0077B6"
+                            android:textColor="#64748B"
                             android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bajo control"
+                            android:textColor="#10B981"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -113,30 +165,46 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     app:cardCornerRadius="16dp"
-                    app:cardBackgroundColor="#CAF0F8"
-                    app:cardElevation="2dp">
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="14dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@android:drawable/ic_menu_edit"
+                            app:tint="#00B4D8"
+                            android:layout_marginBottom="6dp" />
 
                         <TextView
                             android:id="@+id/tvPromedioEgfR"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="42.5"
+                            android:text="0"
                             android:textColor="#03045E"
-                            android:textSize="24sp"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="eGFR promedio"
-                            android:textColor="#0077B6"
+                            android:text="eGFR prom."
+                            android:textColor="#64748B"
                             android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="mL/min/1.73m²"
+                            android:textColor="#00B4D8"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -146,30 +214,46 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:cardCornerRadius="16dp"
-                    app:cardBackgroundColor="#90E0EF"
-                    app:cardElevation="2dp">
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="14dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@android:drawable/ic_dialog_alert"
+                            app:tint="#EF4444"
+                            android:layout_marginBottom="6dp" />
 
                         <TextView
                             android:id="@+id/tvRiesgoAlto"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="23"
-                            android:textColor="#03045E"
-                            android:textSize="24sp"
+                            android:text="0"
+                            android:textColor="#EF4444"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Riesgo alto"
-                            android:textColor="#03045E"
+                            android:textColor="#64748B"
                             android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Prioritario"
+                            android:textColor="#EF4444"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
@@ -181,38 +265,45 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:singleSelection="true"
-                app:selectionRequired="true">
+                app:selectionRequired="true"
+                app:chipSpacingHorizontal="8dp">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip3Meses"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3M"
+                    android:text="Últimos 3 meses"
                     android:checked="true"
                     android:textColor="#03045E"
-                    app:chipBackgroundColor="#90E0EF"
-                    app:checkedIconVisible="false" />
+                    app:chipBackgroundColor="#E8F4FD"
+                    app:checkedIconVisible="false"
+                    app:chipStrokeColor="#0077B6"
+                    app:chipStrokeWidth="1dp" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip6Meses"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="6M"
+                    android:text="Últimos 6 meses"
                     android:textColor="#03045E"
-                    app:chipBackgroundColor="#90E0EF"
-                    app:checkedIconVisible="false" />
+                    app:chipBackgroundColor="#E8F4FD"
+                    app:checkedIconVisible="false"
+                    app:chipStrokeColor="#0077B6"
+                    app:chipStrokeWidth="1dp" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip1Ano"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1A"
+                    android:text="Último año"
                     android:textColor="#03045E"
-                    app:chipBackgroundColor="#90E0EF"
-                    app:checkedIconVisible="false" />
+                    app:chipBackgroundColor="#E8F4FD"
+                    app:checkedIconVisible="false"
+                    app:chipStrokeColor="#0077B6"
+                    app:chipStrokeWidth="1dp" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipTodo"
@@ -221,8 +312,10 @@
                     android:layout_height="wrap_content"
                     android:text="Todo"
                     android:textColor="#03045E"
-                    app:chipBackgroundColor="#90E0EF"
-                    app:checkedIconVisible="false" />
+                    app:chipBackgroundColor="#E8F4FD"
+                    app:checkedIconVisible="false"
+                    app:chipStrokeColor="#0077B6"
+                    app:chipStrokeWidth="1dp" />
             </com.google.android.material.chip.ChipGroup>
 
             <!-- Tarjeta 1: Gráfica de tendencia eGFR -->
@@ -230,8 +323,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="#CAF0F8"
-                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp"
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
@@ -240,26 +334,48 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Proyección eGFR vs. Daño Parenquimatoso"
-                        android:textColor="#03045E"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Trayectoria histórica y decaimiento proyectado con IA"
-                        android:textColor="#0077B6"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="12dp" />
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_compass"
+                            app:tint="#0077B6"
+                            android:layout_marginEnd="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Proyección eGFR vs. Daño Parenquimatoso"
+                                android:textColor="#03045E"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Trayectoria histórica y decaimiento proyectado con IA"
+                                android:textColor="#64748B"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/chartLineProgression"
                         android:layout_width="match_parent"
-                        android:layout_height="220dp" />
+                        android:layout_height="240dp"
+                        android:background="@android:color/transparent" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -268,8 +384,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="#90E0EF"
-                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp"
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
@@ -278,26 +395,48 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Distribución de Cohorte por Estadio Renal"
-                        android:textColor="#03045E"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total de pacientes evaluados categorizados en G1, G2, G3a, G3b, G4 y G5"
-                        android:textColor="#03045E"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="12dp" />
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_myplaces"
+                            app:tint="#10B981"
+                            android:layout_marginEnd="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Distribución de Cohorte por Estadio Renal"
+                                android:textColor="#03045E"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total de pacientes evaluados categorizados en G1, G2, G3a, G3b, G4 y G5"
+                                android:textColor="#64748B"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/chartBarEstadios"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp" />
+                        android:layout_height="220dp"
+                        android:background="@android:color/transparent" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -306,8 +445,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="#CAF0F8"
-                app:cardElevation="2dp">
+                app:cardBackgroundColor="#E8F4FD"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp"
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -315,22 +456,37 @@
                     android:orientation="vertical"
                     android:padding="18dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Análisis Predictivo de Riesgo Poblacional"
-                        android:textColor="#03045E"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@android:drawable/ic_menu_info_details"
+                            app:tint="#0077B6"
+                            android:layout_marginEnd="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Análisis Predictivo de Riesgo Poblacional"
+                            android:textColor="#03045E"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tvInsightIA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Analizando cohortes asignadas..."
-                        android:textColor="#03045E"
+                        android:textColor="#334155"
                         android:textSize="13sp"
-                        android:layout_marginTop="6dp" />
+                        android:lineSpacingExtra="2dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -339,11 +495,16 @@
                 android:id="@+id/btnExportarInforme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Exportar Informe PDF"
                 android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold"
                 app:backgroundTint="#0077B6"
                 app:cornerRadius="12dp"
+                app:icon="@android:drawable/ic_menu_save"
+                app:iconGravity="textStart"
+                android:minHeight="56dp"
                 android:padding="12dp" />
 
         </LinearLayout>
