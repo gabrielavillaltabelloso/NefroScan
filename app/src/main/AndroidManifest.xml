@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
 
-        <!-- 0.1 Pantalla de Registro de Cuentas (ESTA ES LA QUE FALTABA) -->
+        <!-- 0.1 Pantalla de Registro de Cuentas -->
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
@@ -89,9 +89,15 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- 9. Asistente Virtual / Chatbot IA de Salud Renal -->
+        <!-- 9. Asistente Virtual / Chatbot IA de Salud Renal General -->
         <activity
             android:name=".ChatbotActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 9.1 Chat de Consulta Rápida y Soporte Clínico para el Promotor (Teleapoyo) -->
+        <activity
+            android:name=".ChatPromotor"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

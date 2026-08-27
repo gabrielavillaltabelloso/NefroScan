@@ -1,70 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0F172A"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
+    android:fillViewport="true">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Panel del Promotor de Salud"
-        android:textColor="#38BDF8"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="6dp"/>
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Gestión de Visitas Domiciliarias y Campo"
-        android:textColor="#94A3B8"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:layout_marginBottom="32dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Panel del Promotor de Salud"
+            android:textColor="#38BDF8"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnNuevaVisita"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Nueva Visita / Tamizaje Comunitario"
-        android:backgroundTint="#0284C7"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="Gestión de Visitas Domiciliarias y Campo"
+            android:textColor="#94A3B8"
+            android:textSize="14sp" />
 
-    <Button
-        android:id="@+id/btnMapaRiesgo"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Radar Epidemiológico Nacional"
-        android:backgroundTint="#1E293B"
-        android:textColor="#38BDF8"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        <Button
+            android:id="@+id/btnNuevaVisita"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#0284C7"
+            android:text="Tamizaje y Alertas de Riesgo (CKD)"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnEstadoSincronizacion"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Sincronización de Fichas (Offline/Cloud)"
-        android:backgroundTint="#1E293B"
-        android:textColor="#10B981"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp"/>
+        <Button
+            android:id="@+id/btnCalendarioVisitas"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#1E293B"
+            android:text="Rutas y Citas de Control ERC"
+            android:textColor="#38BDF8"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnVolverRoles"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Cambiar de Rol"
-        android:backgroundTint="#334155"
-        android:textColor="#94A3B8"/>
+        <Button
+            android:id="@+id/btnHistorialFichas"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#1E293B"
+            android:text="Historial de Fichas Comunitarias"
+            android:textColor="#38BDF8"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnDerivacionesMedicas"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#0F766E"
+            android:text="Casos Derivados y Trazabilidad Médica"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnChatConsultaRapida"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#4F46E5"
+            android:text="Chat de Consulta Rápida (Mensajería Segura)"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnRecursosEducativos"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#1E293B"
+            android:text="Guías y Educación Comunitaria"
+            android:textColor="#F8FAFC"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnMapaRiesgo"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#1E293B"
+            android:text="Radar Epidemiológico Nacional"
+            android:textColor="#38BDF8"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnEstadoSincronizacion"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#1E293B"
+            android:text="Sincronización (Offline / Cloud)"
+            android:textColor="#10B981"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnVolverRoles"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#334155"
+            android:text="Cambiar de Rol"
+            android:textColor="#94A3B8"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+</ScrollView>

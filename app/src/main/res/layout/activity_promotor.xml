@@ -14,21 +14,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Ficha de Tamizaje Comunitario"
             android:textColor="#38BDF8"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="4dp"/>
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Evaluación de Riesgo Ocupacional y Renal"
             android:textColor="#94A3B8"
             android:textSize="13sp"
-            android:gravity="center"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="24dp" />
 
         <!-- Nombre del Paciente -->
         <EditText
@@ -41,7 +41,7 @@
             android:textColor="#FFFFFF"
             android:padding="12dp"
             android:layout_marginBottom="12dp"
-            android:inputType="textPersonName"/>
+            android:inputType="textPersonName" />
 
         <!-- Presión Arterial Sistólica -->
         <EditText
@@ -54,7 +54,20 @@
             android:textColor="#FFFFFF"
             android:padding="12dp"
             android:layout_marginBottom="12dp"
-            android:inputType="number"/>
+            android:inputType="number" />
+
+        <!-- Presión Arterial Diastólica -->
+        <EditText
+            android:id="@+id/etPromotorPADiastolica"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#1E293B"
+            android:hint="Presión Diastólica (Ej: 80 o 95)"
+            android:textColorHint="#64748B"
+            android:textColor="#FFFFFF"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"
+            android:inputType="number" />
 
         <!-- Selector de Antecedente Agrícola / Laboral -->
         <TextView
@@ -63,7 +76,7 @@
             android:text="¿Trabajo agrícola intenso / exposición a calor extremo?"
             android:textColor="#E2E8F0"
             android:textSize="14sp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp" />
 
         <Spinner
             android:id="@+id/spinnerExposicion"
@@ -71,18 +84,48 @@
             android:layout_height="50dp"
             android:background="#1E293B"
             android:padding="12dp"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="16dp" />
+
+        <!-- Selector de Síntomas de Alerta (Edema, orina espumosa) -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Signos de Alerta Observados en Visita:"
+            android:textColor="#E2E8F0"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
+        <Spinner
+            android:id="@+id/spinnerSintomasAlerta"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#1E293B"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp" />
 
         <!-- Botón de Análisis de Campo -->
         <Button
             android:id="@+id/btnCalcularRiesgoCampo"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Calcular Semáforo de Riesgo"
+            android:layout_height="56dp"
             android:backgroundTint="#0284C7"
+            android:text="Calcular Semáforo de Riesgo"
             android:textColor="#FFFFFF"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:textSize="15sp" />
+            android:layout_marginBottom="12dp" />
+
+        <!-- Botón para Derivar Directamente al Médico -->
+        <Button
+            android:id="@+id/btnDerivarCasoDirecto"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:backgroundTint="#0F766E"
+            android:text="Derivar Caso a Médico (Teleapoyo)"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
     </LinearLayout>
 </ScrollView>

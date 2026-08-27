@@ -3,38 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="24dp"
+        android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Visita Domiciliaria"
-            android:textColor="#03045E"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/ic_launcher"
             android:layout_marginBottom="16dp"
-            android:text="Ficha de tamizaje comunitario y riesgo renal"
-            android:textColor="#0077B6"
-            android:textSize="14sp" />
+            android:contentDescription="Logo NefroScan"
+            android:background="#CAF0F8"
+            android:padding="12dp"
+            android:elevation="4dp" />
 
+        <!-- T�tulo -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Registro de Paciente"
+            android:textColor="#03045E"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Subt�tulo -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingrese los datos b�sicos para comenzar el an�lisis"
+            android:textColor="#0077B6"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Tarjeta con el formulario -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
             app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="3dp"
-            android:layout_marginBottom="16dp">
+            app:cardElevation="4dp"
+            android:layout_marginBottom="24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,12 +60,17 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Nombre del Paciente -->
+                <!-- Campo: Nombre -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombre del Paciente"
+                    android:hint="Nombre Completo"
+                    app:startIconDrawable="@android:drawable/ic_menu_myplaces"
                     app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxStrokeColor="#0077B6"
                     android:layout_marginBottom="12dp">
 
@@ -55,100 +78,73 @@
                         android:id="@+id/etNombrePaciente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:textColor="#03045E"
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- DUI / ID -->
+                <!-- Campo: DUI o Correo -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="DUI / Identificación"
+                    android:hint="DUI o Correo Electr�nico"
+                    app:startIconDrawable="@android:drawable/ic_dialog_email"
                     app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxStrokeColor="#0077B6"
                     android:layout_marginBottom="12dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etDuiPaciente"
+                        android:id="@+id/etIdPacienteDui"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:textColor="#03045E"
+                        android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Presión Sistólica / Diastólica -->
-                <LinearLayout
+                <!-- Campo: Edad -->
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
+                    android:hint="Edad"
+                    app:startIconDrawable="@android:drawable/ic_menu_agenda"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxStrokeColor="#0077B6"
                     android:layout_marginBottom="12dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEdadPaciente"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:hint="Sistólica"
-                        app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="#0077B6">
+                        android:inputType="number"
+                        android:textColor="#03045E"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etSistolica"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:hint="Diastólica"
-                        app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="#0077B6">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDiastolica"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-
-                <!-- Checkboxes de Exposición -->
-                <CheckBox
-                    android:id="@+id/cbCalorAgricola"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Jornada agrícola intensa o calor extremo"
-                    android:textColor="#333333" />
-
-                <CheckBox
-                    android:id="@+id/cbAgroquimicos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Contacto frecuente con agroquímicos"
-                    android:textColor="#333333" />
-
-                <CheckBox
-                    android:id="@+id/cbAntecedentes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Diagnóstico previo (Diabetes / Hipertensión)"
-                    android:textColor="#333333" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Botón para Registrar y Notificar -->
+        <!-- Bot�n de acci�n -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRegistrarVisita"
+            android:id="@+id/btnIniciarEscaneo"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Registrar y Enviar Notificación"
+            android:text="Iniciar Escaneo IA"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:backgroundTint="#0077B6"
-            app:cornerRadius="16dp" />
-
+            app:cornerRadius="28dp"
+            app:icon="@android:drawable/ic_menu_camera"
+            app:iconGravity="textStart"
+            android:contentDescription="Bot�n para iniciar el escaneo con IA" />
     </LinearLayout>
 </ScrollView>
