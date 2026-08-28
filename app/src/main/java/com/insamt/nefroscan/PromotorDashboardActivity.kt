@@ -3,7 +3,7 @@ package com.insamt.nefroscan
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -25,16 +25,14 @@ class PromotorDashboardActivity : AppCompatActivity() {
     }
 
     private fun configurarVistas() {
-        // Enlace de vistas con el layout
-        val btnNuevaVisita = findViewById<Button>(R.id.btnNuevaVisita)
-        val btnCalendarioVisitas = findViewById<Button>(R.id.btnCalendarioVisitas)
-        val btnHistorialFichas = findViewById<Button>(R.id.btnHistorialFichas)
-        val btnDerivacionesMedicas = findViewById<Button>(R.id.btnDerivacionesMedicas)
-        val btnChatConsultaRapida = findViewById<Button>(R.id.btnChatConsultaRapida)
-        val btnRecursosEducativos = findViewById<Button>(R.id.btnRecursosEducativos)
-        val btnMapaRiesgo = findViewById<Button>(R.id.btnMapaRiesgo)
-        val btnEstadoSincronizacion = findViewById<Button>(R.id.btnEstadoSincronizacion)
-        val btnVolverRoles = findViewById<Button>(R.id.btnVolverRoles)
+        val btnNuevaVisita = findViewById<View>(R.id.btnNuevaVisita)
+        val btnCalendarioVisitas = findViewById<View>(R.id.btnCalendarioVisitas)
+        val btnHistorialFichas = findViewById<View>(R.id.btnHistorialFichas)
+        val btnDerivacionesMedicas = findViewById<View>(R.id.btnDerivacionesMedicas)
+        val btnChatConsultaRapida = findViewById<View>(R.id.btnChatConsultaRapida)
+        val btnRecursosEducativos = findViewById<View>(R.id.btnRecursosEducativos)
+        val btnMapaRiesgo = findViewById<View>(R.id.btnMapaRiesgo)
+        val btnEstadoSincronizacion = findViewById<View>(R.id.btnEstadoSincronizacion)
 
         // 1. Tamizaje y Alertas de Riesgo (CKD)
         btnNuevaVisita.setOnClickListener {
@@ -83,11 +81,6 @@ class PromotorDashboardActivity : AppCompatActivity() {
                 putExtra("NOMBRE_PROMOTOR", nombrePromotorSesion)
             }
             startActivity(intent)
-        }
-
-        // 9. Cambiar de Rol
-        btnVolverRoles.setOnClickListener {
-            finish()
         }
     }
 

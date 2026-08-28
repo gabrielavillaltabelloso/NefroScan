@@ -4,32 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F172A"
+    android:background="#090D16"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".ChatbotActivity">
+    android:paddingHorizontal="18dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="16dp"
+    tools:context=".ChatbotActivity"
+    tools:ignore="HardcodedText,VisualLintButtonSize">
 
-    <!-- Encabezado del Chatbot -->
-    <TextView
-        android:id="@+id/tvTituloChatbot"
+    <!-- Encabezado del Chatbot con Tarjeta de Respaldo -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:gravity="center"
-        android:text="Asistente Virtual NefroScan"
-        android:textColor="#38BDF8"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#131B2E"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="#1E293B"
+        app:strokeWidth="1dp">
 
-    <TextView
-        android:id="@+id/tvSubtituloChatbot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:gravity="center"
-        android:text="Educación y Orientación en Salud Renal"
-        android:textColor="#94A3B8"
-        android:textSize="12sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp">
+
+            <TextView
+                android:id="@+id/tvTituloChatbot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:text="Asistente Virtual NefroScan"
+                android:textColor="#38BDF8"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tvSubtituloChatbot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="Educación y Orientación en Salud Renal"
+                android:textColor="#94A3B8"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Lista de Mensajes del Chat -->
     <androidx.recyclerview.widget.RecyclerView
@@ -39,30 +63,40 @@
         android:layout_marginBottom="12dp"
         android:layout_weight="1"
         android:clipToPadding="false"
+        android:overScrollMode="never"
         android:paddingBottom="4dp" />
 
-    <!-- Preguntas y Botones de Opciones -->
+    <!-- Preguntas y Botones de Opciones (Chips) -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="14dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
         android:scrollbars="none">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroupPreguntas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="8dp"
             app:singleLine="true" />
 
     </HorizontalScrollView>
 
     <!-- Botón Volver -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVolverHistorial"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:backgroundTint="#334155"
+        android:layout_height="50dp"
+        android:fontFamily="sans-serif-medium"
         android:text="Volver"
-        android:textColor="#94A3B8" />
+        android:textColor="#94A3B8"
+        android:textSize="13sp"
+        app:cornerRadius="12dp"
+        app:rippleColor="#334155"
+        app:strokeColor="#1E293B"
+        app:strokeWidth="1dp" />
 
 </LinearLayout>

@@ -43,7 +43,6 @@ class PacienteDashboardActivity : AppCompatActivity() {
         val btnChatbot = findViewById<MaterialButton>(R.id.btnAsistenteIA)
         val btnPasaporte = findViewById<MaterialButton>(R.id.btnPasaporteQR)
         val btnGuia = findViewById<MaterialButton>(R.id.btnGuiaRenal)
-        val btnVolver = findViewById<MaterialButton>(R.id.btnVolverRolesPaciente)
 
         cargarDatosFicha()
 
@@ -62,14 +61,11 @@ class PacienteDashboardActivity : AppCompatActivity() {
         btnGuia.setOnClickListener {
             startActivity(Intent(this, KidneyCareGuideActivity::class.java))
         }
-
-        btnVolver.setOnClickListener { finish() }
     }
 
     private fun cargarDatosFicha() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Se utiliza la función suspend lista de tu DiagnosticDao
                 val expedientes = database.diagnosticDao().obtenerTodosLista()
                 if (expedientes.isNotEmpty()) {
                     ultimoExpediente = expedientes.first() // Toma el último diagnóstico (timestamp DESC)
