@@ -19,13 +19,14 @@
 
         <!-- Logo y título de la app -->
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@android:drawable/ic_menu_compass"
-            android:contentDescription="Logo de NefroScan"
-            app:tint="#0077B6"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Logo NefroScan"
+            android:background="#CAF0F8"
+            android:padding="12dp"
+            android:elevation="4dp" />
 
         <TextView
             android:layout_width="match_parent"

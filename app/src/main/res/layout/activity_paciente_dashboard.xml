@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F172A"
+    android:background="#CAF0F8"
     android:fillViewport="true">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Portal del Paciente"
-            android:textColor="#EC4899"
+            android:textColor="#03045E"
             android:textSize="26sp"
             android:fontFamily="sans-serif-medium"
             android:textStyle="bold"
@@ -29,8 +29,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NefroScan • Autogestión Renal"
-            android:textColor="#94A3B8"
+            android:text="NefroScan · Autogestión Renal"
+            android:textColor="#0077B6"
             android:textSize="13sp"
             android:layout_marginBottom="24dp"/>
 
@@ -39,10 +39,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="#1E293B"
-            app:strokeColor="#334155"
+            app:cardBackgroundColor="#FFFFFF"
+            app:strokeColor="#90E0EF"
             app:strokeWidth="1dp"
-            app:cardElevation="2dp"
+            app:cardElevation="4dp"
             android:layout_marginBottom="24dp">
 
             <LinearLayout
@@ -56,17 +56,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cargando Paciente..."
-                    android:textColor="#FFFFFF"
+                    android:textColor="#03045E"
                     android:textSize="18sp"
                     android:fontFamily="sans-serif-medium"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvEdadSexoPerfil"
+                    android:id="@+id/tvEdadPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Edad: -- | Sexo: --"
-                    android:textColor="#94A3B8"
+                    android:text="Edad: --"
+                    android:textColor="#0077B6"
                     android:textSize="14sp"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="12dp"/>
@@ -74,7 +74,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#334155"
+                    android:background="#90E0EF"
                     android:layout_marginBottom="12dp"/>
 
                 <TextView
@@ -82,25 +82,37 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Estado: Evaluando datos..."
-                    android:textColor="#F59E0B"
+                    android:textColor="#00B4D8"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium"
                     android:textStyle="bold"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Botones Principales -->
+        <!-- Botones de Acceso Rápido -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVerDetalles"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Ver Detalles del Último Diagnóstico"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-medium"
+            app:cornerRadius="16dp"
+            app:backgroundTint="#03045E"
+            android:layout_marginBottom="12dp" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnMiHistorial"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Mi Historial y Expedientes"
-            android:textColor="#38BDF8"
+            android:textColor="#0077B6"
             android:textSize="15sp"
             android:fontFamily="sans-serif-medium"
             app:cornerRadius="16dp"
-            app:backgroundTint="#1E293B"
-            app:strokeColor="#38BDF8"
+            app:backgroundTint="#FFFFFF"
+            app:strokeColor="#0077B6"
             app:strokeWidth="1dp"
             android:layout_marginBottom="12dp" />
 
@@ -113,9 +125,92 @@
             android:textSize="15sp"
             android:fontFamily="sans-serif-medium"
             app:cornerRadius="16dp"
-            app:backgroundTint="#0284C7"
+            app:backgroundTint="#0077B6"
             android:layout_marginBottom="12dp" />
 
+        <!-- Sección de Herramientas de Autocuidado -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Herramientas de Autocuidado"
+            android:textColor="#03045E"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRecordatorioMedicamentos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Recordatorio\nMedicamentos"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:fontFamily="sans-serif-medium"
+                app:cornerRadius="12dp"
+                app:backgroundTint="#00B4D8"
+                android:layout_marginEnd="6dp"
+                android:padding="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCalculadoraHidratacion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Calculadora\nHidratación"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:fontFamily="sans-serif-medium"
+                app:cornerRadius="12dp"
+                app:backgroundTint="#0077B6"
+                android:layout_marginStart="6dp"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnConsejosRapidos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Consejos\nRápidos"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:fontFamily="sans-serif-medium"
+                app:cornerRadius="12dp"
+                app:backgroundTint="#03045E"
+                android:layout_marginEnd="6dp"
+                android:padding="8dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLineaAyuda"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Línea de\nAyuda"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:fontFamily="sans-serif-medium"
+                app:cornerRadius="12dp"
+                app:backgroundTint="#00B4D8"
+                android:layout_marginStart="6dp"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+        <!-- Botones principales restantes -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPasaporteQR"
             android:layout_width="match_parent"
@@ -125,7 +220,7 @@
             android:textSize="15sp"
             android:fontFamily="sans-serif-medium"
             app:cornerRadius="16dp"
-            app:backgroundTint="#10B981"
+            app:backgroundTint="#00B4D8"
             android:layout_marginBottom="12dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -137,7 +232,7 @@
             android:textSize="15sp"
             android:fontFamily="sans-serif-medium"
             app:cornerRadius="16dp"
-            app:backgroundTint="#8B5CF6"
+            app:backgroundTint="#03045E"
             android:layout_marginBottom="28dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -145,10 +240,12 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Cambiar de Perfil"
-            android:textColor="#94A3B8"
+            android:textColor="#0077B6"
             android:textSize="14sp"
             app:cornerRadius="14dp"
-            app:backgroundTint="#334155" />
+            app:backgroundTint="#FFFFFF"
+            app:strokeColor="#0077B6"
+            app:strokeWidth="1dp" />
 
     </LinearLayout>
 </ScrollView>

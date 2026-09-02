@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F172A"
+    android:background="#CAF0F8"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".ChatbotActivity">
@@ -17,7 +17,7 @@
         android:layout_marginBottom="2dp"
         android:gravity="center"
         android:text="Asistente Virtual NefroScan"
-        android:textColor="#38BDF8"
+        android:textColor="#03045E"
         android:textSize="22sp"
         android:textStyle="bold" />
 
@@ -28,7 +28,7 @@
         android:layout_marginBottom="12dp"
         android:gravity="center"
         android:text="Educación y Orientación en Salud Renal"
-        android:textColor="#94A3B8"
+        android:textColor="#0077B6"
         android:textSize="12sp" />
 
     <!-- Lista de Mensajes del Chat -->
@@ -38,8 +38,9 @@
         android:layout_height="0dp"
         android:layout_marginBottom="12dp"
         android:layout_weight="1"
+        android:background="#FFFFFF"
         android:clipToPadding="false"
-        android:paddingBottom="4dp" />
+        android:padding="8dp" />
 
     <!-- Preguntas y Botones de Opciones -->
     <HorizontalScrollView
@@ -52,7 +53,8 @@
             android:id="@+id/chipGroupPreguntas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:singleLine="true" />
+            app:singleLine="true"
+            app:chipSpacingHorizontal="8dp" />
 
     </HorizontalScrollView>
 
@@ -61,8 +63,10 @@
         android:id="@+id/btnVolverHistorial"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:backgroundTint="#334155"
+        android:backgroundTint="#FFFFFF"
         android:text="Volver"
-        android:textColor="#94A3B8" />
+        android:textColor="#0077B6"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
-</LinearLayout>
+</LinearLayout> 
