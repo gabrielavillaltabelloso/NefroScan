@@ -3,7 +3,7 @@ package com.insamt.nefroscan
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -21,12 +21,20 @@ class PromotorDashboardActivity : AppCompatActivity() {
         idPromotorSesion = prefs.getString("ID_USUARIO", "") ?: ""
         nombrePromotorSesion = prefs.getString("NOMBRE_USUARIO", "Promotor de Salud") ?: "Promotor de Salud"
 
-        val btnNuevaVisita = findViewById<Button>(R.id.btnNuevaVisita)
-        val btnMapaRiesgo = findViewById<Button>(R.id.btnMapaRiesgo)
-        val btnEstadoSincronizacion = findViewById<Button>(R.id.btnEstadoSincronizacion)
-        val btnVolverRoles = findViewById<Button>(R.id.btnVolverRoles)
+        configurarVistas()
+    }
 
-        // 1. Abrir ficha de tamizaje comunitario pasando la trazabilidad del promotor
+    private fun configurarVistas() {
+        val btnNuevaVisita = findViewById<View>(R.id.btnNuevaVisita)
+        val btnCalendarioVisitas = findViewById<View>(R.id.btnCalendarioVisitas)
+        val btnHistorialFichas = findViewById<View>(R.id.btnHistorialFichas)
+        val btnDerivacionesMedicas = findViewById<View>(R.id.btnDerivacionesMedicas)
+        val btnChatConsultaRapida = findViewById<View>(R.id.btnChatConsultaRapida)
+        val btnRecursosEducativos = findViewById<View>(R.id.btnRecursosEducativos)
+        val btnMapaRiesgo = findViewById<View>(R.id.btnMapaRiesgo)
+        val btnEstadoSincronizacion = findViewById<View>(R.id.btnEstadoSincronizacion)
+
+        // 1. Tamizaje y Alertas de Riesgo (CKD)
         btnNuevaVisita.setOnClickListener {
             val intent = Intent(this, PromotorActivity::class.java).apply {
                 putExtra("EXTRA_ROL", "PROMOTOR")
@@ -36,22 +44,57 @@ class PromotorDashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 2. Abrir radar epidemiológico nacional / departamental
-        btnMapaRiesgo.setOnClickListener {
-            startActivity(Intent(this, MapaRiesgoActivity::class.java))
+        // 2. Rutas y Citas de Control ERC
+        btnCalendarioVisitas.setOnClickListener {
+            abrirActivitySegura("AgendaVisitasActivity")
         }
 
-        // 3. Abrir gestor de sincronización offline / nube (Firestore)
+        // 3. Historial de Fichas Comunitarias
+        btnHistorialFichas.setOnClickListener {
+            abrirActivitySegura("HistorialFichasActivity")
+        }
+
+        // 4. Casos Derivados y Trazabilidad Médica
+        btnDerivacionesMedicas.setOnClickListener {
+            abrirActivitySegura("DerivacionesMedicasActivity")
+        }
+
+        // 5. Chat de Consulta Rápida
+        btnChatConsultaRapida.setOnClickListener {
+            abrirActivitySegura("ChatPromotor")
+        }
+
+        // 6. Guías y Educación Comunitaria
+        btnRecursosEducativos.setOnClickListener {
+            abrirActivitySegura("GuiasEducacionActivity")
+        }
+
+        // 7. Radar Epidemiológico Nacional
+        btnMapaRiesgo.setOnClickListener {
+            abrirActivitySegura("MapaRiesgoActivity")
+        }
+
+        // 8. Sincronización Offline / Cloud
         btnEstadoSincronizacion.setOnClickListener {
             val intent = Intent(this, SyncStatusActivity::class.java).apply {
                 putExtra("ID_PROMOTOR", idPromotorSesion)
+                putExtra("NOMBRE_PROMOTOR", nombrePromotorSesion)
             }
             startActivity(intent)
         }
+    }
 
-        // 4. Regresar al selector de roles o cerrar sesión
-        btnVolverRoles.setOnClickListener {
-            finish()
+    private fun abrirActivitySegura(nombreClase: String) {
+        try {
+            val claseDestino = Class.forName("com.insamt.nefroscan.$nombreClase")
+            val intent = Intent(this, claseDestino).apply {
+                putExtra("EXTRA_ROL", "PROMOTOR")
+                putExtra("EXTRA_REGISTRADOR_ID", idPromotorSesion)
+                putExtra("EXTRA_REGISTRADOR_NOMBRE", nombrePromotorSesion)
+            }
+            startActivity(intent)
+        } catch (e: ClassNotFoundException) {
+            Toast.makeText(this, "Módulo en construcción: $nombreClase", Toast.LENGTH_SHORT).show()
         }
     }
 }

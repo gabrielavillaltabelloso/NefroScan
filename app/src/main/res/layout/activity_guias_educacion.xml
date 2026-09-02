@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A"
+    android:fitsSystemWindows="true"
+    android:padding="16dp"
+    tools:ignore="HardcodedText,VisualLintTextFieldSize,VisualLintButtonSize">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guías y Educación Comunitaria"
+            android:textColor="#38BDF8"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Herramientas y material preventivo para promotores"
+            android:textColor="#94A3B8"
+            android:textSize="13sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Calculadora de Hidratación en Campo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#1E293B"
+            android:padding="14dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💧 Calculadora Rápida de Hidratación"
+                android:textColor="#38BDF8"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calcula los litros recomendados según peso y jornada laboral bajo calor."
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/etPesoPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:hint="Peso del paciente en kg (ej. 70)"
+                android:inputType="numberDecimal"
+                android:importantForAutofill="no"
+                android:textColorHint="#94A3B8"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btnCalcularAgua"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="Calcular Consumo Diario"
+                android:backgroundTint="#0284C7"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/tvResultadoAgua"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingresa el peso para ver la recomendación."
+                android:textColor="#E2E8F0"
+                android:textSize="13sp"
+                android:textStyle="italic"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilares de Prevención Renal Comunitarios"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Módulo 1: Reducción de Sal -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#1E293B"
+            android:padding="14dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🧂 1. Control de Sodio y Presión Arterial"
+                android:textColor="#FBBF24"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• Limitar el consumo de sal a menos de 5g diarios (1 cucharadita).\n• Evitar consomés concentrados, sopas instantáneas y alimentos ultraprocesados.\n• Explicar que la hipertensión no controlada es la causa directa del daño en el filtrado renal."
+                android:textColor="#CBD5E1"
+                android:textSize="13sp"
+                android:layout_marginTop="6dp" />
+        </LinearLayout>
+
+        <!-- Módulo 2: Automedicación y AINEs -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#1E293B"
+            android:padding="14dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🚫 2. Riesgos de la Automedicación (AINEs)"
+                android:textColor="#F87171"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• Advetir contra el uso frecuente de Ibuprofeno, Diclofenaco y Naproxeno para dolores musculares de trabajo de campo.\n• Estos analgésicos reducen el flujo sanguíneo a los riñones, acelerando la ERC."
+                android:textColor="#CBD5E1"
+                android:textSize="13sp"
+                android:layout_marginTop="6dp" />
+        </LinearLayout>
+
+        <!-- Módulo 3: Agroquímicos y Protección -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#1E293B"
+            android:padding="14dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🌾 3. Protección ante Exposición a Agroquímicos"
+                android:textColor="#34D399"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="• Uso obligatorio de mascarilla, guantes y lavado de manos inmediato tras fumigar.\n• No utilizar recipientes de plaguicidas para almacenar agua potable o alimentos en el hogar."
+                android:textColor="#CBD5E1"
+                android:textSize="13sp"
+                android:layout_marginTop="6dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
