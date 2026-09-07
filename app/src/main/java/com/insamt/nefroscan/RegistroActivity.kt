@@ -3,10 +3,10 @@ package com.insamt.nefroscan
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 
 class RegistroActivity : AppCompatActivity() {
 
@@ -23,10 +23,10 @@ class RegistroActivity : AppCompatActivity() {
         registradorRol = intent.getStringExtra("EXTRA_ROL")
             ?: prefs.getString("ROL_USUARIO", "MEDICO") ?: "MEDICO"
 
-        val etNombre = findViewById<EditText>(R.id.etNombrePaciente)
-        val etIdPaciente = findViewById<EditText>(R.id.etIdPacienteDui)
-        val etEdad = findViewById<EditText>(R.id.etEdadPaciente)
-        val btnIniciar = findViewById<Button>(R.id.btnIniciarEscaneo)
+        val etNombre = findViewById<TextInputEditText>(R.id.etNombrePaciente)
+        val etIdPaciente = findViewById<TextInputEditText>(R.id.etIdPacienteDui)
+        val etEdad = findViewById<TextInputEditText>(R.id.etEdadPaciente)
+        val btnIniciar = findViewById<MaterialButton>(R.id.btnIniciarEscaneo)
 
         btnIniciar.setOnClickListener {
             val nombre = etNombre.text.toString().trim()

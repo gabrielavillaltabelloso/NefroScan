@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
 
         btnDemoMedico.setOnClickListener {
             etUsuario.setText("binnivillalta@gmail.com")
-            etContrasena.setText("200826")
+            etContrasena.setText("ale555")
             Toast.makeText(this, "Demo Medico cargado", Toast.LENGTH_SHORT).show()
         }
 
@@ -76,18 +76,23 @@ class LoginActivity : AppCompatActivity() {
         val emailParaAuth = if (usuario.contains("@")) usuario else "$usuario@nefroscan.sv"
 
         lifecycleScope.launch(Dispatchers.IO) {
+            var uidFirebase = ""
+            var emailFirebase = emailParaAuth
+            var rolFinal = "PACIENTE"
+            var accesoConcedido = false
+
+            // 1. Intentar autenticar con Firebase (Requiere Internet)
             try {
-                // 1. Autenticar en Firebase Authentication
                 val authResult = FirebaseAuth.getInstance()
                     .signInWithEmailAndPassword(emailParaAuth, pass)
                     .await()
 
                 val firebaseUser = authResult.user
-                val uidFirebase = firebaseUser?.uid ?: ""
-                val emailFirebase = firebaseUser?.email ?: emailParaAuth
+                uidFirebase = firebaseUser?.uid ?: ""
+                emailFirebase = firebaseUser?.email ?: emailParaAuth
+                accesoConcedido = true
 
-                // 2. OBTENER EL ROL REAL DIRECTAMENTE DESDE FIRESTORE (La fuente de la verdad)
-                var rolFinal = "PACIENTE"
+                // Obtener el rol real directamente desde Firestore si hay conexión
                 try {
                     val firestoreDoc = FirebaseFirestore.getInstance()
                         .collection("usuarios")
@@ -98,7 +103,6 @@ class LoginActivity : AppCompatActivity() {
                     if (firestoreDoc.exists()) {
                         rolFinal = firestoreDoc.getString("rol")?.uppercase(Locale.getDefault()) ?: "PACIENTE"
                     } else {
-                        // Fallback estricto basado en correos conocidos si no está el documento en Firestore
                         rolFinal = when {
                             emailFirebase.equals("binnivillalta@gmail.com", ignoreCase = true) -> "MEDICO"
                             emailFirebase.contains("promotor", ignoreCase = true) || emailFirebase.contains("prom") -> "PROMOTOR"
@@ -107,38 +111,61 @@ class LoginActivity : AppCompatActivity() {
                     }
                 } catch (e: Exception) {
                     Log.e("LoginFirestore", "No se pudo leer de Firestore, usando respaldo local", e)
-                    // Si falla internet, leemos el rol que ya estaba guardado localmente
                     val dbFallback = UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
                     val localUser = dbFallback.userDao().obtenerUsuarioPorId(emailFirebase)
                     rolFinal = localUser?.rol?.uppercase(Locale.getDefault()) ?: "PACIENTE"
                 }
 
-                // 3. Guardar o actualizar la entidad en Room local con el rol verificado
-                val dbGeneral = UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
-                val nombreGenerado = emailFirebase.substringBefore("@")
-                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+            } catch (e: Exception) {
+                // 2. MODO OFFLINE: Si Firebase falla (sin internet), validamos en la base de datos local Room
+                Log.w("LoginAuth", "Fallo autenticación online, intentando modo offline...", e)
 
-                val userEntity = UserEntity(
-                    idUsuario = emailFirebase,
-                    nombreCompleto = nombreGenerado,
-                    contrasena = pass,
-                    rol = rolFinal
-                )
-                dbGeneral.userDao().insertarUsuario(userEntity)
+                try {
+                    val dbFallback = UserDatabaseFactory.getDatabaseForUser(applicationContext, emailParaAuth)
+                    val usuarioLocal = dbFallback.userDao().autenticar(emailParaAuth, pass)
+
+                    if (usuarioLocal != null) {
+                        rolFinal = usuarioLocal.rol.uppercase(Locale.getDefault())
+                        emailFirebase = usuarioLocal.idUsuario
+                        uidFirebase = "offline_${usuarioLocal.idUsuario}"
+                        accesoConcedido = true
+                    }
+                } catch (localEx: Exception) {
+                    Log.e("LoginLocal", "Error al validar en base de datos local", localEx)
+                }
+            }
+
+            // 3. Si se concedió el acceso (por Firebase o por Room offline)
+            if (accesoConcedido) {
+                try {
+                    val dbGeneral = UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
+                    val nombreGenerado = emailFirebase.substringBefore("@")
+                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+
+                    val userEntity = UserEntity(
+                        idUsuario = emailFirebase,
+                        nombreCompleto = nombreGenerado,
+                        contrasena = pass,
+                        rol = rolFinal
+                    )
+                    dbGeneral.userDao().insertarUsuario(userEntity)
+                } catch (ex: Exception) {
+                    Log.e("RoomSave", "No se pudo actualizar la BD local", ex)
+                }
 
                 withContext(Dispatchers.Main) {
                     // 4. Guardar la sesión activa con el rol correcto
                     val prefs = getSharedPreferences("SesionNefroScan", Context.MODE_PRIVATE)
                     prefs.edit().clear().apply {
-                        putString("ID_USUARIO", userEntity.idUsuario)
+                        putString("ID_USUARIO", emailFirebase)
                         putString("UID_FIREBASE", uidFirebase)
-                        putString("NOMBRE_USUARIO", userEntity.nombreCompleto)
+                        putString("NOMBRE_USUARIO", emailFirebase.substringBefore("@"))
                         putString("ROL_USUARIO", rolFinal)
                         apply()
                     }
 
                     // 5. Inicializar la base de datos privada del usuario
-                    UserDatabaseFactory.getDatabaseForUser(applicationContext, userEntity.idUsuario)
+                    UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
 
                     // 6. Redirigir al Dashboard exacto según el rol real
                     val intent = when (rolFinal) {
@@ -149,9 +176,13 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
-            } catch (e: Exception) {
+            } else {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@LoginActivity, "Error de acceso: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Acceso denegado. Verifique sus credenciales o conéctese a internet por primera vez en este dispositivo.",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
