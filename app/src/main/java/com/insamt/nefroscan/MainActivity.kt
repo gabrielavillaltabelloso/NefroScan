@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private var singleModelNode: ModelNode? = null
     private var isHeatmapMode = false
 
-    // Variables de control de posición y zoom 3D
+    // Variables de control de posicion y zoom 3D
     private var currentModelX = 0.0f
     private var currentModelY = 0.0f
     private var currentModelZ = -1.2f
@@ -57,11 +57,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var sbWater: SeekBar
     private lateinit var sbSodium: SeekBar
-    private lateinit var sbOpacity: SeekBar
+    private lateinit var sbZoom: SeekBar
     private lateinit var sbLayers: SeekBar
     private lateinit var lblWater: TextView
     private lateinit var lblSodium: TextView
-    private lateinit var lblOpacity: TextView
+    private lateinit var lblZoom: TextView
     private lateinit var lblLayers: TextView
     private lateinit var txtPrediction5Years: TextView
     private lateinit var txtPrediction10Years: TextView
@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                 val resultadoCalidad = ImageQualityEvaluator.evaluarCalidadEcografia(bitmap)
                 if (!resultadoCalidad.isApta) {
                     AlertDialog.Builder(this)
-                        .setTitle("⚠️ Captura No Apta para Diagnóstico")
+                        .setTitle("Captura No Apta para Diagnostico")
                         .setMessage(resultadoCalidad.mensajeDiagnostico)
                         .setPositiveButton("Repetir Captura", null)
                         .show()
@@ -118,15 +118,15 @@ class MainActivity : AppCompatActivity() {
                         ultimoResultadoIA = result
 
                         val porcentajeAfeccion = when (result.pathologyLabel) {
-                            "Riñón Normal" -> 0f
-                            "Anomalía Física (Litiasis / Quiste)" -> result.anomalyPercentage
+                            "Rinon Normal" -> 0f
+                            "Anomalia Fisica (Litiasis / Quiste)" -> result.anomalyPercentage
                             else -> result.nephropathyPercentage
                         }
 
                         val severidadTexto = when {
                             porcentajeAfeccion < 15f -> "Normal/Leve"
                             porcentajeAfeccion < 45f -> "Moderada"
-                            else -> "Severa/Crítica"
+                            else -> "Severa/Critica"
                         }
 
                         val litrosAgua = withContext(Dispatchers.Main) { sbWater.progress / 10.0f }
@@ -168,8 +168,8 @@ class MainActivity : AppCompatActivity() {
                         database.diagnosticDao().insertarDiagnostico(expediente)
 
                         withContext(Dispatchers.Main) {
-                            txtStatusTitle.text = "Patología: ${result.pathologyLabel} (${"%.1f".format(result.confidence)}%)\n" +
-                                    "Afección: ${"%.1f".format(porcentajeAfeccion)}% ($severidadTexto)"
+                            txtStatusTitle.text = "Patologia: ${result.pathologyLabel} (${"%.1f".format(result.confidence)}%)\n" +
+                                    "Afeccion: ${"%.1f".format(porcentajeAfeccion)}% ($severidadTexto)"
 
                             nivelDanoIA = danoTemp
                             actualizarGemeloDigital()
@@ -180,7 +180,7 @@ class MainActivity : AppCompatActivity() {
                                 damagePercentage = porcentajeAfeccion
                             )
 
-                            if (result.pathologyLabel != "Riñón Normal" || porcentajeAfeccion > 2.0f) {
+                            if (result.pathologyLabel != "Rinon Normal" || porcentajeAfeccion > 2.0f) {
                                 start3DScanningAnimation(singleModelNode)
                             } else {
                                 stop3DScanningAnimation()
@@ -195,9 +195,9 @@ class MainActivity : AppCompatActivity() {
                         }
                     } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
-                            Log.e("NephroScanAI", "Error crítico en análisis IA", e)
-                            Toast.makeText(this@MainActivity, "Error en el análisis: ${e.message}", Toast.LENGTH_LONG).show()
-                            txtStatusTitle.text = "Error en el análisis"
+                            Log.e("NephroScanAI", "Error critico en analisis IA", e)
+                            Toast.makeText(this@MainActivity, "Error en el analisis: ${e.message}", Toast.LENGTH_LONG).show()
+                            txtStatusTitle.text = "Error en el analisis"
                         }
                     }
                 }
@@ -239,24 +239,22 @@ class MainActivity : AppCompatActivity() {
 
         sbWater = findViewById(R.id.sbWater)
         sbSodium = findViewById(R.id.sbSodium)
-        sbOpacity = findViewById(R.id.sbOpacity)
+        sbZoom = findViewById(R.id.sbZoom)
         sbLayers = findViewById(R.id.sbLayers)
         lblWater = findViewById(R.id.lblWater)
         lblSodium = findViewById(R.id.lblSodium)
-        lblOpacity = findViewById(R.id.lblOpacity)
+        lblZoom = findViewById(R.id.lblZoom)
         lblLayers = findViewById(R.id.lblLayers)
         txtPrediction5Years = findViewById(R.id.txtPrediction5Years)
         txtPrediction10Years = findViewById(R.id.txtPrediction10Years)
 
         singleSceneView = findViewById(R.id.singleSceneView)
 
-        // --- CONFIGURACIÓN DE LOS BOTONES DE MOVIMIENTO Y ZOOM 3D ---
+        // --- CONFIGURACION DE LOS BOTONES DE MOVIMIENTO 3D ---
         val btnUp: ImageButton = findViewById(R.id.btnUp)
         val btnDown: ImageButton = findViewById(R.id.btnDown)
         val btnLeft: ImageButton = findViewById(R.id.btnLeft)
         val btnRight: ImageButton = findViewById(R.id.btnRight)
-        val btnZoomIn: ImageButton = findViewById(R.id.btnZoomIn)
-        val btnZoomOut: ImageButton = findViewById(R.id.btnZoomOut)
         val btnResetView: ImageButton = findViewById(R.id.btnResetView)
 
         btnUp.setOnClickListener {
@@ -275,20 +273,12 @@ class MainActivity : AppCompatActivity() {
             currentModelX += 0.1f
             actualizarTransformacionModelo()
         }
-        btnZoomIn.setOnClickListener {
-            currentModelZ += 0.15f
-            actualizarTransformacionModelo()
-        }
-        btnZoomOut.setOnClickListener {
-            currentModelZ -= 0.15f
-            actualizarTransformacionModelo()
-        }
         btnResetView.setOnClickListener {
             currentModelX = 0.0f
             currentModelY = 0.0f
             currentModelZ = -1.2f
             currentScaleFactor = 1.0f
-            sbOpacity.progress = 0
+            sbZoom.progress = 100
             sbLayers.progress = 0
             actualizarTransformacionModelo()
             Toast.makeText(this, "Vista 3D restablecida", Toast.LENGTH_SHORT).show()
@@ -302,7 +292,7 @@ class MainActivity : AppCompatActivity() {
             isHeatmapMode = !isHeatmapMode
             if (isHeatmapMode) {
                 lblTitleVisor.text = "Gemelo Digital (Mapa de Calor)"
-                btnToggleViewMode.text = "Cambiar a Modo: Anatomía 3D"
+                btnToggleViewMode.text = "Cambiar a Modo: Anatomia 3D"
                 actualizarGemeloDigital()
             } else {
                 lblTitleVisor.text = getString(R.string.title_anatomy_3d)
@@ -320,7 +310,7 @@ class MainActivity : AppCompatActivity() {
 
         configurarControlesSimulacion()
 
-        lblOpacity.text = getString(R.string.lbl_opacity_default, sbOpacity.progress)
+        lblZoom.text = "Tamano: ${sbZoom.progress}%"
         lblLayers.text = getString(R.string.lbl_layers, getString(R.string.layer_all))
 
         lifecycleScope.launch {
@@ -351,10 +341,10 @@ class MainActivity : AppCompatActivity() {
                 --- PASAPORTE NEFROSCAN ---
                 ID Paciente: $idPacienteActual
                 Paciente: $nombre
-                Diagnóstico IA: ${resultado.pathologyLabel}
+                Diagnostico IA: ${resultado.pathologyLabel}
                 Severidad: $severidad
                 Confianza: ${"%.1f".format(resultado.confidence)}%
-                Nivel Afección: ${"%.1f".format(porcentajeAfeccion)}%
+                Nivel Afeccion: ${"%.1f".format(porcentajeAfeccion)}%
                 Registrador: $rolRegistradorActual ($idRegistradorActual)
             """.trimIndent()
 
@@ -364,7 +354,7 @@ class MainActivity : AppCompatActivity() {
             val tvInfo = dialogView.findViewById<TextView>(R.id.tvInfoQrDialog)
 
             ivQR?.setImageBitmap(bitmap)
-            tvInfo?.text = "Paciente: $nombre\nPatología: ${resultado.pathologyLabel} ($severidad)"
+            tvInfo?.text = "Paciente: $nombre\nPatologia: ${resultado.pathologyLabel} ($severidad)"
 
             val dialog = AlertDialog.Builder(this)
                 .setView(dialogView)
@@ -396,7 +386,7 @@ class MainActivity : AppCompatActivity() {
         damagePercentage: Float
     ) {
         modelNode?.let { node ->
-            val isLesionDetected = pathologyLabel != "Riñón Normal" || damagePercentage > 2.0f
+            val isLesionDetected = pathologyLabel != "Rinon Normal" || damagePercentage > 2.0f
 
             node.modelInstance?.materialInstances?.forEach { material ->
                 try {
@@ -415,7 +405,7 @@ class MainActivity : AppCompatActivity() {
                         material.setParameter("emissiveFactor", 0.0f, 0.0f, 0.0f)
                     }
                 } catch (e: Exception) {
-                    Log.w("NephroScan3D", "Material no soporta el parámetro: ${e.message}")
+                    Log.w("NephroScan3D", "Material no soporta el parametro: ${e.message}")
                 }
             }
         }
@@ -474,7 +464,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
-                Log.e("NephroScan3D", "Error cargando modelo 3D único: ${e.message}")
+                Log.e("NephroScan3D", "Error cargando modelo 3D unico: ${e.message}")
             }
         }
     }
@@ -505,16 +495,12 @@ class MainActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        sbOpacity.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        // --- NUEVO: SeekBar para controlar el tamano del modelo ---
+        sbZoom.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                lblOpacity.text = getString(R.string.lbl_opacity_default, progress)
-                val alpha = 1.0f - (progress / 100.0f)
-
-                singleModelNode?.modelInstance?.materialInstances?.forEach { material ->
-                    try {
-                        material.setParameter("baseColorFactor", 0.8f, 0.35f, 0.3f, alpha)
-                    } catch (_: Exception) {}
-                }
+                lblZoom.text = "Tamano: $progress%"
+                currentScaleFactor = progress / 100.0f
+                actualizarTransformacionModelo()
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}

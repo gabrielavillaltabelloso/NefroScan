@@ -2,7 +2,6 @@ package com.insamt.nefroscan.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 @Entity(tableName = "evaluaciones_edema")
 data class EdemaEvaluacion(

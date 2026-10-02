@@ -214,7 +214,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Card 3: Parámetros Clínicos & Síntomas de Alarma -->
+        <!-- Card 3: Parámetros Clínicos y Síntomas de Alarma -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -340,7 +340,7 @@
                     android:id="@+id/btnNotificarMedico"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="🚨 Enviar Alerta Inmediata al Nefrólogo"
+                    android:text="⚠ Enviar Alerta Inmediata al Nefrólogo"
                     android:backgroundTint="#DC2626"
                     android:textColor="#FFFFFF"
                     android:visibility="gone"/>

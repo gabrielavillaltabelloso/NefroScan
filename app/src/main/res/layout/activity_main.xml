@@ -17,7 +17,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Títulos con mejor jerarquía -->
+        <!-- Titulos con mejor jerarquia -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:gravity="center"
             android:layout_marginBottom="16dp" />
 
-        <!-- Card de Carga de Ecografía -->
+        <!-- Card de Carga de Ecografia -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:layout_height="140dp"
                     android:scaleType="centerCrop"
                     android:src="@android:drawable/ic_menu_gallery"
-                    android:contentDescription="Ecografía renal"
+                    android:contentDescription="Ecografia renal"
                     android:layout_marginBottom="12dp"
                     app:tint="#0077B6" />
 
@@ -116,48 +116,47 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
-                    <!-- PANEL IZQUIERDO: Zoom y Reset flotantes -->
+                    <!-- PANEL IZQUIERDO: Control de tamano del modelo con SeekBar -->
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="140dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|start"
                         android:layout_margin="12dp"
                         android:orientation="vertical"
                         android:background="#8003045E"
-                        android:padding="6dp"
+                        android:padding="8dp"
                         android:elevation="4dp">
 
-                        <ImageButton
-                            android:id="@+id/btnZoomIn"
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:layout_marginBottom="4dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="Acercar"
-                            android:src="@android:drawable/ic_menu_zoom"
-                            app:tint="#38BDF8" />
+                        <TextView
+                            android:id="@+id/lblZoom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Tamano: 100%"
+                            android:textColor="#38BDF8"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp" />
 
-                        <ImageButton
-                            android:id="@+id/btnZoomOut"
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:layout_marginBottom="4dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:contentDescription="Alejar"
-                            android:src="@android:drawable/ic_menu_zoom"
-                            app:tint="#38BDF8" />
+                        <SeekBar
+                            android:id="@+id/sbZoom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:max="200"
+                            android:progress="100" />
 
                         <ImageButton
                             android:id="@+id/btnResetView"
                             android:layout_width="44dp"
                             android:layout_height="44dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:contentDescription="Restablecer vista"
                             android:src="@android:drawable/ic_menu_rotate"
                             app:tint="#38BDF8" />
                     </LinearLayout>
 
-                    <!-- PANEL DERECHO: Grid de movimiento direccional corregido -->
+                    <!-- PANEL DERECHO: Grid de movimiento direccional -->
                     <GridLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -216,7 +215,7 @@
                     </GridLayout>
                 </FrameLayout>
 
-                <!-- Botón para alternar el modo de visualización -->
+                <!-- Boton para alternar el modo de visualizacion -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnToggleViewMode"
                     android:layout_width="match_parent"
@@ -242,23 +241,6 @@
                     android:layout_marginBottom="12dp" />
 
                 <TextView
-                    android:id="@+id/lblOpacity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lbl_opacity_default"
-                    android:textColor="#64748B"
-                    android:textSize="12sp"
-                    android:layout_marginBottom="4dp" />
-
-                <SeekBar
-                    android:id="@+id/sbOpacity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="100"
-                    android:progress="0"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
                     android:id="@+id/lblLayers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -276,7 +258,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Card Proyección Temporal -->
+        <!-- Card Proyeccion Temporal -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

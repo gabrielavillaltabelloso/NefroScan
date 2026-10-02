@@ -23,20 +23,20 @@ class PromotorActivity : AppCompatActivity() {
         val spinnerSintomasAlerta = findViewById<Spinner>(R.id.spinnerSintomasAlerta) // <-- 1. Declarar el campo con problemas
         val btnCalcular = findViewById<Button>(R.id.btnCalcularRiesgoCampo)
 
-        // Opciones de riesgo de exposición laboral
+        // Opciones de riesgo de exposici�n laboral
         val opcionesExposicion = arrayOf(
-            "Baja exposición (Urbano / Oficina)",
-            "Exposición moderada (Comercio / Campo ocasional)",
-            "Alta exposición constante (Agricultura / Cañales)"
+            "Baja exposici�n (Urbano / Oficina)",
+            "Exposici�n moderada (Comercio / Campo ocasional)",
+            "Alta exposici�n constante (Agricultura / Ca�ales)"
         )
         val adapterExposicion = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, opcionesExposicion)
         spinnerExposicion.adapter = adapterExposicion
 
-        // <-- 2. Añadir opciones al Spinner de Signos de Alerta que no funcionaba
+        // <-- 2. A�adir opciones al Spinner de Signos de Alerta que no funcionaba
         val opcionesSintomas = arrayOf(
             "Ninguno / Sin signos aparentes",
             "Fatiga extrema o mareos frecuentes",
-            "Edema (Hinchazón) en párpados o extremidades",
+            "Edema (Hinchaz�n) en p�rpados o extremidades",
             "Disuria / Alteraciones urinarias evidentes"
         )
         val adapterSintomas = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, opcionesSintomas)
@@ -53,16 +53,16 @@ class PromotorActivity : AppCompatActivity() {
 
             val presionSistolica = paStr.toIntOrNull() ?: 120
             val nivelExposicion = spinnerExposicion.selectedItemPosition
-            val nivelSintomas = spinnerSintomasAlerta.selectedItemPosition // <-- 3. Capturar la selección del usuario
+            val nivelSintomas = spinnerSintomasAlerta.selectedItemPosition // <-- 3. Capturar la selecci�n del usuario
 
-            // Algoritmo de riesgo comunitario ajustado considerando los síntomas de alerta
+            // Algoritmo de riesgo comunitario ajustado considerando los s�ntomas de alerta
             var puntajeRiesgo = 0
             if (presionSistolica >= 140) puntajeRiesgo += 2
             else if (presionSistolica >= 130) puntajeRiesgo += 1
 
             puntajeRiesgo += nivelExposicion
 
-            // Si presenta signos clínicos avanzados (índice mayor a 0 en el spinner), incrementa el riesgo
+            // Si presenta signos cl�nicos avanzados (�ndice mayor a 0 en el spinner), incrementa el riesgo
             if (nivelSintomas > 0) {
                 puntajeRiesgo += 1
             }
@@ -70,17 +70,17 @@ class PromotorActivity : AppCompatActivity() {
             val (semaforoTexto, recomendacion, esRiesgoAlto) = when {
                 puntajeRiesgo >= 3 -> Triple(
                     "ROJO - RIESGO ALTO",
-                    "Derivar urgentemente para evaluación renal completa y ecografía.",
+                    "Derivar urgentemente para evaluaci�n renal completa y ecograf�a.",
                     true
                 )
                 puntajeRiesgo == 2 -> Triple(
                     "AMARILLO - RIESGO MODERADO",
-                    "Programar control de presión e hidratación en menos de 15 días.",
+                    "Programar control de presi�n e hidrataci�n en menos de 15 d�as.",
                     false
                 )
                 else -> Triple(
                     "VERDE - RIESGO BAJO",
-                    "Mantener medidas preventivas de hidratación oral constante.",
+                    "Mantener medidas preventivas de hidrataci�n oral constante.",
                     false
                 )
             }
@@ -96,11 +96,11 @@ class PromotorActivity : AppCompatActivity() {
         esRiesgoAlto: Boolean
     ) {
         val builder = AlertDialog.Builder(this)
-            .setTitle("Evaluación Comunitaria: $nombre")
-            .setMessage("Nivel de Alerta:\n$semaforo\n\nRecomendación Clínica:\n$recomendacion")
+            .setTitle("Evaluaci�n Comunitaria: $nombre")
+            .setMessage("Nivel de Alerta:\n$semaforo\n\nRecomendaci�n Cl�nica:\n$recomendacion")
 
         if (esRiesgoAlto) {
-            builder.setPositiveButton("Realizar Ecografía Inmediata") { dialog, _ ->
+            builder.setPositiveButton("Realizar Ecograf�a Inmediata") { dialog, _ ->
                 dialog.dismiss()
                 val intent = Intent(this, RegistroActivity::class.java).apply {
                     putExtra("EXTRA_NOMBRE", nombre)

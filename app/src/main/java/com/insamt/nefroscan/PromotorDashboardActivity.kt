@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
+@Suppress("SpellCheckingInspection")
 class PromotorDashboardActivity : AppCompatActivity() {
 
     private var idPromotorSesion: String = ""
@@ -33,6 +34,7 @@ class PromotorDashboardActivity : AppCompatActivity() {
         val btnRecursosEducativos = findViewById<View>(R.id.btnRecursosEducativos)
         val btnMapaRiesgo = findViewById<View>(R.id.btnMapaRiesgo)
         val btnEstadoSincronizacion = findViewById<View>(R.id.btnEstadoSincronizacion)
+        val btnScannerEdema = findViewById<View>(R.id.btnScannerEdema) // Referencia al nuevo botón de Edema
 
         // 1. Tamizaje y Alertas de Riesgo (CKD)
         btnNuevaVisita.setOnClickListener {
@@ -74,7 +76,17 @@ class PromotorDashboardActivity : AppCompatActivity() {
             abrirActivitySegura("MapaRiesgoActivity")
         }
 
-        // 8. Sincronización Offline / Cloud
+        // 8. Escáner Clínico de Edema (Fóvea)
+        btnScannerEdema.setOnClickListener {
+            val intent = Intent(this, EdemaScannerActivity::class.java).apply {
+                putExtra("EXTRA_ROL", "PROMOTOR")
+                putExtra("EXTRA_REGISTRADOR_ID", idPromotorSesion)
+                putExtra("EXTRA_REGISTRADOR_NOMBRE", nombrePromotorSesion)
+            }
+            startActivity(intent)
+        }
+
+        // 9. Sincronización Offline / Cloud
         btnEstadoSincronizacion.setOnClickListener {
             val intent = Intent(this, SyncStatusActivity::class.java).apply {
                 putExtra("ID_PROMOTOR", idPromotorSesion)

@@ -268,7 +268,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
@@ -333,6 +333,46 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
+
+        <!-- NUEVA FILA: Botón de Escáner de Edema Clínico -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnScannerEdema"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#0369A1"
+            app:cardCornerRadius="12dp"
+            app:strokeColor="#38BDF8"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="🔍 Escáner Clínico de Edema (Fóvea)"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:text="Evaluación de sobrecarga hídrica y video"
+                    android:textColor="#E0F2FE"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
