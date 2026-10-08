@@ -81,6 +81,13 @@ class LoginActivity : AppCompatActivity() {
             var rolFinal = "PACIENTE"
             var accesoConcedido = false
 
+            // REGLA DE ORO: Forzar rol de médico o promotor inmediatamente si es cuenta conocida
+            if (emailParaAuth.equals("binnivillalta@gmail.com", ignoreCase = true)) {
+                rolFinal = "MEDICO"
+            } else if (emailParaAuth.contains("promotor", ignoreCase = true) || emailParaAuth.contains("prom", ignoreCase = true)) {
+                rolFinal = "PROMOTOR"
+            }
+
             // 1. Intentar autenticar con Firebase (Requiere Internet)
             try {
                 val authResult = FirebaseAuth.getInstance()
@@ -92,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
                 emailFirebase = firebaseUser?.email ?: emailParaAuth
                 accesoConcedido = true
 
-                // Obtener el rol real directamente desde Firestore si hay conexión
+                // Obtener el rol real desde Firestore si hay conexión y no es un correo preforzado
                 try {
                     val firestoreDoc = FirebaseFirestore.getInstance()
                         .collection("usuarios")
@@ -101,19 +108,13 @@ class LoginActivity : AppCompatActivity() {
                         .await()
 
                     if (firestoreDoc.exists()) {
-                        rolFinal = firestoreDoc.getString("rol")?.uppercase(Locale.getDefault()) ?: "PACIENTE"
-                    } else {
-                        rolFinal = when {
-                            emailFirebase.equals("binnivillalta@gmail.com", ignoreCase = true) -> "MEDICO"
-                            emailFirebase.contains("promotor", ignoreCase = true) || emailFirebase.contains("prom") -> "PROMOTOR"
-                            else -> "PACIENTE"
+                        val rolCloud = firestoreDoc.getString("rol")?.uppercase(Locale.getDefault())
+                        if (!rolCloud.isNullOrEmpty()) {
+                            rolFinal = rolCloud
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e("LoginFirestore", "No se pudo leer de Firestore, usando respaldo local", e)
-                    val dbFallback = UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
-                    val localUser = dbFallback.userDao().obtenerUsuarioPorId(emailFirebase)
-                    rolFinal = localUser?.rol?.uppercase(Locale.getDefault()) ?: "PACIENTE"
+                    Log.e("LoginFirestore", "No se pudo leer de Firestore, usando respaldo", e)
                 }
 
             } catch (e: Exception) {
@@ -125,7 +126,9 @@ class LoginActivity : AppCompatActivity() {
                     val usuarioLocal = dbFallback.userDao().autenticar(emailParaAuth, pass)
 
                     if (usuarioLocal != null) {
-                        rolFinal = usuarioLocal.rol.uppercase(Locale.getDefault())
+                        if (usuarioLocal.rol.isNotEmpty()) {
+                            rolFinal = usuarioLocal.rol.uppercase(Locale.getDefault())
+                        }
                         emailFirebase = usuarioLocal.idUsuario
                         uidFirebase = "offline_${usuarioLocal.idUsuario}"
                         accesoConcedido = true
@@ -137,6 +140,11 @@ class LoginActivity : AppCompatActivity() {
 
             // 3. Si se concedió el acceso (por Firebase o por Room offline)
             if (accesoConcedido) {
+                // Doble seguridad para asegurarnos de que el doctor nunca pierda su rol
+                if (emailFirebase.equals("binnivillalta@gmail.com", ignoreCase = true)) {
+                    rolFinal = "MEDICO"
+                }
+
                 try {
                     val dbGeneral = UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
                     val nombreGenerado = emailFirebase.substringBefore("@")
@@ -167,7 +175,7 @@ class LoginActivity : AppCompatActivity() {
                     // 5. Inicializar la base de datos privada del usuario
                     UserDatabaseFactory.getDatabaseForUser(applicationContext, emailFirebase)
 
-                    // 6. Redirigir al Dashboard exacto según el rol real
+                    // 6. Redirigir al Dashboard exacto según el rol real asegurado
                     val intent = when (rolFinal) {
                         "MEDICO" -> Intent(this@LoginActivity, MedicoDashboardActivity::class.java)
                         "PROMOTOR" -> Intent(this@LoginActivity, PromotorDashboardActivity::class.java)

@@ -4,65 +4,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F172A"
+    android:background="#FFFFFF"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="8dp"
     tools:context=".ChatbotActivity">
 
     <!-- Encabezado del Chatbot -->
-    <TextView
-        android:id="@+id/tvTituloChatbot"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:gravity="center"
-        android:text="Asistente Virtual NefroScan"
-        android:textColor="#38BDF8"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
 
-    <TextView
-        android:id="@+id/tvSubtituloChatbot"
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@string/app_name"
+            android:src="@android:drawable/ic_menu_myplaces"
+            app:tint="#03045E" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTituloChatbot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Asistente Virtual NefroScan"
+                android:textColor="#03045E"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSubtituloChatbot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Educación y Orientación en Salud Renal"
+                android:textColor="#0077B6"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnLimpiarChat"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Limpiar conversación"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="#0077B6" />
+    </LinearLayout>
+
+    <!-- Divisor con la nueva paleta -->
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="1dp"
         android:layout_marginBottom="12dp"
-        android:gravity="center"
-        android:text="Educación y Orientación en Salud Renal"
-        android:textColor="#94A3B8"
-        android:textSize="12sp" />
+        android:background="#90E0EF" />
 
     <!-- Lista de Mensajes del Chat -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChatMessages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="1"
         android:clipToPadding="false"
-        android:paddingBottom="4dp" />
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:scrollbars="none" />
 
     <!-- Preguntas y Botones de Opciones -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
         android:scrollbars="none">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroupPreguntas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:singleLine="true" />
+            app:chipSpacingHorizontal="8dp"
+            app:singleLine="true"
+            app:singleSelection="false" />
 
     </HorizontalScrollView>
 
     <!-- Botón Volver -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVolverHistorial"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:backgroundTint="#334155"
-        android:text="Volver"
-        android:textColor="#94A3B8" />
+        android:layout_height="56dp"
+        android:text="← Volver al inicio"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:fontFamily="sans-serif-medium"
+        app:cornerRadius="16dp"
+        app:backgroundTint="#03045E" />
 
 </LinearLayout>

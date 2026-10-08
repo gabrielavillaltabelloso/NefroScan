@@ -678,7 +678,7 @@ class PacienteDashboardActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun crearBitmapQR(texto: String): Bitmap {
+    private fun crearBitmapQR(texto: String): Bitmap    {
         val writer = QRCodeWriter()
         val bitMatrix = writer.encode(texto, BarcodeFormat.QR_CODE, 512, 512)
         val bitmap = createBitmap(512, 512, Bitmap.Config.RGB_565)
